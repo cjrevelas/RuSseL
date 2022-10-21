@@ -11,7 +11,7 @@ BOTH_OPTIONS        = # -DMUMPS_REPORT
 CCOMP = /usr/bin/gcc
 CPPCOMP = /usr/bin/g++
 
-topdir = /home/cjrevelas/libraries/mumps_serial
+topdir = /home/cjrevelas/libraries/mumps_serial_cpp/
 
 libdir = $(topdir)/lib
 
@@ -32,16 +32,21 @@ CCFLAGS  = $(CC_PROD) -cpp $(CPPFLAGS)
 endif
 
 INCLDIR += -Isrc/include
-INCLDIR += -I/home/cjrevelas/libraries/mumps_serial/include
+INCLDIR += -I/home/cjrevelas/libraries/mumps_serial_cpp/include
+INCLDIR += -I/home/cjrevelas/libraries/mumps_serial_cpp/libseq
+INCLDIR += -I/usr/lib/gcc/x86_64-linux-gnu/9/include
 
 LIBFS=-lstdc++ #-lm
 LD = ld
 
 LDFLAGS = $(CCFLAGS)
+LIBOTHERS = -L/usr/lib/gcc/x86_64-linux-gnu/9/ -lgfortran
+LIBOTHERS += -lpthread
 #--------------------------------------------------------SET FILE PATHS AND EXECUTABLE NAME-------------------------------------------------------#
 OBJDIR=obj
 SRCDIR=src
 RUNDIR=run
+
 
 OBJECTS=$(OBJDIR)/mesh.o\
 	$(OBJDIR)/fem.o\
