@@ -1,0 +1,2 @@
+-Isrc/include
+-I/home/cjrevelas/libraries/mumps_serial/include
