@@ -1,18 +1,36 @@
 #include <iostream>
 #include <mpi.h>
 #include "dmumps_c.h"
-#include "mesh.hpp"
+#include "Mesh.hpp"
+#include "Parser.hpp"
+#include "Russel.hpp"
+#include "IOHelper.hpp"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
   int gid = 4852;
 
   Mesh *mesh = new Mesh("in.mesh");
 
   mesh->elementsContainingNode(gid);
-  std::cout << mesh->computeMeshVolume() << '\n';
+ // std::cout << mesh->computeMeshVolume() << '\n';
 
   delete mesh;
   mesh = NULL;
+
+  std::string inputFileName = "in.input";
+  for (int ii = 0; ii<argc; ++ii) {
+    std::string argument(argv[ii]);
+    if (argument == "-in") {
+      inputFileName = argv[++ii];
+    }
+  }
+
+  if (!RusselNS::FileExists(inputFileName)) {
+    RusselNS::ExitProgram("Input file " + inputFileName + " does not exist!");
+  }
+
+  // Spawn an instance of the application itself
+  class RusselNS::Russel *russel = new RusselNS::Russel();
 
   DMUMPS_STRUC_C id;
   MUMPS_INT nn = 2;
@@ -77,11 +95,12 @@ int main(int argc, char *argv[]) {
   dmumps_c(&id);
   if (myId == 0) {
     if (!error) {
-      std::cout << "solution is: " << rhs[0] << rhs[1] << '\n';
+      std::cout << "solution is: " << rhs[0] << ' ' << rhs[1] << '\n';
     } else {
       std::cout << "an error has occured!\n";
     }
   }
+
 
   ierr = MPI_Finalize();
   return 0;

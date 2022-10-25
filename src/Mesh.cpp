@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
-#include "string_helper.hpp"
-#include "fem.hpp"
-#include "mesh.hpp"
+#include "StringHelper.hpp"
+#include "Fem.hpp"
+#include "Mesh.hpp"
 
 Mesh::Mesh(const std::string meshFileName)
 : meshFileName_(meshFileName) {

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "fem.hpp"
+#include "Fem.hpp"
 
 Fem::Fem() { gp = gausspoints(); }
 

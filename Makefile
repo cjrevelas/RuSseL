@@ -48,12 +48,14 @@ SRCDIR=src
 RUNDIR=run
 
 
-OBJECTS=$(OBJDIR)/mesh.o\
-	$(OBJDIR)/fem.o\
-	$(OBJDIR)/string_helper.o\
-        $(OBJDIR)/main.o
+OBJECTS=$(OBJDIR)/Mesh.o\
+	$(OBJDIR)/Fem.o\
+	$(OBJDIR)/StringHelper.o\
+        $(OBJDIR)/Parser.o\
+	$(OBJDIR)/IOHelper.o\
+        $(OBJDIR)/Main.o
 
-EXEC=$(RUNDIR)/RuSseL
+EXEC=$(RUNDIR)/russel
 #-----------------------------------------------------------------COMPILE AND LINK----------------------------------------------------------------#
 #compilation
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp

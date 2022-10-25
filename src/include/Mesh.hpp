@@ -1,8 +1,8 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
-#include "string_helper.hpp"
-#include "fem.hpp"
+#include "StringHelper.hpp"
+#include "Fem.hpp"
 
 class Mesh{
  private:
