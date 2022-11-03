@@ -1,5 +1,7 @@
 #include <iostream>
 #include <mpi.h>
+#include <memory.h>
+
 #include "dmumps_c.h"
 #include "Mesh.hpp"
 #include "Parser.hpp"
@@ -30,7 +32,8 @@ int main(int argc, char **argv) {
   }
 
   // Spawn an instance of the application itself
-  class RusselNS::Russel *russel = new RusselNS::Russel();
+  std::unique_ptr<RusselNS::Russel> russel{new RusselNS::Russel()};
+  std::unique_ptr<RusselNS::Russel> russel2{std::make_unique<RusselNS::Russel>()};
 
   DMUMPS_STRUC_C id;
   MUMPS_INT nn = 2;
