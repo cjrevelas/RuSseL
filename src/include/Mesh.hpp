@@ -1,7 +1,7 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
-#include "StringHelper.hpp"
+#include "StringOperations.hpp"
 #include "Fem.hpp"
 
 class Mesh{

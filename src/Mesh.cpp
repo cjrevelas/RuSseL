@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include "StringHelper.hpp"
+#include "StringOperations.hpp"
 #include "Fem.hpp"
 #include "Mesh.hpp"
 
@@ -31,14 +31,14 @@ void Mesh::import() {
     getline(meshFile, current_line);
 
     if (current_line.find("sdim") != std::string::npos) {
-      tokens = tokenize(current_line);
+      tokens = russelNS::GetVectorTokens(current_line);
       ndm_   = atoi(tokens[0].c_str());
 
       std::cout << "Number of dimensions = " << ndm_ << '\n';
     }
 
     if (current_line.find("number of mesh points") != std::string::npos) {
-      tokens = tokenize(current_line);
+      tokens = russelNS::GetVectorTokens(current_line);
       numNodes_ = atoi(tokens[0].c_str());
 
       std::cout << "Number of mesh points: " << numNodes_ << '\n';
@@ -48,7 +48,7 @@ void Mesh::import() {
     if (current_line.find("Mesh point coordinates") != std::string::npos) {
       for (int ii=0; ii<numNodes_; ++ii) {
         getline(meshFile, current_line);
-        tokens = tokenize(current_line);
+        tokens = russelNS::GetVectorTokens(current_line);
 
         for (int jj=0; jj<ndm_; ++jj) {
           xc[ii * ndm_ + jj] = atof(tokens[jj].c_str());
@@ -57,10 +57,10 @@ void Mesh::import() {
     }
 
     if (current_line.find("number of nodes per element") != std::string::npos) {
-      tokens = tokenize(current_line);
+      tokens = russelNS::GetVectorTokens(current_line);
       nen_ = atoi(tokens[0].c_str());
       getline(meshFile, current_line);
-      tokens = tokenize(current_line);
+      tokens = russelNS::GetVectorTokens(current_line);
       numElements_ = atoi(tokens[0].c_str());
 
       if (nen_ == 1) {
@@ -76,7 +76,7 @@ void Mesh::import() {
 
         for (int ii=0; ii<numElements_; ++ii) {
           getline(meshFile, current_line);
-          tokens = tokenize(current_line);
+          tokens = russelNS::GetVectorTokens(current_line);
 
           for (int jj=0; jj<nen_; ++jj) {
             ix[ii * nen_ + jj] = atoi(tokens[jj].c_str());

@@ -50,7 +50,7 @@ RUNDIR=run
 
 OBJECTS=$(OBJDIR)/Mesh.o\
 	$(OBJDIR)/Fem.o\
-	$(OBJDIR)/StringHelper.o\
+	$(OBJDIR)/StringOperations.o\
         $(OBJDIR)/Parser.o\
 	$(OBJDIR)/IOHelper.o\
         $(OBJDIR)/Main.o
