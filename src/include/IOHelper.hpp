@@ -12,6 +12,7 @@ namespace RusselNS {
 std::vector<std::string> ParseUntilDash(const std::vector<std::string> &vecCoeffs, std::vector<std::string>::iterator &it);
 std::deque<std::string> ParseUntiDash(const std::deque<std::string> &deqCoeffs, std::deque<std::string>::iterator &it);
 
+void ParseArray(const std::string &flag, std::string &name, const std::vector<std::string> &arguments);
 void PrintMessage(const std::string &message, const int indentLevel);
 void PrintWarning(const std::string &message);
 void PrintWarning(const std::string &caller, const std::string &message);
@@ -41,7 +42,7 @@ void PrintVariable(const std::string &description, const V &variable, const std:
 }
 
 struct convert {
-  static std::map<char,int> CreateMapXYZ2Int() {
+  static std::map<char,int> CreateMapXYZToInt() {
     std::map<char,int> map;
     map['x'] = 0;
     map['y'] = 1;
@@ -50,7 +51,7 @@ struct convert {
     return map;
   }
 
-  static std::map<int,char> CreateMapInt2XYZ() {
+  static std::map<int,char> CreateMapIntToXYZ() {
     std::map<int,char> map;
     map[0] = 'x';
     map[1] = 'y';
@@ -59,7 +60,7 @@ struct convert {
     return map;
   }
 
-  static std::map<std::string,bool> CreateMapYesNo2Bool() {
+  static std::map<std::string,bool> CreateMapYesNoToBool() {
     std::map<std::string,bool> map;
     map["yes"] = true;
     map["no"]  = false;
@@ -67,7 +68,7 @@ struct convert {
     return map;
   }
 
-  static std::map<bool,std::string> CreateMapBool2YesNo() {
+  static std::map<bool,std::string> CreateMapBoolToYesNo() {
     std::map<bool,std::string> map;
     map[true]  = "yes";
     map[false] = "no";
@@ -75,10 +76,10 @@ struct convert {
     return map;
   }
 
-  static std::map<int,char> int2xyz;
-  static std::map<char,int> xyz2int;
-  static std::map<std::string,bool> YesNo2Bool();
-  static std::map<bool,std::string> bool2YesNo();
+  static std::map<int,char> IntToXYZ;
+  static std::map<char,int> XYZToInt;
+  static std::map<std::string,bool> YesNoToBool();
+  static std::map<bool,std::string> BoolToYesNo();
 };
 
 } // RusselNS

@@ -8,11 +8,24 @@
 
 namespace RusselNS {
 
-std::map<char,int> convert::xyz2int = convert::CreateMapXYZ2Int();
-std::map<int,char> convert::int2xyz = convert::CreateMapInt2XYZ();
+std::map<char,int> convert::XYZToInt = convert::CreateMapXYZToInt();
+std::map<int,char> convert::IntToXYZ = convert::CreateMapIntToXYZ();
 
-std::map<std::string,bool> convertYesNo2Bool = convert::CreateMapYesNo2Bool();
-std::map<bool,std::string> convertBool2YesNo = convert::CreateMapBool2YesNo();
+std::map<std::string,bool> convertYesNo2Bool = convert::CreateMapYesNoToBool();
+std::map<bool,std::string> convertBool2YesNo = convert::CreateMapBoolToYesNo();
+
+void ParseArray(const std::string &flag, std::string &name, std::vector<std::string> &arguments) {
+  std::string auxString = russelNS::EraseCharFromString(flag, ']');
+  std::vector<std::string> tokens = russelNS::GetVectorTokensDelimiter(auxString, '[');
+
+  name = tokens[0];
+
+  arguments.clear();
+
+  for (int ii=1; ii<tokens.size(); ++ii) {
+    arguments.push_back(tokens[ii]);
+  }
+}
 
 std::vector<std::string> ParseUntilDash(const std::vector<std::string> &vecCoeffs, std::vector<std::string>::iterator &it) {
   std::vector<std::string> coeffList;
@@ -20,7 +33,7 @@ std::vector<std::string> ParseUntilDash(const std::vector<std::string> &vecCoeff
   while (it != vecCoeffs.end()) {
     std::string arg = (*it);
 
-    if (IsNumber<double>(arg) && arg[0] == '-') {
+    if (russelNS::IsNumber<double>(arg) && arg[0] == '-') {
       break;
     } else {
       coeffList.push_back(arg);
@@ -33,7 +46,6 @@ std::vector<std::string> ParseUntilDash(const std::vector<std::string> &vecCoeff
 
   return coeffList;
 }
-
 
 std::deque<std::string> ParseUntilDash(const std::deque<std::string> &deqCoeffs, std::deque<std::string>::iterator &it) {
   std::deque<std::string> coeffList;
@@ -41,7 +53,7 @@ std::deque<std::string> ParseUntilDash(const std::deque<std::string> &deqCoeffs,
   while (it != deqCoeffs.end()) {
     std::string arg = (*it);
 
-    if (IsNumber<double>(arg) && arg[0] == '-') {
+    if (russelNS::IsNumber<double>(arg) && arg[0] == '-') {
       break;
     } else {
       coeffList.push_back(arg);
@@ -54,7 +66,6 @@ std::deque<std::string> ParseUntilDash(const std::deque<std::string> &deqCoeffs,
 
   return coeffList;
 }
-
 
 void PrintMessage(const std::string &message, const int indentLevel) {
   int widthLevel = indentLevel * 3;
@@ -69,7 +80,6 @@ void PrintMessage(const std::string &message, const int indentLevel) {
   std::cout << std::right;
 }
 
-
 void PrintWarning(const std::string &message) {
   std::cout << std::left;
   std::cout << std::setw(3 ) << "#:";
@@ -80,7 +90,6 @@ void PrintWarning(const std::string &message) {
   std::cout << '\n';
   std::cout << std::right;
 }
-
 
 void PrintWarning(const std::string &caller, const std::string &message) {
   std::cout << std::left;
@@ -100,7 +109,6 @@ void ExitProgram(const std::string &message) {
   exit(EXIT_SUCCESS);
 }
 
-
 void ExitProgram(const std::string &caller, const std::string &message) {
   std::cout << '\n';
   std::cout << std::left;
@@ -110,7 +118,6 @@ void ExitProgram(const std::string &caller, const std::string &message) {
   std::cout << '\n';
   exit(EXIT_SUCCESS);
 }
-
 
 bool FileExists(const std::string &fileName) {
   std::ifstream file;
