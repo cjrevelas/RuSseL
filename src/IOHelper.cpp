@@ -15,8 +15,8 @@ std::map<std::string,bool> convertYesNo2Bool = convert::CreateMapYesNoToBool();
 std::map<bool,std::string> convertBool2YesNo = convert::CreateMapBoolToYesNo();
 
 void ParseArray(const std::string &flag, std::string &name, std::vector<std::string> &arguments) {
-  std::string auxString = russelNS::EraseCharFromString(flag, ']');
-  std::vector<std::string> tokens = russelNS::GetVectorTokensDelimiter(auxString, '[');
+  std::string auxString = RusselNS::EraseCharFromString(flag, ']');
+  std::vector<std::string> tokens = RusselNS::GetVectorTokensDelimiter(auxString, '[');
 
   name = tokens[0];
 
@@ -33,7 +33,7 @@ std::vector<std::string> ParseUntilDash(const std::vector<std::string> &vecCoeff
   while (it != vecCoeffs.end()) {
     std::string arg = (*it);
 
-    if (russelNS::IsNumber<double>(arg) && arg[0] == '-') {
+    if (RusselNS::IsNumber<double>(arg) && arg[0] == '-') {
       break;
     } else {
       coeffList.push_back(arg);
@@ -53,7 +53,7 @@ std::deque<std::string> ParseUntilDash(const std::deque<std::string> &deqCoeffs,
   while (it != deqCoeffs.end()) {
     std::string arg = (*it);
 
-    if (russelNS::IsNumber<double>(arg) && arg[0] == '-') {
+    if (RusselNS::IsNumber<double>(arg) && arg[0] == '-') {
       break;
     } else {
       coeffList.push_back(arg);

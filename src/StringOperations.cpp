@@ -1,7 +1,7 @@
 #include <StringOperations.hpp>
 #include <algorithm>
 
-namespace russelNS {
+namespace RusselNS {
 
 std::vector<std::string> GetVectorTokens(const std::string &inputString){
   std::string buf;

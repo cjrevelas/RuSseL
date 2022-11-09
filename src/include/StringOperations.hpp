@@ -6,7 +6,7 @@
 #include <deque>
 #include <vector>
 
-namespace russelNS {
+namespace RusselNS {
 
 std::vector<std::string> GetVectorTokens(const std::string &inputString);
 std::vector<std::string> GetVectorTokensDelimiter(const std::string &inputString, const char ch);
