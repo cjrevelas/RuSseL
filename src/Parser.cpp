@@ -44,4 +44,18 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
  // listOfFlags.push_back(std::make_unique<ParserPrint>());
 }
 
+void CheckDuplicateFlags(const std::vector<std::unique_ptr<Parser>> &listOfFlags) {
+  for (std::vector<std::unique_ptr<Parser>>::const_iterator it = listOfFlags.begin(); it != listOfFlags.end(); ++it) {
+    for (std::vector<std::unique_ptr<Parser>>::const_iterator jt = listOfFlags.begin(); jt != listOfFlags.end(); ++jt) {
+      if (it == jt) continue;
+
+      std::string iFlag = (*it)->GetFlag();
+      std::string jFlag = (*jt)->GetFlag();
+
+      if (iFlag == jFlag) {
+        ExitProgram("Parser::CheckDuplicateFlags", "Flag \"" + iFlag + "\" overlaps with flag \"" + jFlag + "\"");
+      }
+    }
+  }
+}
 } // RusselNS
