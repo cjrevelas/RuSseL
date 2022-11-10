@@ -32,8 +32,12 @@ int main(int argc, char **argv) {
   }
 
   // Spawn an instance of the application itself
-  std::unique_ptr<RusselNS::Russel> russel{new RusselNS::Russel()};
-  std::unique_ptr<RusselNS::Russel> russel2{std::make_unique<RusselNS::Russel>()};
+  std::shared_ptr<RusselNS::Russel> russel{std::make_shared<RusselNS::Russel>()};
+
+  std::cout << "Address of Russel in Main: " << russel << '\n';
+  std::cout << "Address of shared pointer in Main: " << &russel << '\n';
+
+  ParseInput(inputFileName, russel);
 
   DMUMPS_STRUC_C id;
   MUMPS_INT nn = 2;

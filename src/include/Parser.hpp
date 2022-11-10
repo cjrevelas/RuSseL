@@ -19,6 +19,7 @@ class Parser {
 
  public:
   Parser(const std::string &flag, const int &coeffsMinLength);
+
   virtual ~Parser() {}
 
   std::string GetFlag() const { return flag_;}
@@ -29,14 +30,15 @@ class Parser {
 
   static int lineOfInput_;
   static bool verbose_;
-  static std::unique_ptr<Russel> russel_;
+  static std::shared_ptr<Russel> russel_;
 };
 
-void ParseInput(const std::string &filename, std::unique_ptr<Russel> &russel); // we pass a smart pointer by reference here
+void ParseInput(const std::string &filename, std::shared_ptr<Russel> &russel); // we pass a smart pointer by reference here
 
 void CheckDuplicateFlags(const std::vector<std::unique_ptr<Parser>> &listOfFlags); // we pass a vector of smart pointers by reference here
 
-std::string CheckForExpressions(const std::string &inputString);
-}
+std::string CheckForExpressions(const std::string &stringCoeffs);
 
-#endif
+} // RusselNS
+
+#endif // PARSER_HPP
