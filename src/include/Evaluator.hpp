@@ -1,5 +1,5 @@
-#ifndef EVALUATOR_H
-#define EVALUATOR_H
+#ifndef EVALUATOR_HPP
+#define EVALUATOR_HPP
 
 #include <string>
 #include <memory>
@@ -21,6 +21,6 @@ enum {
   kRightBracket,
 };
 
-}  //RusselNS
+}  // RusselNS
 
-#endif  // EVALUATOR_H
+#endif  // EVALUATOR_HPP

@@ -48,7 +48,8 @@ SRCDIR=src
 RUNDIR=run
 
 
-OBJECTS=$(OBJDIR)/Mesh.o\
+OBJECTS=$(OBJDIR)/Variable.o\
+        $(OBJDIR)/Mesh.o\
 	$(OBJDIR)/Fem.o\
 	$(OBJDIR)/StringOperations.o\
         $(OBJDIR)/Parser.o\

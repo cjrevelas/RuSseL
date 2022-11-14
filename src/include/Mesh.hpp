@@ -4,6 +4,8 @@
 #include "StringOperations.hpp"
 #include "Fem.hpp"
 
+namespace RusselNS {
+
 class Mesh{
  private:
   std::string meshFileName_;
@@ -11,8 +13,8 @@ class Mesh{
   int numNodes_;
   int nen_;
   int ndm_;
-  int *ix;
-  double *xc;
+  int *ix;   // This must become a shared pointer
+  double *xc; // This must become a shared pointer
 
  public:
   Mesh(const std::string meshFileName);
@@ -25,4 +27,6 @@ class Mesh{
   friend std::vector<std::string> tokenize(const std::string &input_string);
 };
 
-#endif
+} // RusselNS
+
+#endif // MESH_HPP

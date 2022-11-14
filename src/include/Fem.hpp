@@ -1,6 +1,8 @@
 #ifndef FEM_HPP
 #define FEM_HPP
 
+namespace RusselNS {
+
 class Fem {
  private:
   int numGaussPoints{11};
@@ -16,4 +18,6 @@ class Fem {
   double tetshp(int pp, double *xl);
 };
 
-#endif
+} // RusselNS
+
+#endif // FEM_HPP

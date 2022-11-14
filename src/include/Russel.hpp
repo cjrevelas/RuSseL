@@ -1,5 +1,5 @@
-#ifndef RUSSEL_H
-#define RUSSEL_H
+#ifndef RUSSEL_HPP
+#define RUSSEL_HPP
 
 #include <iostream>
 
@@ -13,5 +13,4 @@ namespace RusselNS {
   };
 }  // RusselNS
 
-
-#endif
+#endif // RUSSEL_HPP

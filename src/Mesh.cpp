@@ -4,6 +4,8 @@
 #include "Fem.hpp"
 #include "Mesh.hpp"
 
+namespace RusselNS {
+
 Mesh::Mesh(const std::string meshFileName)
 : meshFileName_(meshFileName) {
   import();
@@ -162,3 +164,5 @@ double Mesh::computeMeshVolume(){
 
   return vol;
 }
+
+} // RusselNS

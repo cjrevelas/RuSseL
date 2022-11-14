@@ -1,5 +1,5 @@
-#ifndef STRING_OPERATIONS_H
-#define STRING_OPERATIONS_H
+#ifndef STRING_OPERATIONS_HPP
+#define STRING_OPERATIONS_HPP
 
 #include <string>
 #include <sstream>
@@ -65,6 +65,6 @@ bool IsInDeque(const T &element, const std::vector<T> &vec) {
   }
 }
 
-} // russelNS
+} // RusselNS
 
-#endif // STRING_OPERATIONS_H
+#endif // STRING_OPERATIONS_HPP
