@@ -49,6 +49,7 @@ RUNDIR=run
 
 
 OBJECTS=$(OBJDIR)/Variable.o\
+	$(OBJDIR)/Memory.o\
         $(OBJDIR)/Mesh.o\
 	$(OBJDIR)/Fem.o\
 	$(OBJDIR)/StringOperations.o\

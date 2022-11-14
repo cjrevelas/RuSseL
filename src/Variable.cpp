@@ -141,5 +141,28 @@ double Variable::GetCastToDouble() {
   return dbl_;
 }
 
+std::string Variable::GetCastToString(int precision) {
+  std::stringstream buffer;
+  buffer << std::setprecision(precision);
+
+  if (isExpression_) {
+    buffer << EvaluateExpression(expressionPostfix_);
+  } else if (type_ == "int") {
+    buffer << int_;
+  } else if (type_ == "dbl") {
+    buffer << dbl_;
+  } else if (type_ == "str") {
+    buffer << str_;
+  } else if (type_ == "pcint") {
+    buffer << *pcint_;
+  } else if (type_ == "pcdble") {
+    buffer << *pcdbl_;
+  } else if (type_ == "pcstr") {
+    buffer << *pcstr_;
+  }
+
+  return buffer.str();
+}
+
 
 } // RusselNS
