@@ -1,5 +1,5 @@
-#ifndef EVAL_ARG_H
-#define EVAL_ARG_H
+#ifndef EVAL_ARG_HPP
+#define EVAL_ARG_HPP
 
 #include <string>
 #include <memory>
@@ -41,11 +41,21 @@ class EvalArg {
 };
 
 // Value
-class Val : public EvalArg { public: Val(std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~Val(){} virtual void Operate();};
+class Val     : public EvalArg { public: Val    (std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~Val()     {} virtual void Operate();};
+class Ref     : public EvalArg { public: Ref    (std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~Ref()     {} virtual void Operate();};
+class PreVal  : public EvalArg { public: PreVal (std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~PreVal()  {} virtual void Operate();};
+class Array1D : public EvalArg { public: Array1D(std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~Array1D() {} virtual void Operate(int &positionOfFirstArgument, int &argumentsToDelete, std::_List_iterator<std::unique_ptr<EvalArg>> it);};
+class Array2D : public EvalArg { public: Array2D(std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~Array2D() {} virtual void Operate(int &positionOfFirstArgument, int &argumentsToDelete, std::_List_iterator<std::unique_ptr<EvalArg>> it);};
 
 // Numerical operators and functions
 class Add: public EvalArg { public: Add(std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~Add(){} virtual void Operate(int &positionOfFirstArgument, int &argumentsToDelete, std::_List_iterator<std::unique_ptr<EvalArg>> it); };
-}
+class Sub: public EvalArg { public: Sub(std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~Sub(){} virtual void Operate(int &positionOfFirstArgument, int &argumentsToDelete, std::_List_iterator<std::unique_ptr<EvalArg>> it); };
+
+// Brackets and separators
+class LeftBracket:  public EvalArg { public: LeftBracket (std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~LeftBracket(){}  virtual void Operate(int &positionOfFirstArgument, int &argumentsToDelete, std::_List_iterator<std::unique_ptr<EvalArg>> it); };
+class RightBracket: public EvalArg { public: RightBracket(std::string argument, int order, int type, std::string associativity): EvalArg(argument, order, type, associativity){} virtual ~RightBracket(){} virtual void Operate(int &positionOfFirstArgument, int &argumentsToDelete, std::_List_iterator<std::unique_ptr<EvalArg>> it); };
+
+} // RusselNS
 
 
-#endif
+#endif // EVAL_ARG_HPP
