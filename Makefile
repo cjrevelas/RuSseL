@@ -21,7 +21,7 @@ LIBMUMPS_COMMON = $(libdir)/libmumps_common$(PLAT)$(LIBEXT)
 LIBDMUMPS       = $(libdir)/libdmumps$(PLAT)$(LIBEXT) $(LIBMUMPS_COMMON)
 
 CC_PROD  = -O3
-CC_DEBUG = -O0 -g -Wall -Wextra -pedantic-errors\
+CC_DEBUG = -std=c++14 -O0 -g -Wall -Wextra -pedantic-errors\
 
 ifeq ($(MAKE_PRODUCTION_RUN),0)
 CPPFLAGS = $(DEBUG_OPTIONS) $(BOTH_OPTIONS)
@@ -40,7 +40,7 @@ LIBFS=-lstdc++ #-lm
 LD = ld
 
 LDFLAGS = $(CCFLAGS)
-LIBOTHERS = -L/usr/lib/gcc/x86_64-linux-gnu/9/ -lgfortran
+LIBOTHERS = -L/usr/lib/gcc/x86_64-linux-gnu/11/ -lgfortran
 LIBOTHERS += -lpthread
 #--------------------------------------------------------SET FILE PATHS AND EXECUTABLE NAME-------------------------------------------------------#
 OBJDIR=obj
@@ -53,6 +53,8 @@ OBJECTS=$(OBJDIR)/Variable.o\
         $(OBJDIR)/Mesh.o\
 	$(OBJDIR)/Fem.o\
 	$(OBJDIR)/StringOperations.o\
+	$(OBJDIR)/EvalArg.o\
+	$(OBJDIR)/Evaluator.o\
         $(OBJDIR)/Parser.o\
 	$(OBJDIR)/IOHelper.o\
         $(OBJDIR)/Main.o

@@ -20,6 +20,10 @@ void Val::Operate() {
   value_ = StringToNumber<double>(stringValue_);
 }
 
+void PreVal::Operate() {
+  std::string type = ""; // TODO: FIX THIS
+}
+
 void Add::Operate(int &iBegin, int &iCount, std::_List_iterator<std::unique_ptr<EvalArg>> it) {
   std::advance(it, -1);
   double valueRight = (*it)->GetValue();
