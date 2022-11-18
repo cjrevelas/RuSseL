@@ -15,8 +15,8 @@ std::map<std::string,bool> convertYesNo2Bool = convert::CreateMapYesNoToBool();
 std::map<bool,std::string> convertBool2YesNo = convert::CreateMapBoolToYesNo();
 
 void ParseArray(const std::string &flag, std::string &name, std::vector<std::string> &arguments) {
-  std::string auxString = RusselNS::EraseCharFromString(flag, ']');
-  std::vector<std::string> tokens = RusselNS::GetVectorTokensDelimiter(auxString, '[');
+  std::string auxString = EraseCharFromString(flag, ']');
+  std::vector<std::string> tokens = GetVectorTokensDelimiter(auxString, '[');
 
   name = tokens[0];
 

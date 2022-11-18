@@ -11,7 +11,7 @@
 int main(int argc, char **argv) {
   int gid = 4852;
 
-  Mesh *mesh = new Mesh("in.mesh");
+  RusselNS::Mesh *mesh = new RusselNS::Mesh("in.mesh"); // TODO: use a smart pointer here
 
   mesh->elementsContainingNode(gid);
  // std::cout << mesh->computeMeshVolume() << '\n';

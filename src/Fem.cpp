@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Fem.hpp"
 
+namespace RusselNS {
+
 Fem::Fem() { gp = gausspoints(); }
 
 Fem::~Fem(){
@@ -109,3 +111,5 @@ double Fem::tetshp(int pp, double *xl) {
 
   return xsj;
 }
+
+} // RusselNS
