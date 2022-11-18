@@ -30,6 +30,7 @@ class Variable {
     Variable(std::shared_ptr<const int> xx);
     Variable(std::shared_ptr<const double> xx);
     Variable(std::shared_ptr<const std::string> xx);
+
     ~Variable();
 
     void Reset(std::string itype, std::string stringValue, std::string stringExpressionPrefix);

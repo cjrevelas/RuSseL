@@ -95,6 +95,13 @@ void Variable::Reset(std::string itype, std::string stringValue, std::string str
   }
 }
 
+Variable::~Variable() {
+#ifdef DEV_REPORT_HEAP
+  PrintMessage("Deleting Variable, type(" + type_ + "), expression(" + stringExpressionPrefix_ + ")", 2);
+#endif
+  ClearExpression();
+}
+
 void Variable::ClearExpression() {
   while(!expressionPostfix_.empty()) {
     expressionPostfix_.pop_front();
