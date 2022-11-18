@@ -12,7 +12,7 @@ namespace RusselNS {
 std::vector<std::string> ParseUntilDash(const std::vector<std::string> &vecCoeffs, std::vector<std::string>::iterator &it);
 std::deque<std::string> ParseUntiDash(const std::deque<std::string> &deqCoeffs, std::deque<std::string>::iterator &it);
 
-void ParseArray(const std::string &flag, std::string &name, const std::vector<std::string> &arguments);
+void ParseArray(const std::string &flag, std::string &name, std::vector<std::string> &arguments);
 void PrintMessage(const std::string &message, const int indentLevel);
 void PrintWarning(const std::string &message);
 void PrintWarning(const std::string &caller, const std::string &message);

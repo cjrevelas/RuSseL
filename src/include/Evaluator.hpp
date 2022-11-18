@@ -10,7 +10,7 @@
 namespace RusselNS {
 
 void PreconditionExpression(std::string &);
-void ConvertStringToExpression(std::string &, std::list<std::unique_ptr<EvalArg>> &);
+void ConvertStringToExpression(std::string, std::list<std::unique_ptr<EvalArg>> &);
 double EvaluateExpression(std::list<std::unique_ptr<EvalArg>> &);
 
 enum {
