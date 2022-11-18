@@ -1,6 +1,8 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
+#include <memory>
+
 #include "StringOperations.hpp"
 #include "Fem.hpp"
 
@@ -13,8 +15,8 @@ class Mesh{
   int numNodes_;
   int nen_;
   int ndm_;
-  int *ix;   // This must become a shared pointer
-  double *xc; // This must become a shared pointer
+  std::unique_ptr<int []> ix;
+  std::unique_ptr<double []> xc;
 
  public:
   Mesh(const std::string meshFileName);

@@ -12,11 +12,12 @@ Mesh::Mesh(const std::string meshFileName)
 }
 
 Mesh::~Mesh(){
-  delete[] ix;
-  delete[] xc;
+  std::cout << "Deleting FEM mesh with id>>\n";
+ // delete[] ix;
+ // delete[] xc;
 
-  ix = NULL;
-  xc = NULL;
+ // ix = NULL;
+ // xc = NULL;
 }
 
 void Mesh::import() {
@@ -44,7 +45,7 @@ void Mesh::import() {
       numNodes_ = atoi(tokens[0].c_str());
 
       std::cout << "Number of mesh points: " << numNodes_ << '\n';
-      xc = new double[ndm_ * numNodes_];
+      xc = std::make_unique<double []>(ndm_ * numNodes_);
     }
 
     if (current_line.find("Mesh point coordinates") != std::string::npos) {
@@ -72,7 +73,7 @@ void Mesh::import() {
       } else if (nen_ == 3) {
         std::cout << "Number of face elements: " << numElements_ << '\n';
       } else if (nen_ == 4) {
-        ix = new int[nen_ * numElements_];
+        ix = std::make_unique<int []>(nen_ * numElements_);
 
         getline(meshFile, current_line);
 
