@@ -20,7 +20,7 @@ Parser::Parser(const std::string &flag, const int &coeffsMinLength) {
   flag_ = flag;
   flagLength_ = vecFlag.size();
   coeffsMinLength_ = coeffsMinLength;
-  std::cout <<  flag << coeffsMinLength << '\n';
+  std::cout << flag_ << coeffsMinLength_ << '\n';
 }
 
 void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russel) {
@@ -114,4 +114,30 @@ void CheckDuplicateFlags(const std::vector<std::unique_ptr<Parser>> &listOfFlags
     }
   }
 }
+
+
+bool Parser::GetCoeffs(const std::string &stringCoeffs) {
+  bool flagFound = false;
+
+  std::deque<std::string> vecCoeffs = GetDequeTokens(stringCoeffs);
+
+  if (vecCoeffs[0] == flag_) {
+    for (int ii=0; ii<flagLength_; ++ii) {
+      vecCoeffs.pop_front();
+    }
+
+    if (vecCoeffs.size() < coeffsMinLength_) {
+      ExitProgram("Parser::GetCoeffs", "ERROR in reading line " + NumberToString(lineOfInput_) + ": the number of coeffs (" + NumberToString(vecCoeffs.size()) + ") is lower than the required (" + NumberToString(coeffsMinLength_) + ")");
+    }
+
+    // Use derived class functionality
+    ProcessCoeffs(vecCoeffs);
+
+    flagFound = true;
+  }
+
+  return flagFound;
+}
+
+
 } // RusselNS
