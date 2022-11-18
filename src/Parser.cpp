@@ -1,4 +1,5 @@
 #include <list>
+#include <fstream>
 
 #include "Parser.hpp"
 #include "IOHelper.hpp"
@@ -43,6 +44,61 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
 
  // listOfFlags.push_back(std::make_unique<ParserPrint>());
 }
+
+
+std::string CheckForExpressions(const std::string &stringCoeffs) {
+  if (stringCoeffs.size() < 6) {
+    return stringCoeffs;
+  }
+
+  std::string stringCoeffsEval = stringCoeffs;
+
+  while (true) {
+    // Attempt ot fetch a substring that contains the expression
+    bool record = false;
+    int ibegin = 0;
+    int iend = 0;
+
+    std::string stringExpressionPrefix = "";
+
+    for (std::string::size_type ii=0; ii<stringCoeffsEval.size()-1; ++ii) {
+      std::string firstTwoChars = stringCoeffsEval.substr(ii,2);
+
+      if (firstTwoChars == "$(") {
+        ibegin = ii++;
+        record = true;
+        stringExpressionPrefix = "";
+        continue;
+      }
+
+      std::string nextTwoChars = stringCoeffsEval.substr(ii+1,2);
+
+      if (nextTwoChars == ")$") {
+        iend = ii+3;
+        record = false;
+        stringExpressionPrefix.push_back(stringCoeffsEval[ii]);
+        break;
+      }
+
+      if (record) {
+        stringExpressionPrefix.push_back(stringCoeffsEval[ii]);
+      }
+
+      bool isExpression = !(stringExpressionPrefix.empty());
+      if (isExpression && record) {
+        ExitProgram("Parser::CheckForExpressions", "Cannot find termination flag.\n" + stringCoeffs);
+      }
+
+
+      if (isExpression && !record) {
+        // Convert the string into an expression type and retrieve the maximum order
+        std::list<std::unique_ptr<EvalArg>> stringExpressionPostFix;
+ //       ConvertStringToExpression(stringExpressionPrefix, stringExpressionPostFix);
+      }
+    }
+  }
+}
+
 
 void CheckDuplicateFlags(const std::vector<std::unique_ptr<Parser>> &listOfFlags) {
   for (std::vector<std::unique_ptr<Parser>>::const_iterator it = listOfFlags.begin(); it != listOfFlags.end(); ++it) {
