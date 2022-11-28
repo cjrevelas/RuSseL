@@ -54,6 +54,68 @@ double EvaluateExpression(std::list<std::unique_ptr<EvalArg>> &expressionPostfix
   return value;
 }
 
+
+// The following function introduces additional whitespaces between arguments in order
+// to facilitate the parsing of the expression
+void PreconditionExpression(std::string &stringExpressionPrefix) {
+  std::string auxExpression = "";
+
+  for (int ii=0; ii<stringExpressionPrefix.size(); ++ii) {
+    char character = stringExpressionPrefix[ii];
+
+    bool addSpaceBefore = false;
+    bool addSpaceAfter  = false;
+
+    // Deal with single operators
+    if (character == '(' ||
+        character == ')' ||
+        character == '+' ||
+        character == '-' ||
+        character == '*' ||
+        character == '/' ||
+        character == '^' ||
+        character == '!' ||
+        character == ',') {
+      addSpaceBefore = true;
+      addSpaceAfter  = true;
+    // Deal with operators that form pairs
+    } else if (character == '=' ||
+               character == '>' ||
+               character == '<') {
+      char previousCharacter = stringExpressionPrefix[ii-1];
+      if (previousCharacter != ' ' &&
+          previousCharacter != '=' &&
+          previousCharacter != '>' &&
+          previousCharacter != '<') {
+        addSpaceBefore = true;
+      }
+      char nextCharacter = stringExpressionPrefix[ii+1];
+      if (nextCharacter != ' ' &&
+          nextCharacter != '=' &&
+          nextCharacter != '>' &&
+          nextCharacter != '<') {
+        addSpaceAfter = true;
+      }
+    } else if (character == 'e' ||
+               character == 'E') {
+      char previousCharacter = stringExpressionPrefix[ii-1];
+      if (previousCharacter == '.' || std::isdigit(previousCharacter)) {
+        addSpaceBefore = true;
+      }
+      char nextCharacter = stringExpressionPrefix[ii+1];
+      if (nextCharacter == '.' || std::isdigit(nextCharacter)) {
+        addSpaceAfter = true;
+      }
+    }
+
+    if (addSpaceBefore) auxExpression += " ";
+
+    auxExpression += character;
+
+    if (addSpaceAfter) auxExpression += " ";
+  }
+
+  stringExpressionPrefix = auxExpression;
 }
 
 
