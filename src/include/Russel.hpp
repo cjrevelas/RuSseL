@@ -2,15 +2,22 @@
 #define RUSSEL_HPP
 
 #include <iostream>
+#include <memory>
+
+#include "Memory.hpp"
+#include "Mesh.hpp"
 
 namespace RusselNS {
+
   class Russel {
     public:
-     Russel() {
-       std::cout << "A new instance of Russel has been created\n";
-     }
-     ~Russel(){}
+     Russel();
+
+     ~Russel();
+
+     std::unique_ptr<class Memory> memory_;
   };
+
 }  // RusselNS
 
 #endif // RUSSEL_HPP
