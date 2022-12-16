@@ -24,9 +24,9 @@ class Parser {
 
   std::string GetFlag() const { return flag_;}
 
-  bool GetCoeffs(const std::string &stringCoeffs) const;
+  bool GetCoeffs(const std::string &stringCoeffs);
 
-  virtual void ProcessCoeffs(const std::deque<std::string> &coeffs);
+  virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) {}
 
   static int lineOfInput_;
   static bool verbose_;
@@ -38,6 +38,10 @@ void ParseInput(const std::string &filename, std::shared_ptr<Russel> &russel); /
 void CheckDuplicateFlags(const std::vector<std::unique_ptr<Parser>> &listOfFlags); // we pass a vector of smart pointers by reference here
 
 std::string CheckForExpressions(const std::string &stringCoeffs);
+
+class ParserInteract : public Parser { public: ParserInteract (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserInteract() override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
+class ParserPrint    : public Parser { public: ParserPrint    (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserPrint()    override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
+class ParserVariable : public Parser { public: ParserVariable (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserVariable() override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
 
 } // RusselNS
 

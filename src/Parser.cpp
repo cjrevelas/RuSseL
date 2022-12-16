@@ -84,20 +84,50 @@ std::string CheckForExpressions(const std::string &stringCoeffs) {
       if (record) {
         stringExpressionPrefix.push_back(stringCoeffsEval[ii]);
       }
-
-      bool isExpression = !(stringExpressionPrefix.empty());
-      if (isExpression && record) {
-        ExitProgram("Parser::CheckForExpressions", "Cannot find termination flag.\n" + stringCoeffs);
-      }
-
-
-      if (isExpression && !record) {
-        // Convert the string into an expression type and retrieve the maximum order
-        std::list<std::unique_ptr<EvalArg>> stringExpressionPostFix;
- //       ConvertStringToExpression(stringExpressionPrefix, stringExpressionPostFix);
-      }
     }
+
+    bool isExpression = !(stringExpressionPrefix.empty());
+    if (isExpression && record) {
+      ExitProgram("Parser::CheckForExpressions", "Cannot find termination flag.\n" + stringCoeffs);
+    }
+
+
+    if (isExpression && !record) {
+      // Convert the string into an expression type and retrieve the maximum order
+      std::list<std::unique_ptr<EvalArg>> stringExpressionPostFix;
+      ConvertStringToExpression(stringExpressionPrefix, stringExpressionPostFix);
+
+      // Evaluate a copy of the expression
+      double value = EvaluateExpression(stringExpressionPostFix);
+
+      // Clear the expression
+      while (!stringExpressionPostFix.empty()) {
+        stringExpressionPostFix.pop_front();
+      }
+
+      // Replace the expression of the original string with its value
+      std::string aux = "";
+
+      // Retrieve the part of the string before the expression started
+      for (std::string::size_type ii=0; ii<ibegin; ++ii) {
+        aux.push_back(stringCoeffsEval[ii]);
+      }
+
+      // Append the actual result of the expression
+      aux += NumberToString<double>(value);
+
+      // Append the part of the string after the expression
+      for (std::string::size_type ii=iend; ii<stringCoeffsEval.size(); ++ii) {
+        aux.push_back(stringCoeffsEval[ii]);
+      }
+
+      stringCoeffsEval = aux;
+    }
+
+    if (!isExpression) break;
   }
+
+  return stringCoeffsEval;
 }
 
 
