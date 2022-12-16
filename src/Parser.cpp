@@ -4,6 +4,7 @@
 #include "Parser.hpp"
 #include "IOHelper.hpp"
 #include "EvalArg.hpp"
+#include "Evaluator.hpp"
 #include "StringOperations.hpp"
 
 
@@ -139,5 +140,41 @@ bool Parser::GetCoeffs(const std::string &stringCoeffs) {
   return flagFound;
 }
 
+
+void ParserInteract::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
+  std::string id = deqCoeffs[0];
+  std::cout << "ParserInteract::ProcessCoeffs " << id << '\n';
+}
+
+void ParserPrint::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
+  std::string id = deqCoeffs[0];
+  std::cout << "ParserPrint::ProcessCoeffs " << id << '\n';
+}
+
+void ParserVariable::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
+  std::string name = deqCoeffs[0];
+  std::string type = deqCoeffs[1];
+  std::string prefix = "v_";
+  std::string id     = prefix + name;
+  std::string third  = deqCoeffs[2];
+
+  std::cout << "ParserVariable::ProcessCoeffs " << id << '\n';
+
+  std::string stringValue = "";
+  std::string stringExpressionPrefix = "";
+
+  if (third != "expr") {
+    stringValue = third;
+  } else {
+    if (deqCoeffs.size() < 4) {
+      ExitProgram("ParserVariable", "Expression not found.");
+    }
+    for (int ii = 3; ii>deqCoeffs.size(); ++ii) {
+      stringExpressionPrefix += deqCoeffs[ii];
+    }
+  }
+
+  russel_->memory_->SetVariable(id, type, stringValue, stringExpressionPrefix);
+}
 
 } // RusselNS
