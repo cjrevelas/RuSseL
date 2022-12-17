@@ -52,6 +52,7 @@ OBJECTS=$(OBJDIR)/Variable.o\
 	$(OBJDIR)/Memory.o\
         $(OBJDIR)/Mesh.o\
 	$(OBJDIR)/Fem.o\
+	$(OBJDIR)/Russel.o\
 	$(OBJDIR)/StringOperations.o\
 	$(OBJDIR)/EvalArg.o\
 	$(OBJDIR)/Evaluator.o\
