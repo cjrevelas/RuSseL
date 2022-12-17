@@ -17,7 +17,7 @@ class Variable {
     std::string type_;
     bool isExpression_;
     std::string stringExpressionPrefix_;
-    std::list<std::unique_ptr<EvalArg>> expressionPostfix_;
+    std::list<std::unique_ptr<class EvalArg>> expressionPostfix_;
 
     void ClearExpression();
 
