@@ -18,32 +18,96 @@ std::shared_ptr<Russel> Parser::russel_ = nullptr;
 
 Parser::Parser(const std::string &flag, const int &coeffsMinLength) {
   std::vector<std::string> vecFlag = GetVectorTokens(flag);
-  flag_ = flag;
-  flagLength_ = vecFlag.size();
+  flag_            = flag;
+  flagLength_      = vecFlag.size();
   coeffsMinLength_ = coeffsMinLength;
+
   std::cout << flag_ << coeffsMinLength_ << '\n';
 }
 
 void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russel) {
   Parser::russel_ = russel;
 
-  std::cout << "Address of Russel instance in Parser: " << Parser::russel_ << '\n';
-
+  std::cout << "Address of Russel instance in Parser: "       << Parser::russel_ << '\n';
   std::cout << "Address of Russel shared pointer in Parser: " << &Parser::russel_ << '\n';
-
   std::cout << "Address of Russel shared pointer in Parser: " << &russel << '\n';
 
   PrintVariable("Parse input from file:", inputFileName, "", 0);
 
   // Setup thee list of input flags (vector of base smart pointers to derived classes)
   std::vector<std::unique_ptr<Parser>> listOfFlags;
+  std::vector<std::unique_ptr<Parser>>::iterator listOfFlagsIt;
 
   const std::string hello("hello from parser parent class");
 
-  //listOfFlags.push_back(std::make_unique<Parser>("Hello from Parser parent class",0));
   listOfFlags.push_back(std::make_unique<Parser>(hello,0));
+  listOfFlags.push_back(std::make_unique<ParserInteract>("interact",1));
+  listOfFlags.push_back(std::make_unique<ParserPrint>("print",1));
+  listOfFlags.push_back(std::make_unique<ParserVariable>("variable",2));
+  listOfFlags.push_back(std::make_unique<ParserVariable>("mesh",1));
 
- // listOfFlags.push_back(std::make_unique<ParserPrint>());
+  CheckDuplicateFlags(listOfFlags);
+
+  std::ifstream inputFile(inputFileName.c_str(), std::ifstream::in);
+
+  std::vector<std::string> linesOfFile;
+
+  std::string stringCoeffs = "";
+
+  while (inputFile.good()) {
+    std::string rawLine;
+    std::getline(inputFile, rawLine);
+
+    Parser::lineOfInput_ += 1;
+
+    std::string commentStrippedLine = "";
+
+    for (char &ch : rawLine) {
+      if (ch == '#') break;
+      commentStrippedLine += ch;
+    }
+
+    if (commentStrippedLine.empty()) continue;
+
+    stringCoeffs += " " + commentStrippedLine;
+
+    // In case the last char of the line is &, merge it with the next one
+    bool continueToNextLine;
+    for (char &ch : ReverseString(commentStrippedLine)) {
+      if (ch == '&') continueToNextLine = true;
+    }
+
+    if (continueToNextLine) continue;
+
+    // Sanitize the string by removing extra spaces and '&', if any
+    stringCoeffs = ReplaceSubstring(stringCoeffs, "&", "");
+    stringCoeffs = RemoveMultipleSpaces(stringCoeffs);
+
+    std::cout << "checking for expressions\n";
+    stringCoeffs = CheckForExpressions(stringCoeffs);
+    std::cout << "finished checking for expressions\n";
+
+    // Try to read the string of coeffs
+    bool parseFailure = true;
+    for (listOfFlagsIt = listOfFlags.begin(); listOfFlagsIt != listOfFlags.end(); ++listOfFlagsIt) {
+      if ((*listOfFlagsIt)->GetCoeffs(stringCoeffs)) {
+        parseFailure = false;
+        break;
+      }
+    }
+
+    if (parseFailure) {
+      PrintWarning("ParseInput", "Unknown command: " + stringCoeffs);
+    }
+
+    stringCoeffs = "";
+  }
+
+  inputFile.close();
+
+  // Update the main::russel pointer
+  russel = Parser::russel_;
+  std::cout << "CJR: russel pointer after reading input\n" << russel;
 }
 
 

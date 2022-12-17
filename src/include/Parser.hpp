@@ -42,6 +42,7 @@ std::string CheckForExpressions(const std::string &stringCoeffs);
 class ParserInteract : public Parser { public: ParserInteract (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserInteract() override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
 class ParserPrint    : public Parser { public: ParserPrint    (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserPrint()    override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
 class ParserVariable : public Parser { public: ParserVariable (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserVariable() override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
+class ParserMesh     : public Parser { public: ParserMesh     (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserMesh()     override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
 
 } // RusselNS
 
