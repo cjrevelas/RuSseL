@@ -57,7 +57,7 @@ char StringBack(const std::string &inputString) {
 std::string DequeToString(const std::deque<std::string> &tokens) {
   std::string outputString = "";
 
-  for (int ii=0; ii<tokens.size(); ++ii) {
+  for (int ii=0; ii<static_cast<int>(tokens.size()); ++ii) {
     if (ii > 0) {
       outputString += " ";
     }
@@ -97,7 +97,7 @@ std::string RemoveMultipleSpaces(const std::string &inputString) {
   std::vector<std::string> tokens = GetVectorTokens(inputString);
   std::string outputString = "";
 
-  for (int ii=0; ii<tokens.size(); ++ii) {
+  for (int ii=0; ii<static_cast<int>(tokens.size()); ++ii) {
     if (ii>0) {
       outputString += " ";
     }
@@ -111,7 +111,7 @@ std::string RemoveMultipleSpaces(const std::string &inputString) {
 std::string UpperToLower(const std::string &inputString) {
   std::string lower = "";
 
-  for (int ii=0; ii<inputString.size(); ++ii) {
+  for (int ii=0; ii<static_cast<int>(inputString.size()); ++ii) {
     char ch = inputString[ii];
     if (ch>=65 && ch<=92) {
       ch += 32;

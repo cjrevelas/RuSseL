@@ -22,7 +22,7 @@ void ParseArray(const std::string &flag, std::string &name, std::vector<std::str
 
   arguments.clear();
 
-  for (int ii=1; ii<tokens.size(); ++ii) {
+  for (int ii=1; ii<static_cast<int>(tokens.size()); ++ii) {
     arguments.push_back(tokens[ii]);
   }
 }

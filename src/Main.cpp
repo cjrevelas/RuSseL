@@ -102,5 +102,7 @@ int main(int argc, char **argv) {
 
 
   ierr = MPI_Finalize();
+
+  std::cout << "MPI ierr: " << ierr << '\n'; 
   return 0;
 }

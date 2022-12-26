@@ -173,7 +173,7 @@ std::string CheckForExpressions(const std::string &stringCoeffs) {
       std::string aux = "";
 
       // Retrieve the part of the string before the expression started
-      for (std::string::size_type ii=0; ii<ibegin; ++ii) {
+      for (int /*std::string::size_type*/ ii=0; ii<ibegin; ++ii) {
         aux.push_back(stringCoeffsEval[ii]);
       }
 
@@ -221,7 +221,7 @@ bool Parser::GetCoeffs(const std::string &stringCoeffs) {
       vecCoeffs.pop_front();
     }
 
-    if (vecCoeffs.size() < coeffsMinLength_) {
+    if (static_cast<int>(vecCoeffs.size()) < coeffsMinLength_) {
       ExitProgram("Parser::GetCoeffs", "ERROR in reading line " + NumberToString(lineOfInput_) + ": the number of coeffs (" + NumberToString(vecCoeffs.size()) + ") is lower than the required (" + NumberToString(coeffsMinLength_) + ")");
     }
 
@@ -273,7 +273,7 @@ void ParserVariable::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
     if (deqCoeffs.size() < 4) {
       ExitProgram("ParserVariable", "Expression not found.");
     }
-    for (int ii = 3; ii>deqCoeffs.size(); ++ii) {
+    for (int ii = 3; ii>static_cast<int>(deqCoeffs.size()); ++ii) {
       stringExpressionPrefix += deqCoeffs[ii];
     }
   }

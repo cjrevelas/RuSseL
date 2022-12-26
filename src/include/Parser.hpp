@@ -26,7 +26,7 @@ class Parser {
 
   bool GetCoeffs(const std::string &stringCoeffs);
 
-  virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) {}
+  virtual void ProcessCoeffs(std::deque<std::string> &) {}
 
   static int lineOfInput_;
   static bool verbose_;
