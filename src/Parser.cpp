@@ -44,7 +44,7 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
   listOfFlags.push_back(std::make_unique<ParserInteract>("interact",1));
   listOfFlags.push_back(std::make_unique<ParserPrint>("print",1));
   listOfFlags.push_back(std::make_unique<ParserVariable>("variable",2));
-  listOfFlags.push_back(std::make_unique<ParserVariable>("mesh",1));
+  listOfFlags.push_back(std::make_unique<ParserMesh>("mesh",1));
 
   CheckDuplicateFlags(listOfFlags);
 
@@ -243,6 +243,16 @@ void ParserInteract::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
 void ParserPrint::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id = deqCoeffs[0];
   std::cout << "ParserPrint::ProcessCoeffs " << id << '\n';
+}
+
+void ParserMesh::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
+  std::string id = deqCoeffs[0];
+  std::cout << "ParserMesh::ProcessCoeffs " << id << '\n';
+
+  int graftPointId = 4852;
+
+  russel_->memory_->mesh_ = std::make_shared<class Mesh>("in.mesh");
+  russel_->memory_->mesh_->elementsContainingNode(graftPointId);
 }
 
 void ParserVariable::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {

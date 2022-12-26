@@ -8,17 +8,9 @@
 #include "Russel.hpp"
 #include "IOHelper.hpp"
 
+using namespace RusselNS;
+
 int main(int argc, char **argv) {
-  int gid = 4852;
-
-  RusselNS::Mesh *mesh = new RusselNS::Mesh("in.mesh"); // TODO: use a smart pointer here
-
-  mesh->elementsContainingNode(gid);
- // std::cout << mesh->computeMeshVolume() << '\n';
-
-  delete mesh;
-  mesh = NULL;
-
   std::string inputFileName = "in.input";
   for (int ii = 0; ii<argc; ++ii) {
     std::string argument(argv[ii]);
@@ -27,15 +19,15 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (!RusselNS::FileExists(inputFileName)) {
-    RusselNS::ExitProgram("Input file " + inputFileName + " does not exist!");
+  if (!FileExists(inputFileName)) {
+    ExitProgram("Input file " + inputFileName + " does not exist!");
   }
 
   // Spawn an instance of the application itself
-  std::shared_ptr<RusselNS::Russel> russel{std::make_shared<RusselNS::Russel>()};
+  std::shared_ptr<Russel> russel{std::make_shared<Russel>()};
 
-  std::cout << "Address of Russel in Main: " << russel << '\n';
-  std::cout << "Address of shared pointer in Main: " << &russel << '\n';
+  std::cout << "Address of Russel instance in Main: " << russel << '\n';
+  std::cout << "Address of Russel shared pointer in Main: " << &russel << '\n';
 
   ParseInput(inputFileName, russel);
 

@@ -12,7 +12,7 @@ Mesh::Mesh(const std::string meshFileName)
 }
 
 Mesh::~Mesh(){
-  std::cout << "Deleting FEM mesh with id>>\n";
+  std::cout << "Deleting FEM mesh\n";
  // delete[] ix;
  // delete[] xc;
 
@@ -124,8 +124,8 @@ double Mesh::computeElementVolume(const int &elemId) {
     volel += xsj;
   }
 
-  delete[] xl;
-  xl = NULL;
+  //delete[] xl;
+  //xl = NULL;
 
   return volel;
 }
@@ -160,8 +160,8 @@ double Mesh::computeMeshVolume(){
     vol += volel;
   }
 
-  delete[] xl;
-  xl  = NULL;
+  //delete[] xl;
+  //xl  = NULL;
 
   return vol;
 }

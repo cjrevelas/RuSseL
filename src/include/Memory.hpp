@@ -29,12 +29,12 @@ class Memory {
     // Getters (obj)
     std::shared_ptr<class Variable> GetVariable(const std::string &id);
 
-
     // Checkers (obj)
     bool IsVariable(const std::string &id);
 
+    std::shared_ptr<Mesh> mesh_;
   private:
-    class Mesh *mesh;
+
     std::unordered_map<std::string, std::shared_ptr<class Variable>> variableMap_;
 };
 

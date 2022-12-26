@@ -33,9 +33,9 @@ class Parser {
   static std::shared_ptr<Russel> russel_;
 };
 
-void ParseInput(const std::string &filename, std::shared_ptr<Russel> &russel); // we pass a smart pointer by reference here
+void ParseInput(const std::string &filename, std::shared_ptr<Russel> &russel);
 
-void CheckDuplicateFlags(const std::vector<std::unique_ptr<Parser>> &listOfFlags); // we pass a vector of smart pointers by reference here
+void CheckDuplicateFlags(const std::vector<std::unique_ptr<Parser>> &listOfFlags);
 
 std::string CheckForExpressions(const std::string &stringCoeffs);
 
