@@ -6,6 +6,11 @@ Memory::Memory() {
 #ifdef DEV_REPORT_HEAP
   PrintMessage("Add Memory", 1);
 #endif
+
+
+  for (int ii=0; ii<10; ++ii) {
+    wwTemp[ii] = 2.0;
+  }
 }
 
 Memory::~Memory() {

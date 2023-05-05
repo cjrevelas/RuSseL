@@ -24,10 +24,27 @@ int main(int argc, char **argv) {
   }
 
   // Spawn an instance of the application itself
-  std::shared_ptr<Russel> russel{std::make_shared<Russel>()};
+  std::shared_ptr<class Russel> russel{std::make_shared<Russel>()};
 
   std::cout << "Address of Russel instance in Main: " << russel << '\n';
   std::cout << "Address of Russel shared pointer in Main: " << &russel << '\n';
+
+  auto ww     = std::unique_ptr<double []>(new double[10]);
+  auto phi_gr = std::unique_ptr<double []>(new double[10]);
+  auto phi_mx = std::unique_ptr<double []>(new double[10]);
+
+  for (int ii=0; ii<10; ++ii) {
+    ww[ii] = 1.0;
+    std::cout << ww[ii] << '\n';
+  }
+
+  std::cout << '\n';
+
+  for (int ii=0; ii<10; ++ii) {
+    std::cout << russel->memory_->wwTemp[ii] << '\n';
+  }
+
+  std::cout << '\n';
 
   ParseInput(inputFileName, russel);
 
@@ -103,6 +120,6 @@ int main(int argc, char **argv) {
 
   ierr = MPI_Finalize();
 
-  std::cout << "MPI ierr: " << ierr << '\n'; 
+  std::cout << "MPI ierr: " << ierr << '\n';
   return 0;
 }

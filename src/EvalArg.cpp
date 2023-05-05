@@ -5,7 +5,7 @@
 
 namespace RusselNS {
 
-std::shared_ptr<Russel> EvalArg::russel_ = nullptr;
+std::shared_ptr<class Russel> EvalArg::russel_ = nullptr;
 
 EvalArg::~EvalArg() {
 #ifdef DEBUG

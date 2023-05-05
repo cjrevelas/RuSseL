@@ -33,6 +33,8 @@ class Memory {
     bool IsVariable(const std::string &id);
 
     std::shared_ptr<Mesh> mesh_;
+
+    std::unique_ptr<double []> wwTemp  = std::unique_ptr<double []>(new double[10]);
   private:
 
     std::unordered_map<std::string, std::shared_ptr<class Variable>> variableMap_;
