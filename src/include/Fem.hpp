@@ -14,8 +14,8 @@ class Fem {
   Fem();
   ~Fem();
 
-  double *gausspoints();
-  double tetshp(int pp, double *xl);
+  double *Gausspoints();
+  double Tetshp(int pp, double *xl);
 };
 
 } // RusselNS

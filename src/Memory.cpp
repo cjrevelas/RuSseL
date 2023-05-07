@@ -7,6 +7,8 @@ Memory::Memory() {
   PrintMessage("Add Memory", 1);
 #endif
 
+  // TODO: initialize arrays with numNodes size and export to file
+  // TODO: add 2D propagator arrays using matrix.cpp with smart pointers
   // Allocate memory and initialize all essential SCFT arrays
   wwField_     = std::shared_ptr<double []>(new double[10]);
   wwFieldNew_  = std::shared_ptr<double []>(new double[10]);

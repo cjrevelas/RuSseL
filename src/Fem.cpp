@@ -3,14 +3,14 @@
 
 namespace RusselNS {
 
-Fem::Fem() { gp = gausspoints(); }
+Fem::Fem() { gp = Gausspoints(); }
 
 Fem::~Fem(){
   delete[] gp;
   gp  = NULL;
 }
 
-double *Fem::gausspoints(){
+double *Fem::Gausspoints(){
   gp = new double[numGaussPoints * numparams];
 
   for (int ii=0; ii<3; ++ii){
@@ -40,7 +40,7 @@ double *Fem::gausspoints(){
   gp[0 * numGaussPoints + 6]  = 0.5;
   gp[0 * numGaussPoints + 9]  = 0.0;
 
-  //compute fourth point coordinates
+  // Compute fourth point coordinates
   for (int jj=0; jj<numGaussPoints; ++jj){
     gp[3 * numGaussPoints + jj] = 1.0 - (gp[0 * numGaussPoints + jj] + gp[1 * numGaussPoints + jj] + gp[2 * numGaussPoints + jj]);
   }
@@ -49,7 +49,7 @@ double *Fem::gausspoints(){
 }
 
 
-double Fem::tetshp(int pp, double *xl) {
+double Fem::Tetshp(int pp, double *xl) {
   double shp[4*4];
 
   shp[3*4 + 0] = gp[0 * numGaussPoints + pp];

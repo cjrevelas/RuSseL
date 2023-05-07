@@ -41,8 +41,8 @@ class Memory {
     std::shared_ptr<double []> phiGrafted_;
     std::shared_ptr<double []> phiMatrix_;
     std::shared_ptr<double []> phiTotal_;
-  private:
 
+  private:
     std::unordered_map<std::string, std::shared_ptr<class Variable>> variableMap_;
 };
 

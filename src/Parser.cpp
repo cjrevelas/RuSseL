@@ -252,12 +252,13 @@ void ParserMesh::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   int graftPointId = 4852;
 
   russel_->memory_->mesh_ = std::make_shared<class Mesh>("in.mesh");
-  russel_->memory_->mesh_->elementsContainingNode(graftPointId);
+
+  russel_->memory_->mesh_->ElementsContainingNode(graftPointId);
 }
 
 void ParserVariable::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
-  std::string name = deqCoeffs[0];
-  std::string type = deqCoeffs[1];
+  std::string name   = deqCoeffs[0];
+  std::string type   = deqCoeffs[1];
   std::string prefix = "v_";
   std::string id     = prefix + name;
   std::string third  = deqCoeffs[2];

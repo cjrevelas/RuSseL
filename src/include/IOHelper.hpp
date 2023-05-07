@@ -41,7 +41,7 @@ void PrintVariable(const std::string &description, const V &variable, const std:
   std::cout << std::right;
 }
 
-struct convert {
+struct Convert {
   static std::map<char,int> CreateMapXYZToInt() {
     std::map<char,int> map;
     map['x'] = 0;

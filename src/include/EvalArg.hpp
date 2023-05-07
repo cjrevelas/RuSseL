@@ -21,13 +21,13 @@ class EvalArg {
 
     inline bool IsOrder(int order) { return (order == order_); }
 
-    inline int GetType() const { return type_; }
+    inline int GetType()  const { return type_; }
     inline int GetOrder() const { return order_; }
     inline int GetValue() const { return value_; }
-    inline std::string GetStringValue() const { return stringValue_; }
+    inline std::string GetStringValue()   const { return stringValue_; }
     inline std::string GetAssociativity() const { return associativity_; }
 
-    inline void SetOrder(int order) { order_ = order; }
+    inline void SetOrder(int order)    { order_ = order; }
     inline void SetValue(double value) { value_ = value; }
 
     static std::shared_ptr<class Russel> russel_;

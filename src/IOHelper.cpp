@@ -8,11 +8,11 @@
 
 namespace RusselNS {
 
-std::map<char,int> convert::XYZToInt = convert::CreateMapXYZToInt();
-std::map<int,char> convert::IntToXYZ = convert::CreateMapIntToXYZ();
+std::map<char,int> Convert::XYZToInt = Convert::CreateMapXYZToInt();
+std::map<int,char> Convert::IntToXYZ = Convert::CreateMapIntToXYZ();
 
-std::map<std::string,bool> convertYesNo2Bool = convert::CreateMapYesNoToBool();
-std::map<bool,std::string> convertBool2YesNo = convert::CreateMapBoolToYesNo();
+std::map<std::string,bool> convertYesNo2Bool = Convert::CreateMapYesNoToBool();
+std::map<bool,std::string> convertBool2YesNo = Convert::CreateMapBoolToYesNo();
 
 void ParseArray(const std::string &flag, std::string &name, std::vector<std::string> &arguments) {
   std::string auxString = EraseCharFromString(flag, ']');

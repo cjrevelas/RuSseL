@@ -22,11 +22,11 @@ class Mesh{
   Mesh(const std::string meshFileName);
   ~Mesh();
 
-  void import();
-  void elementsContainingNode(const int &gid);
-  double computeElementVolume(const int &elemId);
-  double computeMeshVolume();
-  friend std::vector<std::string> tokenize(const std::string &input_string);
+  void Import();
+  void ElementsContainingNode(const int &gid);
+  double ComputeElementVolume(const int &elemId);
+  double ComputeMeshVolume();
+  friend std::vector<std::string> Tokenize(const std::string &input_string);
 };
 
 } // RusselNS

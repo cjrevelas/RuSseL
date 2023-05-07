@@ -8,19 +8,14 @@ namespace RusselNS {
 
 Mesh::Mesh(const std::string meshFileName)
 : meshFileName_(meshFileName) {
-  import();
+  Import();
 }
 
 Mesh::~Mesh(){
   std::cout << "Deleting FEM mesh\n";
- // delete[] ix;
- // delete[] xc;
-
- // ix = NULL;
- // xc = NULL;
 }
 
-void Mesh::import() {
+void Mesh::Import() {
   std::cout << "reading mesh from file: " << meshFileName_ << '\n';
 
   std::ifstream meshFile;
@@ -92,18 +87,18 @@ void Mesh::import() {
   }
 }
 
-void Mesh::elementsContainingNode(const int &gid){
+void Mesh::ElementsContainingNode(const int &gid){
   for (int ii=0; ii<numElements_; ++ii) {
     for (int jj=0; jj<nen_; ++jj) {
       if (ix[ii * nen_ + jj] == gid) {
-        std::cout << "Node " << gid << " is in element " << ii << " with volume " << computeElementVolume(ii) << '\n';
+        std::cout << "Node " << gid << " is in element " << ii << " with volume " << ComputeElementVolume(ii) << '\n';
       }
     }
   }
 }
 
-double Mesh::computeElementVolume(const int &elemId) {
-  double *xl = new double[ndm_ * nen_];
+double Mesh::ComputeElementVolume(const int &elemId) {
+  double *xl = new double[ndm_ * nen_]; // TODO: use a shared pointer here.
 
   Fem fem;
 
@@ -118,20 +113,17 @@ double Mesh::computeElementVolume(const int &elemId) {
   double xsj;
 
   for (int kk=0; kk<11; ++kk) {
-    xsj = fem.tetshp(kk, xl);
+    xsj = fem.Tetshp(kk, xl);
     xsj *= fem.gp[11*4+kk];
 
     volel += xsj;
   }
 
-  //delete[] xl;
-  //xl = NULL;
-
   return volel;
 }
 
-double Mesh::computeMeshVolume(){
-  double *xl  = new double[ndm_ * nen_];
+double Mesh::ComputeMeshVolume(){
+  double *xl = new double[ndm_ * nen_]; // TODO: use a shared pointer here.
 
   Fem fem;
 
@@ -149,7 +141,7 @@ double Mesh::computeMeshVolume(){
     double xsj;
 
     for (int kk=0; kk<11; ++kk) {
-      xsj = fem.tetshp(kk, xl);
+      xsj = fem.Tetshp(kk, xl);
       xsj *= fem.gp[11 * 4 + kk];
 
       volel += xsj;
@@ -159,9 +151,6 @@ double Mesh::computeMeshVolume(){
 
     vol += volel;
   }
-
-  //delete[] xl;
-  //xl  = NULL;
 
   return vol;
 }
