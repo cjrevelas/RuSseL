@@ -29,24 +29,21 @@ int main(int argc, char **argv) {
   std::cout << "Address of Russel instance in Main: " << russel << '\n';
   std::cout << "Address of Russel shared pointer in Main: " << &russel << '\n';
 
-  auto ww     = std::unique_ptr<double []>(new double[10]);
-  auto phi_gr = std::unique_ptr<double []>(new double[10]);
-  auto phi_mx = std::unique_ptr<double []>(new double[10]);
-
-  for (int ii=0; ii<10; ++ii) {
-    ww[ii] = 1.0;
-    std::cout << ww[ii] << '\n';
-  }
-
-  std::cout << '\n';
-
-  for (int ii=0; ii<10; ++ii) {
-    std::cout << russel->memory_->wwTemp[ii] << '\n';
-  }
-
-  std::cout << '\n';
-
   ParseInput(inputFileName, russel);
+
+  std::cout << '\n';
+
+  for (int ii=0; ii<10; ++ii) {
+    std::cout << russel->memory_->wwField_[ii]      << ' ';
+    std::cout << russel->memory_->wwFieldNew_[ii]   << ' ';
+    std::cout << russel->memory_->wwFieldMixed_[ii] << ' ';
+    std::cout << russel->memory_->phiGrafted_[ii]   << ' ';
+    std::cout << russel->memory_->phiMatrix_[ii]    << ' ';
+    std::cout << russel->memory_->phiTotal_[ii]     << ' ';
+    std::cout << '\n';
+  }
+
+  std::cout << '\n';
 
   DMUMPS_STRUC_C id;
   MUMPS_INT nn = 2;

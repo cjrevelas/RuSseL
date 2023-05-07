@@ -34,7 +34,13 @@ class Memory {
 
     std::shared_ptr<Mesh> mesh_;
 
-    std::unique_ptr<double []> wwTemp  = std::unique_ptr<double []>(new double[10]);
+    std::shared_ptr<double []> wwTemp  = std::shared_ptr<double []>(new double[10]);
+    std::shared_ptr<double []> wwField_;
+    std::shared_ptr<double []> wwFieldNew_;
+    std::shared_ptr<double []> wwFieldMixed_;
+    std::shared_ptr<double []> phiGrafted_;
+    std::shared_ptr<double []> phiMatrix_;
+    std::shared_ptr<double []> phiTotal_;
   private:
 
     std::unordered_map<std::string, std::shared_ptr<class Variable>> variableMap_;

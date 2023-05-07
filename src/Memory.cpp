@@ -7,9 +7,22 @@ Memory::Memory() {
   PrintMessage("Add Memory", 1);
 #endif
 
+  // Allocate memory and initialize all essential SCFT arrays
+  wwField_     = std::shared_ptr<double []>(new double[10]);
+  wwFieldNew_  = std::shared_ptr<double []>(new double[10]);
+  wwFieldMixed_= std::shared_ptr<double []>(new double[10]);
+  phiGrafted_  = std::shared_ptr<double []>(new double[10]);
+  phiMatrix_   = std::shared_ptr<double []>(new double[10]);
+  phiTotal_    = std::shared_ptr<double []>(new double[10]);
 
   for (int ii=0; ii<10; ++ii) {
-    wwTemp[ii] = 2.0;
+    wwTemp[ii]        = 0.0;
+    wwField_[ii]      = 0.0;
+    wwFieldNew_[ii]   = 0.0;
+    wwFieldMixed_[ii] = 0.0;
+    phiGrafted_[ii]   = 0.0;
+    phiMatrix_[ii]    = 0.0;
+    phiTotal_[ii]     = 0.0;
   }
 }
 
