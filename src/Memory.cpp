@@ -1,4 +1,5 @@
 #include "Memory.hpp"
+#include "Mesh.hpp"
 
 namespace RusselNS {
 
@@ -6,19 +7,23 @@ Memory::Memory() {
 #ifdef DEV_REPORT_HEAP
   PrintMessage("Add Memory", 1);
 #endif
+}
 
-  // TODO: initialize arrays with numNodes size and export to file
-  // TODO: add 2D propagator arrays using matrix.cpp with smart pointers
-  // Allocate memory and initialize all essential SCFT arrays
-  wwField_     = std::shared_ptr<double []>(new double[10]);
-  wwFieldNew_  = std::shared_ptr<double []>(new double[10]);
-  wwFieldMixed_= std::shared_ptr<double []>(new double[10]);
-  phiGrafted_  = std::shared_ptr<double []>(new double[10]);
-  phiMatrix_   = std::shared_ptr<double []>(new double[10]);
-  phiTotal_    = std::shared_ptr<double []>(new double[10]);
+Memory::~Memory() {
+#ifdef DEV_REPORT_HEAP
+  PrintMessage("Delete Memory", 1);
+#endif
+}
 
-  for (int ii=0; ii<10; ++ii) {
-    wwTemp[ii]        = 0.0;
+void Memory::InitializeArrays() {
+  wwField_     = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
+  wwFieldNew_  = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
+  wwFieldMixed_= std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
+  phiGrafted_  = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
+  phiMatrix_   = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
+  phiTotal_    = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
+
+  for (int ii=0; ii<mesh_->GetNumberOfNodes(); ++ii) {
     wwField_[ii]      = 0.0;
     wwFieldNew_[ii]   = 0.0;
     wwFieldMixed_[ii] = 0.0;
@@ -26,14 +31,8 @@ Memory::Memory() {
     phiMatrix_[ii]    = 0.0;
     phiTotal_[ii]     = 0.0;
   }
-}
 
-Memory::~Memory() {
-#ifdef DEV_REPORT_HEAP
-  PrintMessage("Delete Memory", 1);
-#endif
-
-  // CJR: assuming here that all smart pointers of the maps will do their job properly.
+  // TODO: add 2D propagator arrays using matrix.cpp with smart pointers
 }
 
 // Setters

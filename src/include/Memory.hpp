@@ -17,8 +17,9 @@ class Memory {
     Memory();
     virtual ~Memory();
 
-    // TODO: void ResizeNodalArrays(ints dofs);
-    // This function will be useful for implementation of periodic boundary conditions
+    // TODO: void ResizeNodalArrays(ints dofs); // e.g., useful for periodic boundary conditions
+
+    void InitializeArrays();
 
     // Setters (obj)
     void SetVariable(const std::string &id, const std::string &type, const std::string &value, std::string expression);
@@ -34,7 +35,6 @@ class Memory {
 
     std::shared_ptr<Mesh> mesh_;
 
-    std::shared_ptr<double []> wwTemp  = std::shared_ptr<double []>(new double[10]);
     std::shared_ptr<double []> wwField_;
     std::shared_ptr<double []> wwFieldNew_;
     std::shared_ptr<double []> wwFieldMixed_;

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <mpi.h>
 #include <memory.h>
+#include <fstream>
 
 #include "dmumps_c.h"
 #include "Mesh.hpp"
@@ -33,14 +34,24 @@ int main(int argc, char **argv) {
 
   std::cout << '\n';
 
-  for (int ii=0; ii<10; ++ii) {
-    std::cout << russel->memory_->wwField_[ii]      << ' ';
-    std::cout << russel->memory_->wwFieldNew_[ii]   << ' ';
-    std::cout << russel->memory_->wwFieldMixed_[ii] << ' ';
-    std::cout << russel->memory_->phiGrafted_[ii]   << ' ';
-    std::cout << russel->memory_->phiMatrix_[ii]    << ' ';
-    std::cout << russel->memory_->phiTotal_[ii]     << ' ';
-    std::cout << '\n';
+  russel->memory_->InitializeArrays();
+
+  std::ofstream arrays{"o.arrays.txt"};
+
+  if (!arrays) {
+    std::cerr << "ERROR: o.arrays.txt file could not be opened for writing\n";
+  } else {
+    arrays << "ww      ww_new      ww_mixed      phi_grafted      phi_matrix      phi_total\n";
+
+    for (int ii=0; ii<russel->memory_->mesh_->GetNumberOfNodes(); ++ii) {
+      arrays << russel->memory_->wwField_[ii]      << ' ';
+      arrays << russel->memory_->wwFieldNew_[ii]   << ' ';
+      arrays << russel->memory_->wwFieldMixed_[ii] << ' ';
+      arrays << russel->memory_->phiGrafted_[ii]   << ' ';
+      arrays << russel->memory_->phiMatrix_[ii]    << ' ';
+      arrays << russel->memory_->phiTotal_[ii]     << ' ';
+      arrays << '\n';
+    }
   }
 
   std::cout << '\n';

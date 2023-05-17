@@ -26,7 +26,9 @@ class Mesh{
   void ElementsContainingNode(const int &gid);
   double ComputeElementVolume(const int &elemId);
   double ComputeMeshVolume();
+  int GetNumberOfNodes() const { return numNodes_; };
   friend std::vector<std::string> Tokenize(const std::string &input_string);
+
 };
 
 } // RusselNS
