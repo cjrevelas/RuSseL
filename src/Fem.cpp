@@ -5,13 +5,10 @@ namespace RusselNS {
 
 Fem::Fem() { gp = Gausspoints(); }
 
-Fem::~Fem(){
-  delete[] gp;
-  gp  = NULL;
-}
+Fem::~Fem() {}
 
-double *Fem::Gausspoints(){
-  gp = new double[numGaussPoints * numparams];
+std::shared_ptr<double []> Fem::Gausspoints(){
+  gp = std::shared_ptr<double []>(new double[numGaussPoints * numparams]);
 
   for (int ii=0; ii<3; ++ii){
     for (int jj=0; jj<10; jj++){
@@ -49,8 +46,8 @@ double *Fem::Gausspoints(){
 }
 
 
-double Fem::Tetshp(int pp, double *xl) {
-  double shp[4*4];
+double Fem::Tetshp(int pp, std::shared_ptr<double []> xl) {
+  double shp[4*4]; // Considering making this an std::array<double>
 
   shp[3*4 + 0] = gp[0 * numGaussPoints + pp];
   shp[3*4 + 1] = gp[1 * numGaussPoints + pp];

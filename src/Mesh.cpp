@@ -40,7 +40,7 @@ void Mesh::Import() {
       numNodes_ = atoi(tokens[0].c_str());
 
       std::cout << "Number of mesh points: " << numNodes_ << '\n';
-      xc = std::make_unique<double []>(ndm_ * numNodes_);
+      xc = std::make_unique<double []>(ndm_ * numNodes_); // 2D: this must become a custom 2D dynamic array
     }
 
     if (current_line.find("Mesh point coordinates") != std::string::npos) {
@@ -68,7 +68,7 @@ void Mesh::Import() {
       } else if (nen_ == 3) {
         std::cout << "Number of face elements: " << numElements_ << '\n';
       } else if (nen_ == 4) {
-        ix = std::make_unique<int []>(nen_ * numElements_);
+        ix = std::make_unique<int []>(nen_ * numElements_); // TODO: this must become a custom 2D dynamic array
 
         getline(meshFile, current_line);
 
@@ -98,7 +98,7 @@ void Mesh::ElementsContainingNode(const int &gid){
 }
 
 double Mesh::ComputeElementVolume(const int &elemId) {
-  double *xl = new double[ndm_ * nen_]; // TODO: use a shared pointer here.
+  std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[ndm_ * nen_]);
 
   Fem fem;
 
@@ -123,7 +123,7 @@ double Mesh::ComputeElementVolume(const int &elemId) {
 }
 
 double Mesh::ComputeMeshVolume(){
-  double *xl = new double[ndm_ * nen_]; // TODO: use a shared pointer here.
+  std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[ndm_ * nen_]);
 
   Fem fem;
 

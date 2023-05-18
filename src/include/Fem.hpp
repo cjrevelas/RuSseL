@@ -1,6 +1,8 @@
 #ifndef FEM_HPP
 #define FEM_HPP
 
+#include <memory>
+
 namespace RusselNS {
 
 class Fem {
@@ -9,13 +11,13 @@ class Fem {
   int numparams{5};
 
  public:
-  double *gp;
+  std::shared_ptr<double []> gp;
 
   Fem();
   ~Fem();
 
-  double *Gausspoints();
-  double Tetshp(int pp, double *xl);
+  std::shared_ptr<double []> Gausspoints();
+  double Tetshp(int pp, std::shared_ptr<double []> xl);
 };
 
 } // RusselNS
