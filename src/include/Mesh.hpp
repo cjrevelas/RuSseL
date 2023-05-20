@@ -5,6 +5,7 @@
 
 #include "StringOperations.hpp"
 #include "Fem.hpp"
+#include "Matrix.hpp"
 
 namespace RusselNS {
 
@@ -15,8 +16,8 @@ class Mesh{
   int numNodes_;
   int nen_;
   int ndm_;
-  std::unique_ptr<int []> ix;
-  std::unique_ptr<double []> xc;
+  Matrix<int> ix;
+  Matrix<double> xc;
 
  public:
   Mesh(const std::string meshFileName);

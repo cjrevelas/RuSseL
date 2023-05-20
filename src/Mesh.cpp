@@ -40,7 +40,7 @@ void Mesh::Import() {
       numNodes_ = atoi(tokens[0].c_str());
 
       std::cout << "Number of mesh points: " << numNodes_ << '\n';
-      xc = std::make_unique<double []>(ndm_ * numNodes_); // 2D: this must become a custom 2D dynamic array
+      xc.resize(numNodes_,ndm_);
     }
 
     if (current_line.find("Mesh point coordinates") != std::string::npos) {
@@ -49,7 +49,7 @@ void Mesh::Import() {
         tokens = RusselNS::GetVectorTokens(current_line);
 
         for (int jj=0; jj<ndm_; ++jj) {
-          xc[ii * ndm_ + jj] = atof(tokens[jj].c_str());
+          xc(ii,jj) = atof(tokens[jj].c_str());
         }
       }
     }
@@ -68,7 +68,7 @@ void Mesh::Import() {
       } else if (nen_ == 3) {
         std::cout << "Number of face elements: " << numElements_ << '\n';
       } else if (nen_ == 4) {
-        ix = std::make_unique<int []>(nen_ * numElements_); // TODO: this must become a custom 2D dynamic array
+        ix.resize(numElements_,nen_);
 
         getline(meshFile, current_line);
 
@@ -77,7 +77,7 @@ void Mesh::Import() {
           tokens = RusselNS::GetVectorTokens(current_line);
 
           for (int jj=0; jj<nen_; ++jj) {
-            ix[ii * nen_ + jj] = atoi(tokens[jj].c_str());
+            ix(ii,jj) = atoi(tokens[jj].c_str());
           }
         }
 
@@ -90,7 +90,7 @@ void Mesh::Import() {
 void Mesh::ElementsContainingNode(const int &gid){
   for (int ii=0; ii<numElements_; ++ii) {
     for (int jj=0; jj<nen_; ++jj) {
-      if (ix[ii * nen_ + jj] == gid) {
+      if (ix(ii,jj) == gid) {
         std::cout << "Node " << gid << " is in element " << ii << " with volume " << ComputeElementVolume(ii) << '\n';
       }
     }
@@ -103,9 +103,9 @@ double Mesh::ComputeElementVolume(const int &elemId) {
   Fem fem;
 
   for (int ii=0; ii<nen_; ++ii) {
-    int kk = ix[elemId * nen_ + ii];
+    int kk = ix(elemId,ii);
     for (int jj=0; jj<ndm_; ++jj) {
-      xl[nen_ * jj + ii] = xc[ndm_ * kk + jj];
+      xl[nen_ * jj + ii] = xc(kk,jj);
     }
   }
 
@@ -131,9 +131,9 @@ double Mesh::ComputeMeshVolume(){
 
   for (int nn=0; nn<numElements_; ++nn) {
     for (int ii=0; ii<nen_; ++ii) {
-      int kk = ix[nn * nen_ + ii];
+      int kk = ix(nn,ii);
       for (int jj=0; jj<ndm_; ++jj) {
-        xl[nen_ * jj + ii] = xc[ndm_ * kk + jj];
+        xl[nen_ * jj + ii] = xc(kk,jj);
       }
     }
 
