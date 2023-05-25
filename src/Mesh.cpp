@@ -40,7 +40,7 @@ void Mesh::Import() {
       numNodes_ = atoi(tokens[0].c_str());
 
       std::cout << "Number of mesh points: " << numNodes_ << '\n';
-      xc.resize(numNodes_,ndm_);
+      xc.Resize(numNodes_,ndm_);
     }
 
     if (current_line.find("Mesh point coordinates") != std::string::npos) {
@@ -68,7 +68,7 @@ void Mesh::Import() {
       } else if (nen_ == 3) {
         std::cout << "Number of face elements: " << numElements_ << '\n';
       } else if (nen_ == 4) {
-        ix.resize(numElements_,nen_);
+        ix.Resize(numElements_,nen_);
 
         getline(meshFile, current_line);
 
