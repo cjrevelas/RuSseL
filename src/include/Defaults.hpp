@@ -37,4 +37,4 @@ namespace RusselNS {
 
 } // RusselN
 
-#endif
+#endif // DEFAULTS_HPP

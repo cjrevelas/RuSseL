@@ -9,6 +9,7 @@
 #include "Russel.hpp"
 #include "IOHelper.hpp"
 #include "Defaults.hpp"
+#include "ContourFlags.hpp"
 
 using namespace RusselNS;
 
