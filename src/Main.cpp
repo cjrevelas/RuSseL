@@ -10,6 +10,7 @@
 #include "IOHelper.hpp"
 #include "Defaults.hpp"
 #include "ContourFlags.hpp"
+#include "MumpsFlags.hpp"
 
 using namespace RusselNS;
 
