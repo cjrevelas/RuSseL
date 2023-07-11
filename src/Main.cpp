@@ -8,6 +8,7 @@
 #include "Parser.hpp"
 #include "Russel.hpp"
 #include "IOHelper.hpp"
+#include "Defaults.hpp"
 
 using namespace RusselNS;
 
@@ -53,6 +54,9 @@ int main(int argc, char **argv) {
       arrays << '\n';
     }
   }
+
+
+  // Here, we will start the iterative scheme
 
   std::cout << '\n';
 
