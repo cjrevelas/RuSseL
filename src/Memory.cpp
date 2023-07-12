@@ -94,5 +94,17 @@ bool Memory::IsVariable(const std::string &id) {
   return (varIt != variableMap_.end());
 }
 
+// Deleters
+void Memory::DeleteVariableWithTag(const std::string &tag) {
+  auto it = variableMap_.begin();
+  while (it != variableMap_.end()) {
+    if (tag == it->first.substr(0, tag.size())) {
+      it->second.reset();
+      variableMap_.erase(it++);
+    } else {
+      it++;
+    }
+  }
+}
 
 } // RusselNS

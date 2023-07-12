@@ -3,7 +3,7 @@
 
 namespace RusselNS {
   
-  enum class Eos {
+  enum class EosKind {
     hlf,
     sl,
     sl_grad

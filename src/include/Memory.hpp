@@ -42,6 +42,9 @@ class Memory {
     std::shared_ptr<double []> phiMatrix_;
     std::shared_ptr<double []> phiTotal_;
 
+    // Deleters
+    void DeleteVariableWithTag(const std::string &tag);
+
   private:
     std::unordered_map<std::string, std::shared_ptr<class Variable>> variableMap_;
 };

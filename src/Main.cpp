@@ -11,7 +11,6 @@
 #include "Defaults.hpp"
 #include "ContourFlags.hpp"
 #include "MumpsFlags.hpp"
-#include "EosFlags.hpp"
 
 using namespace RusselNS;
 
