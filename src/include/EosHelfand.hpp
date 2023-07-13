@@ -1,0 +1,28 @@
+#ifndef EOS_HELFAND_H
+#define EOS_HELFAND_H
+
+#include "Eos.hpp"
+
+namespace RusselNS {
+
+class EosHelfand : public Eos {
+ public:
+   EosHelfand(const std::string eosId, Russel *russel);
+   ~EosHelfand() override;
+
+   double EnergyDensity(double, double) override;
+   double EnergyDensityDerivative(double, double) override;
+
+ private:
+   void ParseDerived1(std::deque<std::string>) override;
+   void ReportDerived1() override;
+
+   double rho0_;
+   double kappaHlf_;
+   double rho0Inv_;
+};
+
+} // RusselNS
+
+
+#endif // EOS_HELFAND_H

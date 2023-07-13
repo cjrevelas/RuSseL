@@ -4,19 +4,22 @@
 
 using namespace RusselNS;
 
-Eos::~Eos() { russel_->memory_->DeleteVariableWithTag(tag_); }
+Eos::~Eos() {
+  PrintMessage("Del Eos base class", 3);
+  russel_->memory_->DeleteVariableWithTag(tag_);
+}
 
 Eos::Eos(std::string eosId, Russel *russel) {
   russel_      = russel;
   id_          = eosId;
   tag_         = "i_" + id_ + "_";
-  kappaT_      = 0.0;
+  kappa_       = 0.0;
   temperature_ = 0.0;
   pressure_    = 0.0;
   molarMass_   = 0.0;
 
   russel_->memory_->SetVariable(tag_ + "rhoBulk", std::make_shared<double>(rhoBulk_));
-  russel_->memory_->SetVariable(tag_ + "compressibility", std::make_shared<double>(kappaT_));
+  russel_->memory_->SetVariable(tag_ + "compressibility", std::make_shared<double>(kappa_));
 }
 
 void Eos::Parse(std::deque<std::string> deqCoeffs) {
@@ -30,7 +33,7 @@ void Eos::Parse(std::deque<std::string> deqCoeffs) {
     }
 
     if (deqCoeffs[ii] == "-compress") {
-      kappaT_ = StringToNumber<double>(deqCoeffs[++ii]);
+      kappa_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
 
     if (deqCoeffs[ii] == "-density") {
@@ -46,7 +49,7 @@ void Eos::Report() {
   PrintVariable("pressure", pressure_, "atm", 1);
   PrintMessage("Bulk polymer properties:",1);
   PrintVariable("Density", rhoBulk_, "kg/m3", 2);
-  PrintVariable("Compressibility", kappaT_, "Pa^-1", 2);
+  PrintVariable("Compressibility", kappa_, "Pa^-1", 2);
 
   ReportDerived1();
 }

@@ -9,7 +9,7 @@ namespace RusselNS {
 
 class Eos {
   public:
-    Eos(std::string eosId, Russel *russel);
+    Eos(const std::string eosId, Russel *russel);
     virtual ~Eos();
 
     void Parse(std::deque<std::string> coeffs);
@@ -34,7 +34,7 @@ class Eos {
     double pressure_;
     double rhoBulk_;
     double molarMass_;
-    double kappaT_;
+    double kappa_;
     class Russel *russel_;
 };
 
