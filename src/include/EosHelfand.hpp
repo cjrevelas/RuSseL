@@ -10,8 +10,10 @@ class EosHelfand : public Eos {
    EosHelfand(const std::string eosId, Russel *russel);
    ~EosHelfand() override;
 
-   double EnergyDensity(double, double) override;
-   double EnergyDensityDerivative(double, double) override;
+   double EnergyDensity(double) override;
+   double EnergyDensityDerivative(double) override;
+   double RhoBulk() override;
+   double Compressibility(double) override;
 
  private:
    void ParseDerived1(std::deque<std::string>) override;

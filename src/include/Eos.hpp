@@ -15,13 +15,15 @@ class Eos {
     void Parse(std::deque<std::string> coeffs);
     void Report();
 
-    virtual double EnergyDensity(double, double) = 0;
-    virtual double EnergyDensityDerivative(double, double) = 0;
-    virtual double Compressibility(double, double) = 0;
+    virtual double EnergyDensity(double) = 0;
+    virtual double EnergyDensityDerivative(double) = 0;
+    virtual double RhoBulk() = 0;
+    virtual double Compressibility(double) = 0;
 
     inline double GetTemperature() { return temperature_; }
     inline double GetPressure() { return pressure_; }
-    inline double GetRhoBulk() { return rhoBulk_; }
+    inline double GetRhoMassBulk() { return rhoMassBulk_; }
+    inline double GetRhoMolarBulk() { return rhoMolarBulk_; }
     inline double GetMolarMass() { return molarMass_; }
 
   protected:
@@ -32,7 +34,9 @@ class Eos {
     std::string tag_;
     double temperature_;
     double pressure_;
-    double rhoBulk_;
+    double rhoMassBulk_;
+    double rhoMolarBulk_;
+    double rhoMax_;
     double molarMass_;
     double kappa_;
     class Russel *russel_;

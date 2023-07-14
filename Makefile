@@ -51,6 +51,7 @@ RUNDIR=run
 OBJECTS=$(OBJDIR)/Variable.o\
 	$(OBJDIR)/Eos.o\
 	$(OBJDIR)/EosHelfand.o\
+	$(OBJDIR)/EosSanchezLacombe.o\
 	$(OBJDIR)/Memory.o\
         $(OBJDIR)/Mesh.o\
 	$(OBJDIR)/Fem.o\
