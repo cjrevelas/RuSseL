@@ -7,7 +7,7 @@ namespace RusselNS {
 
 EosSanchezLacombe::~EosSanchezLacombe() { PrintMessage("Del EosSanchezLacombe", 3); }
 
-EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, Russel *russel)
+EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<class Russel> russel)
   : Eos(eosId, russel) {
     derPref1_     = 0.0;
     derPref2_     = 0.0;
@@ -19,14 +19,12 @@ EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, Russel *russel)
     rhoTildeMax_  = 0.0;
     rhoTildeBulk_ = RhoBulk();
 
-
-
     PrintMessage("Add EosSanchezLacombe", 3);
 }
 
 void EosSanchezLacombe::ParseDerived1(std::deque<std::string> deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
-    if (deqCoeffs[ii] == "coeffs") {
+    if (deqCoeffs[ii] == "-coeffs") {
       tempStar_  = StringToNumber<double>(deqCoeffs[++ii]);
       pressStar_ = StringToNumber<double>(deqCoeffs[++ii]);
       rhoStar_   = StringToNumber<double>(deqCoeffs[++ii]);
@@ -48,10 +46,12 @@ void EosSanchezLacombe::ParseDerived1(std::deque<std::string> deqCoeffs) {
 
 void EosSanchezLacombe::ReportDerived1() {
   PrintMessage("Sanchez-Lacombe coefficients", 1);
-  PrintVariable("Characteristic temperature", tempStar_,  "K"     , 2);
-  PrintVariable("Characteristic pressure   ", pressStar_, "Pa"    , 2);
-  PrintVariable("Characteristic density    ", rhoStar_,  "kg/m^3", 2);
-  PrintVariable("Maximum allowed density   ", rhoTildeMax_, "kg/m3", 2);
+  PrintVariable("Characteristic temperature", tempStar_,    "K"      , 2);
+  PrintVariable("Characteristic pressure   ", pressStar_,   "Pa"     , 2);
+  PrintVariable("Characteristic density    ", rhoStar_,     "kg/m^3" , 2);
+  PrintVariable("Characteristic rsl ratio  ", rslN_,        "-"      , 2);
+  PrintVariable("Maximum allowed density   ", rhoTildeMax_, "kg/m3"  , 2);
+  // FIXME: Print compressibility (you need to read the lengthBulk)
 }
 
 double EosSanchezLacombe::EnergyDensity(double phi) {

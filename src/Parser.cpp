@@ -6,6 +6,8 @@
 #include "EvalArg.hpp"
 #include "Evaluator.hpp"
 #include "StringOperations.hpp"
+#include "EosHelfand.hpp"
+#include "EosSanchezLacombe.hpp"
 
 
 namespace RusselNS {
@@ -38,13 +40,14 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
   std::vector<std::unique_ptr<Parser>> listOfFlags;
   std::vector<std::unique_ptr<Parser>>::iterator listOfFlagsIt;
 
-  const std::string hello("hello from parser parent class");
+  const std::string hello("hello from parent class: Parser");
 
   listOfFlags.push_back(std::make_unique<Parser>(hello,0));
   listOfFlags.push_back(std::make_unique<ParserInteract>("interact",1));
   listOfFlags.push_back(std::make_unique<ParserPrint>("print",1));
   listOfFlags.push_back(std::make_unique<ParserVariable>("variable",2));
   listOfFlags.push_back(std::make_unique<ParserMesh>("mesh",1));
+  listOfFlags.push_back(std::make_unique<ParserEos>("eos",2));
 
   CheckDuplicateFlags(listOfFlags);
 
@@ -234,6 +237,26 @@ bool Parser::GetCoeffs(const std::string &stringCoeffs) {
   return flagFound;
 }
 
+void ParserEos::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
+  std::string id    = deqCoeffs[0];
+  std::string style = deqCoeffs[1];
+
+  PrintMessage("Add eos " + style + "with id " + id, 0);
+
+  std::shared_ptr<class Eos> eos;
+
+  if (style == "sanchez-lacombe") {
+    eos = std::make_shared<class EosSanchezLacombe>(id, russel_);
+  } else if (style == "helfand") {
+    eos = std::make_shared<class EosHelfand>(id, russel_);
+  } else {
+    ExitProgram("ParserEos", "Unknown EoS style \"" + style + "\"");
+  }
+
+  russel_->memory_->SetEos(id, eos);
+  russel_->memory_->GetEos(id)->Parse(deqCoeffs);
+  russel_->memory_->GetEos(id)->Report();
+}
 
 void ParserInteract::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id = deqCoeffs[0];

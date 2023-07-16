@@ -5,7 +5,7 @@ namespace RusselNS {
 
 EosHelfand::~EosHelfand() { PrintMessage("Del EosHelfand", 3); }
 
-EosHelfand::EosHelfand(const std::string eosId, Russel *russel)
+EosHelfand::EosHelfand(const std::string eosId, std::shared_ptr<class Russel> russel)
   : Eos(eosId, russel) {
   kappaHlf_ = 0.0;
 
@@ -15,9 +15,8 @@ EosHelfand::EosHelfand(const std::string eosId, Russel *russel)
 void EosHelfand::ParseDerived1(std::deque<std::string> deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
     if (deqCoeffs[ii] == "-coeffs") {
-      rhoMassBulk_  = StringToNumber<double>(deqCoeffs[++ii]);
+ //     rhoMassBulk_  = StringToNumber<double>(deqCoeffs[++ii]);
       kappaHlf_     = StringToNumber<double>(deqCoeffs[++ii]);
-      // rho0Inv_      = 1.0/rho0_; // FIXME
     }
   }
 }
@@ -41,6 +40,7 @@ double EosHelfand::RhoBulk() {
 }
 
 double EosHelfand::Compressibility(double lengthBulk) {
+  lengthBulk = lengthBulk;
   return kappaHlf_;
 }
 

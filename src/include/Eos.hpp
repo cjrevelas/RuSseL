@@ -2,6 +2,7 @@
 #define EOS_HPP
 
 #include <string>
+#include <deque>
 
 #include "Russel.hpp"
 
@@ -9,7 +10,7 @@ namespace RusselNS {
 
 class Eos {
   public:
-    Eos(const std::string eosId, Russel *russel);
+    Eos(const std::string eosId, std::shared_ptr<class Russel> russel);
     virtual ~Eos();
 
     void Parse(std::deque<std::string> coeffs);
@@ -39,7 +40,7 @@ class Eos {
     double rhoMax_;
     double molarMass_;
     double kappa_;
-    class Russel *russel_;
+    std::shared_ptr<class Russel> russel_;
 };
 
 } // RusselNS

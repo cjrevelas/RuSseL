@@ -10,7 +10,7 @@ Eos::~Eos() {
   russel_->memory_->DeleteVariableWithTag(tag_);
 }
 
-Eos::Eos(std::string eosId, Russel *russel) {
+Eos::Eos(std::string eosId, std::shared_ptr<class Russel> russel) {
   russel_       = russel;
   id_           = eosId;
   tag_          = "i_" + id_ + "_";
@@ -36,8 +36,8 @@ void Eos::Parse(std::deque<std::string> deqCoeffs) {
       pressure_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
 
-    if (deqCoeffs[ii] == "-compress") {
-      kappa_ = StringToNumber<double>(deqCoeffs[++ii]);
+    if (deqCoeffs[ii] == "-mass") {
+      molarMass_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
 
     if (deqCoeffs[ii] == "-density") {
@@ -53,9 +53,9 @@ void Eos::Report() {
   PrintVariable("temperature", temperature_, "K", 1);
   PrintVariable("pressure", pressure_, "atm", 1);
   PrintMessage("Bulk polymer properties:",1);
+  PrintVariable("Monomer molar mass", molarMass_, "g/mol", 2);
   PrintVariable("Bulk mass density", rhoMassBulk_, "kg/m3", 2);
   PrintVariable("Bulk molar density", rhoMolarBulk_, "mol/m3", 2);
-  PrintVariable("Compressibility", kappa_, "Pa^-1", 2);
 
   ReportDerived1();
 }
