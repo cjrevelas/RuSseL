@@ -1,6 +1,0 @@
--I
-./src/include
--I
-/home/cjrevelas/libraries/mumps_serial_cpp/include/
--I
-/home/cjrevelas/libraries/mumps_serial_cpp/libseq/
