@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.6)
 
 project("RuSseL" LANGUAGES C CXX)
 
-set(PRINT_IN_DETAIL TRUE)
-set(BUILD_TYPE "Debug")
+set(PRINT_IN_DETAIL FALSE)
+set(BUILD_TYPE "Release")
 
 set(CMAKE_BUILD_TYPE ${BUILD_TYPE} CACHE STRING "debug_compiler_configuration" FORCE)
 set(CMAKE_PREFIX_PATH "/usr/lib/gcc/x86_64-linux-gnu/9/;"
