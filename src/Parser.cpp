@@ -75,7 +75,8 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
     stringCoeffs += " " + commentStrippedLine;
 
     // In case the last char of the line is &, merge it with the next one
-    bool continueToNextLine;
+    bool continueToNextLine = false;
+
     for (char &ch : ReverseString(commentStrippedLine)) {
       if (ch == '&') continueToNextLine = true;
     }
