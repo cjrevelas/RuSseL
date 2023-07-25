@@ -28,7 +28,8 @@ void EosSanchezLacombe::ParseDerived1(std::deque<std::string> deqCoeffs) {
       tempStar_  = StringToNumber<double>(deqCoeffs[++ii]);
       pressStar_ = StringToNumber<double>(deqCoeffs[++ii]);
       rhoStar_   = StringToNumber<double>(deqCoeffs[++ii]);
-      rslN_      = StringToNumber<double>(deqCoeffs[++ii]);
+
+      rslN_ = (molarMass_ * pressStar_) / (rhoStar_ * kg_m3_to_gr_m3 * boltz_const_Joule_molK * tempStar_);
 
       tempTilde_   = temperature_ / tempStar_;
       tempStarInv_ = 1.0 / tempStar_;
@@ -51,7 +52,9 @@ void EosSanchezLacombe::ReportDerived1() {
   PrintVariable("Characteristic density    ", rhoStar_,     "kg/m^3" , 2);
   PrintVariable("Characteristic rsl ratio  ", rslN_,        "-"      , 2);
   PrintVariable("Maximum allowed density   ", rhoTildeMax_, "kg/m3"  , 2);
-  // FIXME: Print compressibility (you need to read the lengthBulk)
+  PrintVariable("Compressibility           ", Compressibility(matrixLength_), "Pa^-1", 2);
+  PrintVariable("Temp tilde:               ", tempTilde_, "", 2);
+  PrintVariable("rslN:                     ", rslN_,      "",2);
 }
 
 double EosSanchezLacombe::EnergyDensity(double phi) {
@@ -71,15 +74,15 @@ double EosSanchezLacombe::EnergyDensityDerivative(double phi) {
 }
 
 double EosSanchezLacombe::RhoBulk() {
-  return -1.0; // FIXME
+  return 0.99; // FIXME
 }
 
 double EosSanchezLacombe::Compressibility(double lengthBulk) {
   double aux = tempTilde_ * pressStar_ * rhoTildeBulk_ * rhoTildeBulk_ *
-               (1.0/(1.0-rhoTildeBulk_)) + 1.0/(rhoTildeBulk_ * rslN_ * lengthBulk)
-               -2.0/tempTilde_;
+               (1.0/(1.0-rhoTildeBulk_) + 1.0/(rhoTildeBulk_ * rslN_ * lengthBulk)
+               -2.0/tempTilde_);
 
-  return 1.0/aux; // FIXME
+  return 1.0/aux;
 }
 
 } // RusselNS

@@ -20,10 +20,12 @@ Eos::Eos(std::string eosId, std::shared_ptr<class Russel> russel) {
   molarMass_    = 0.0;
   rhoMassBulk_  = 0.0;
   rhoMolarBulk_ = 0.0;
+  matrixLength_ = 0.0;
 
   russel_->memory_->SetVariable(tag_ + "rhoMassBulk", std::make_shared<double>(rhoMassBulk_));
   russel_->memory_->SetVariable(tag_ + "rhoMolarBulk", std::make_shared<double>(rhoMolarBulk_));
   russel_->memory_->SetVariable(tag_ + "compressibility", std::make_shared<double>(kappa_));
+  russel_->memory_->SetVariable(tag_ + "length of matrix chains", std::make_shared<double>(matrixLength_));
 }
 
 void Eos::Parse(std::deque<std::string> deqCoeffs) {
@@ -31,18 +33,18 @@ void Eos::Parse(std::deque<std::string> deqCoeffs) {
     if (deqCoeffs[ii] == "-temp") {
       temperature_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
-
     if (deqCoeffs[ii] == "-press") {
       pressure_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
-
     if (deqCoeffs[ii] == "-mass") {
       molarMass_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
-
     if (deqCoeffs[ii] == "-density") {
       rhoMassBulk_ = StringToNumber<double>(deqCoeffs[++ii]);
       rhoMolarBulk_ = rhoMassBulk_ / molarMass_ * gr_cm3_to_kg_m3;
+    }
+    if (deqCoeffs[ii] == "-mx_length") {
+      matrixLength_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
   }
 
@@ -56,6 +58,7 @@ void Eos::Report() {
   PrintVariable("Monomer molar mass", molarMass_, "g/mol", 2);
   PrintVariable("Bulk mass density", rhoMassBulk_, "kg/m3", 2);
   PrintVariable("Bulk molar density", rhoMolarBulk_, "mol/m3", 2);
+  PrintVariable("Length of matrix chains", matrixLength_, "carbon bonds", 2);
 
   ReportDerived1();
 }

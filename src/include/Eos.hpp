@@ -40,6 +40,7 @@ class Eos {
     double rhoMax_;
     double molarMass_;
     double kappa_;
+    double matrixLength_;
     std::shared_ptr<class Russel> russel_;
 };
 
