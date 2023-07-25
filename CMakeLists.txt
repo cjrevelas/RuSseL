@@ -2,19 +2,29 @@ cmake_minimum_required(VERSION 2.6)
 
 project("RuSseL" LANGUAGES C CXX)
 
-set(PRINT_IN_DETAIL FALSE)
-set(BUILD_TYPE "Release")
+set(VERBOSE FALSE)
+set(BUILD_TYPE "Debug")
 
-set(CMAKE_BUILD_TYPE ${BUILD_TYPE} CACHE STRING "debug_compiler_configuration" FORCE)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./run)
+add_executable(russel)
+
+# The exact path of all requisite header files must be specified below
+target_include_directories(russel PUBLIC
+  ./src/include
+  /usr/lib/gcc/x86_64-linux-gnu/9/include
+  /home/cjrevelas/libraries/mumps_serial_cpp/PORD/include
+  /home/cjrevelas/libraries/mumps_serial_cpp/libseq
+  /home/cjrevelas/libraries/mumps_serial_cpp/include
+)
+
+# The exact path of all requisite libraries must be specified below
 set(CMAKE_PREFIX_PATH "/usr/lib/gcc/x86_64-linux-gnu/9/;"
                       "/home/cjrevelas/libraries/lapack-3.9.0/;"
                       "/home/cjrevelas/libraries/mumps_serial_cpp/lib/;"
                       "/home/cjrevelas/libraries/mumps_serial_cpp/libseq;"
                       "/home/cjrevelas/libraries/mumps_serial_cpp/PORD/lib"
 )
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./run)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_library(LAPACK_LIB lapack)
 find_library(BLAS_LIB refblas)
@@ -25,7 +35,7 @@ find_library(MUMPS_LIB  mumps_common)
 find_library(GFORTRAN_LIB gfortran)
 find_library(PTHREAD_LIB pthread)
 
-if (PRINT_IN_DETAIL)
+if (VERBOSE)
   message("CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
     
   message(${LAPACK_LIB})
@@ -45,6 +55,8 @@ if (PRINT_IN_DETAIL)
     message("Building project with CLANG compiler")
   endif()
 endif()
+
+set(CMAKE_BUILD_TYPE ${BUILD_TYPE} CACHE STRING "debug_compiler_configuration" FORCE)
 
 # Configuring compilation with GNU compiler
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -67,16 +79,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
     set(CMAKE_CXX_FLAGS_RELEASE ${intel_release_flags} CACHE STRING "intel_release_flags" FORCE)
   endif()
 endif()
-
-add_executable(russel)
-
-target_include_directories(russel PUBLIC
-  ./src/include
-  /usr/lib/gcc/x86_64-linux-gnu/9/include
-  /home/cjrevelas/libraries/mumps_serial_cpp/PORD/include
-  /home/cjrevelas/libraries/mumps_serial_cpp/libseq
-  /home/cjrevelas/libraries/mumps_serial_cpp/include
-)
 
 target_sources(russel PUBLIC
   src/Eos.cpp
