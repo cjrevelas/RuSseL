@@ -10,7 +10,7 @@ namespace RusselNS {
 
 class Eos {
   public:
-    Eos(const std::string eosId, std::shared_ptr<class Russel> russel);
+    Eos(const std::string eosId, std::shared_ptr<class Russel> &russel);
     virtual ~Eos();
 
     void Parse(std::deque<std::string> coeffs);

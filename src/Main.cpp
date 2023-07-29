@@ -21,6 +21,7 @@ int main(int argc, char **argv) {
   ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myId);
 
   std::string inputFileName = "in.input";
+
   for (int ii = 0; ii<argc; ++ii) {
     std::string argument(argv[ii]);
     if (argument == "-in") {
@@ -35,12 +36,11 @@ int main(int argc, char **argv) {
   // Spawn an instance of the application itself
   std::shared_ptr<class Russel> russel{std::make_shared<Russel>()};
 
-  std::cout << "Address of Russel instance in Main: " << russel << '\n';
-  std::cout << "Address of Russel shared pointer in Main: " << &russel << '\n';
+// TODO: IF REPORT_MEMORY_STATUS
+  std::cout << "Number of russel shared pointers [Main]: " << russel.use_count() << '\n';
+// TODO: ENDIF REPORT_MEMORY_STATUS
 
   ParseInput(inputFileName, russel);
-
-  std::cout << '\n';
 
   russel->memory_->InitializeArrays();
 
@@ -66,10 +66,18 @@ int main(int argc, char **argv) {
   SolverMumps(myId);
   // End of iterative scheme
 
+  std::cout << "Number of mesh shared pointers: " << russel->memory_->mesh_.use_count() << '\n';
+  russel->memory_->mesh_.reset();
+  std::cout << "Number of mesh shared pointers: " << russel->memory_->mesh_.use_count() << '\n';
+
+  std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
+  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE EOS EXISTS (E.G., USE A PARSER FLAG IN INPUT FILE)
+  russel->memory_->DeleteEos("EosId");
+  russel->memory_->DeleteEos("EosId2");
+  russel.reset();
+  std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
 
   ierr = MPI_Finalize();
-
-  std::cout << "MPI ierr: " << ierr << '\n';
 
   return 0;
 }

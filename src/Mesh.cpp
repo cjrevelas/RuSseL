@@ -3,6 +3,7 @@
 #include "StringOperations.hpp"
 #include "Fem.hpp"
 #include "Mesh.hpp"
+#include "IOHelper.hpp"
 
 namespace RusselNS {
 
@@ -12,7 +13,7 @@ Mesh::Mesh(const std::string meshFileName)
 }
 
 Mesh::~Mesh(){
-  std::cout << "Deleting FEM mesh\n";
+  PrintMessage("Delete Mesh instance",0);
 }
 
 void Mesh::Import() {

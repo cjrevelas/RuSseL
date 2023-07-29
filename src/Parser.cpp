@@ -30,19 +30,17 @@ Parser::Parser(const std::string &flag, const int &coeffsMinLength) {
 void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russel) {
   Parser::russel_ = russel;
 
-  std::cout << "Address of Russel instance in Parser: "       << Parser::russel_ << '\n';
-  std::cout << "Address of Russel shared pointer in Parser: " << &Parser::russel_ << '\n';
-  std::cout << "Address of Russel shared pointer in Parser: " << &russel << '\n';
+// TODO: IF REPORT_MEMORY_STATUS
+  std::cout << "Number of russel shared pointers [Parser]: " << russel.use_count() << '\n';
+// TODO: ENDIF REPORT_MEMORY_STATUS
 
   PrintVariable("Parse input from file:", inputFileName, "", 0);
 
-  // Setup thee list of input flags (vector of base smart pointers to derived classes)
+  // Setup the list of input flags (vector of base smart pointers to derived classes)
   std::vector<std::unique_ptr<Parser>> listOfFlags;
   std::vector<std::unique_ptr<Parser>>::iterator listOfFlagsIt;
 
-  const std::string hello("hello from parent class: Parser");
-
-  listOfFlags.push_back(std::make_unique<Parser>(hello,0));
+  listOfFlags.push_back(std::make_unique<Parser>("hello from parent class: Parser",0));
   listOfFlags.push_back(std::make_unique<ParserInteract>("interact",1));
   listOfFlags.push_back(std::make_unique<ParserPrint>("print",1));
   listOfFlags.push_back(std::make_unique<ParserVariable>("variable",2));
@@ -86,10 +84,7 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
     // Sanitize the string by removing extra spaces and '&', if any
     stringCoeffs = ReplaceSubstring(stringCoeffs, "&", "");
     stringCoeffs = RemoveMultipleSpaces(stringCoeffs);
-
-    std::cout << "checking for expressions\n";
     stringCoeffs = CheckForExpressions(stringCoeffs);
-    std::cout << "finished checking for expressions\n";
 
     // Try to read the string of coeffs
     bool parseFailure = true;
@@ -111,7 +106,7 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
 
   // Update the main::russel pointer
   russel = Parser::russel_;
-  std::cout << "CJR: russel pointer after reading input\n" << russel;
+  Parser::russel_.reset();
 }
 
 
@@ -158,7 +153,6 @@ std::string CheckForExpressions(const std::string &stringCoeffs) {
     if (isExpression && record) {
       ExitProgram("Parser::CheckForExpressions", "Cannot find termination flag.\n" + stringCoeffs);
     }
-
 
     if (isExpression && !record) {
       // Convert the string into an expression type and retrieve the maximum order

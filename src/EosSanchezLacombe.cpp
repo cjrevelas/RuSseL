@@ -7,7 +7,7 @@ namespace RusselNS {
 
 EosSanchezLacombe::~EosSanchezLacombe() { PrintMessage("Del EosSanchezLacombe", 3); }
 
-EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<class Russel> russel)
+EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {
     derPref1_     = 0.0;
     derPref2_     = 0.0;

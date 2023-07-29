@@ -5,7 +5,7 @@ namespace RusselNS {
 
 EosHelfand::~EosHelfand() { PrintMessage("Del EosHelfand", 3); }
 
-EosHelfand::EosHelfand(const std::string eosId, std::shared_ptr<class Russel> russel)
+EosHelfand::EosHelfand(const std::string eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {
   kappaHlf_ = 0.0;
 
