@@ -37,7 +37,7 @@ find_library(PTHREAD_LIB pthread)
 
 if (VERBOSE)
   message("CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
-    
+
   message(${LAPACK_LIB})
   message(${BLAS_LIB})
   message(${PORD_LIB})
@@ -81,6 +81,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 endif()
 
 target_sources(russel PUBLIC
+  src/SolverMumps.cpp
   src/Eos.cpp
   src/Fem.cpp
   src/Main.cpp
@@ -97,7 +98,7 @@ target_sources(russel PUBLIC
   src/StringOperations.cpp
 )
 
-target_link_libraries(russel PUBLIC 
+target_link_libraries(russel PUBLIC
   ${DMUMPS_LIB}
   ${MUMPS_LIB}
   ${PORD_LIB}
