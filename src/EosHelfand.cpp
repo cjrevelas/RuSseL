@@ -9,7 +9,7 @@ EosHelfand::EosHelfand(const std::string eosId, std::shared_ptr<class Russel> &r
   : Eos(eosId, russel) {
   kappaHlf_ = 0.0;
 
-  PrintMessage("Add EosHelfand", 3);
+  PrintMessage("Add EosHelfand", 1);
 }
 
 void EosHelfand::ParseDerived1(std::deque<std::string> deqCoeffs) {

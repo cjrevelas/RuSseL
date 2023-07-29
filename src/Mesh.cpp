@@ -9,15 +9,17 @@ namespace RusselNS {
 
 Mesh::Mesh(const std::string meshFileName)
 : meshFileName_(meshFileName) {
+  logMesh_.open("o.mesh", std::ios::out);
   Import();
 }
 
-Mesh::~Mesh(){
+Mesh::~Mesh() {
+  logMesh_.close();
   PrintMessage("Delete Mesh instance",0);
 }
 
 void Mesh::Import() {
-  std::cout << "reading mesh from file: " << meshFileName_ << '\n';
+  logMesh_ << "FEM mesh was imported from file: " << meshFileName_ << "\n\n";
 
   std::ifstream meshFile;
 
@@ -33,14 +35,14 @@ void Mesh::Import() {
       tokens = RusselNS::GetVectorTokens(current_line);
       ndm_   = atoi(tokens[0].c_str());
 
-      std::cout << "Number of dimensions = " << ndm_ << '\n';
+      logMesh_ << "Number of dimensions = " << ndm_ << '\n';
     }
 
     if (current_line.find("number of mesh points") != std::string::npos) {
       tokens = RusselNS::GetVectorTokens(current_line);
       numNodes_ = atoi(tokens[0].c_str());
 
-      std::cout << "Number of mesh points: " << numNodes_ << '\n';
+      logMesh_ << "Number of mesh points: " << numNodes_ << '\n';
       xc.Resize(numNodes_,ndm_);
     }
 
@@ -63,11 +65,11 @@ void Mesh::Import() {
       numElements_ = atoi(tokens[0].c_str());
 
       if (nen_ == 1) {
-        std::cout << "Number of vertex elements: " << numElements_ << '\n';
+        logMesh_ << "Number of vertex elements: " << numElements_ << '\n';
       } else if (nen_ == 2) {
-        std::cout << "Number of edge elements: " << numElements_ << '\n';
+        logMesh_ << "Number of edge elements: " << numElements_ << '\n';
       } else if (nen_ == 3) {
-        std::cout << "Number of face elements: " << numElements_ << '\n';
+        logMesh_ << "Number of face elements: " << numElements_ << '\n';
       } else if (nen_ == 4) {
         ix.Resize(numElements_,nen_);
 
@@ -82,20 +84,22 @@ void Mesh::Import() {
           }
         }
 
-        std::cout << "Number of domain elements: " << numElements_ << '\n';
+        logMesh_ << "Number of domain elements: " << numElements_ << '\n';
       }
     }
   }
 }
 
 void Mesh::ElementsContainingNode(const int &gid){
+  logMesh_ << '\n';
   for (int ii=0; ii<numElements_; ++ii) {
     for (int jj=0; jj<nen_; ++jj) {
       if (ix(ii,jj) == gid) {
-        std::cout << "Node " << gid << " is in element " << ii << " with volume " << ComputeElementVolume(ii) << '\n';
+        logMesh_ << "Node " << gid << " is in element " << ii << " with volume " << ComputeElementVolume(ii) << '\n';
       }
     }
   }
+  logMesh_ << '\n';
 }
 
 double Mesh::ComputeElementVolume(const int &elemId) {
@@ -123,7 +127,7 @@ double Mesh::ComputeElementVolume(const int &elemId) {
   return volel;
 }
 
-double Mesh::ComputeMeshVolume(){
+void Mesh::ComputeMeshVolume() {
   std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[ndm_ * nen_]);
 
   Fem fem;
@@ -148,12 +152,10 @@ double Mesh::ComputeMeshVolume(){
       volel += xsj;
     }
 
-    std::cout << volel << '\n';
-
     vol += volel;
   }
 
-  return vol;
+  logMesh_ << "Meshed domain volume: " << vol;
 }
 
 } // RusselNS

@@ -236,7 +236,7 @@ void ParserEos::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id    = deqCoeffs[0];
   std::string style = deqCoeffs[1];
 
-  PrintMessage("Add eos " + style + "with id " + id, 0);
+  PrintMessage("Add eos " + style + " with id " + id, 1);
 
   std::shared_ptr<class Eos> eos;
 
@@ -272,6 +272,7 @@ void ParserMesh::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   russel_->memory_->mesh_ = std::make_shared<class Mesh>("in.mesh");
 
   russel_->memory_->mesh_->ElementsContainingNode(graftPointId);
+  russel_->memory_->mesh_->ComputeMeshVolume();
 }
 
 void ParserVariable::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {

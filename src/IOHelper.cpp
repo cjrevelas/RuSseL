@@ -71,7 +71,7 @@ void PrintMessage(const std::string &message, const int indentLevel) {
   int widthLevel = indentLevel * 3;
 
   std::cout << std::left;
-  std::cout << std::setw(3          ) << "#:";
+  std::cout << std::setw(3          ) << "- ";
   std::cout << std::left;
   std::cout << std::setw(widthLevel) << "";
   std::cout << std::left;
@@ -82,7 +82,7 @@ void PrintMessage(const std::string &message, const int indentLevel) {
 
 void PrintWarning(const std::string &message) {
   std::cout << std::left;
-  std::cout << std::setw(3 ) << "#:";
+  std::cout << std::setw(3 ) << "- ";
   std::cout << std::left;
   std::cout << std::setw(9) << "";
   std::cout << std::left;
@@ -93,7 +93,7 @@ void PrintWarning(const std::string &message) {
 
 void PrintWarning(const std::string &caller, const std::string &message) {
   std::cout << std::left;
-  std::cout << std::setw(3 ) << "#:";
+  std::cout << std::setw(3 ) << "- ";
   std::cout << std::left;
   std::cout << std::setw(11 + caller.size()) << "Warning(" + caller + "):";
   std::cout << std::left;

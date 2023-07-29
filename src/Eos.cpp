@@ -57,8 +57,8 @@ void Eos::Parse(std::deque<std::string> deqCoeffs) {
 }
 
 void Eos::Report() {
-  PrintVariable("temperature", temperature_, "K", 1);
-  PrintVariable("pressure", pressure_, "atm", 1);
+  PrintVariable("Temperature", temperature_, "K", 2);
+  PrintVariable("Pressure", pressure_, "atm", 2);
   PrintMessage("Bulk polymer properties:",1);
   PrintVariable("Monomer molar mass", molarMass_, "g/mol", 2);
   PrintVariable("Bulk mass density", rhoMassBulk_, "kg/m3", 2);

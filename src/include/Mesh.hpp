@@ -2,6 +2,7 @@
 #define MESH_HPP
 
 #include <memory>
+#include <fstream>
 
 #include "StringOperations.hpp"
 #include "Fem.hpp"
@@ -12,6 +13,7 @@ namespace RusselNS {
 class Mesh{
  private:
   std::string meshFileName_;
+  std::fstream logMesh_;
   int numElements_;
   int numNodes_;
   int nen_;
@@ -26,10 +28,9 @@ class Mesh{
   void Import();
   void ElementsContainingNode(const int &gid);
   double ComputeElementVolume(const int &elemId);
-  double ComputeMeshVolume();
+  void ComputeMeshVolume();
   int GetNumberOfNodes() const { return numNodes_; };
   friend std::vector<std::string> Tokenize(const std::string &input_string);
-
 };
 
 } // RusselNS

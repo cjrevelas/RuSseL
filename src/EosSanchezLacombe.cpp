@@ -19,7 +19,7 @@ EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<c
     rhoTildeMax_  = 0.0;
     rhoTildeBulk_ = RhoBulk();
 
-    PrintMessage("Add EosSanchezLacombe", 3);
+    PrintMessage("Add EosSanchezLacombe", 1);
 }
 
 void EosSanchezLacombe::ParseDerived1(std::deque<std::string> deqCoeffs) {

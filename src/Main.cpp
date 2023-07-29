@@ -44,23 +44,26 @@ int main(int argc, char **argv) {
 
   russel->memory_->InitializeArrays();
 
-  std::ofstream arrays{"o.arrays.txt"};
+  std::fstream logArrays;
+  logArrays.open("o.arrays", std::ios::out);
 
-  if (!arrays) {
+  if (!logArrays) {
     std::cerr << "ERROR: o.arrays.txt file could not be opened for writing\n";
   } else {
-    arrays << "ww      ww_new      ww_mixed      phi_grafted      phi_matrix      phi_total\n";
+    logArrays << "ww      ww_new      ww_mixed      phi_grafted      phi_matrix      phi_total\n";
 
     for (int ii=0; ii<russel->memory_->mesh_->GetNumberOfNodes(); ++ii) {
-      arrays << russel->memory_->wwField_[ii]      << ' ';
-      arrays << russel->memory_->wwFieldNew_[ii]   << ' ';
-      arrays << russel->memory_->wwFieldMixed_[ii] << ' ';
-      arrays << russel->memory_->phiGrafted_[ii]   << ' ';
-      arrays << russel->memory_->phiMatrix_[ii]    << ' ';
-      arrays << russel->memory_->phiTotal_[ii]     << ' ';
-      arrays << '\n';
+      logArrays << russel->memory_->wwField_[ii]      << ' ';
+      logArrays << russel->memory_->wwFieldNew_[ii]   << ' ';
+      logArrays << russel->memory_->wwFieldMixed_[ii] << ' ';
+      logArrays << russel->memory_->phiGrafted_[ii]   << ' ';
+      logArrays << russel->memory_->phiMatrix_[ii]    << ' ';
+      logArrays << russel->memory_->phiTotal_[ii]     << ' ';
+      logArrays << '\n';
     }
   }
+
+  logArrays.close();
 
   // Start of iterative scheme
   SolverMumps(myId);
@@ -71,7 +74,7 @@ int main(int argc, char **argv) {
   std::cout << "Number of mesh shared pointers: " << russel->memory_->mesh_.use_count() << '\n';
 
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
-  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE EOS EXISTS (E.G., USE A PARSER FLAG IN INPUT FILE)
+  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE EOS EXISTS (E.G., USE A PARSER FLAG IN INPUT FILE OR CHECK EOS-MAP SIZE)
   russel->memory_->DeleteEos("EosId");
   russel->memory_->DeleteEos("EosId2");
   russel.reset();

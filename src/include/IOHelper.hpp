@@ -27,7 +27,7 @@ void PrintVariable(const std::string &description, const V &variable, const std:
   int widthVariable    = 15;
 
   std::cout << std::left;
-  std::cout << std::setw(3)           << "#:";
+  std::cout << std::setw(3)           << "- ";
   std::cout << std::left;
   std::cout << std::setw(widthLevel) << "";
   std::cout << std::left;
