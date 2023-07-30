@@ -21,6 +21,7 @@ class Memory {
     // TODO: void ResizeNodalArrays(ints dofs); // e.g., useful for periodic boundary conditions
 
     void InitializeArrays();
+    void ReportArrays();
 
     // Setters (obj)
     void SetVariable(const std::string &id, const std::string &type, const std::string &value, std::string expression);
@@ -54,6 +55,8 @@ class Memory {
   private:
     std::unordered_map<std::string, std::shared_ptr<class Variable>> variableMap_;
     std::map<std::string, std::shared_ptr<class Eos>> eosMap_;
+
+    std::fstream logArrays_;
 };
 
 } // RusselNS

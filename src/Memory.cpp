@@ -4,15 +4,17 @@
 namespace RusselNS {
 
 Memory::Memory() {
-#ifdef DEV_REPORT_HEAP
+#ifdef REPORT_MEMORY_STATUS
   PrintMessage("Add Memory", 1);
 #endif
+  logArrays_.open("o.arrays", std::ios::out); 
 }
 
 Memory::~Memory() {
-#ifdef DEV_REPORT_HEAP
+#ifdef REPORT_MEMORY_STATUS
   PrintMessage("Delete Memory", 1);
 #endif
+  logArrays_.close();
 }
 
 void Memory::InitializeArrays() {
@@ -33,6 +35,24 @@ void Memory::InitializeArrays() {
   }
 
   // TODO: add 2D propagator arrays using matrix.cpp with smart pointers
+}
+
+void Memory::ReportArrays() {
+  if (!logArrays_) {
+    std::cerr << "ERROR: o.arrays.txt file could not be opened for writing\n";
+  } else {
+    logArrays_ << "ww      ww_new      ww_mixed      phi_grafted      phi_matrix      phi_total\n";
+
+    for (int ii=0; ii<mesh_->GetNumberOfNodes(); ++ii) {
+      logArrays_ << wwField_[ii]      << ' ';
+      logArrays_ << wwFieldNew_[ii]   << ' ';
+      logArrays_ << wwFieldMixed_[ii] << ' ';
+      logArrays_ << phiGrafted_[ii]   << ' ';
+      logArrays_ << phiMatrix_[ii]    << ' ';
+      logArrays_ << phiTotal_[ii]     << ' ';
+      logArrays_ << '\n';
+    }
+  }
 }
 
 // Setters

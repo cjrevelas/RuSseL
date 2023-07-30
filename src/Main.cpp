@@ -36,34 +36,14 @@ int main(int argc, char **argv) {
   // Spawn an instance of the application itself
   std::shared_ptr<class Russel> russel{std::make_shared<Russel>()};
 
-// TODO: IF REPORT_MEMORY_STATUS
+//#ifdef REPORT_MEMORY_STATUS
   std::cout << "Number of russel shared pointers [Main]: " << russel.use_count() << '\n';
-// TODO: ENDIF REPORT_MEMORY_STATUS
+//#endif
 
   ParseInput(inputFileName, russel);
 
   russel->memory_->InitializeArrays();
-
-  std::fstream logArrays;
-  logArrays.open("o.arrays", std::ios::out);
-
-  if (!logArrays) {
-    std::cerr << "ERROR: o.arrays.txt file could not be opened for writing\n";
-  } else {
-    logArrays << "ww      ww_new      ww_mixed      phi_grafted      phi_matrix      phi_total\n";
-
-    for (int ii=0; ii<russel->memory_->mesh_->GetNumberOfNodes(); ++ii) {
-      logArrays << russel->memory_->wwField_[ii]      << ' ';
-      logArrays << russel->memory_->wwFieldNew_[ii]   << ' ';
-      logArrays << russel->memory_->wwFieldMixed_[ii] << ' ';
-      logArrays << russel->memory_->phiGrafted_[ii]   << ' ';
-      logArrays << russel->memory_->phiMatrix_[ii]    << ' ';
-      logArrays << russel->memory_->phiTotal_[ii]     << ' ';
-      logArrays << '\n';
-    }
-  }
-
-  logArrays.close();
+  russel->memory_->ReportArrays();
 
   // Start of iterative scheme
   SolverMumps(myId);
