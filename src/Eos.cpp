@@ -36,17 +36,17 @@ Eos::Eos(std::string eosId, std::shared_ptr<class Russel> &russel) {
 void Eos::Parse(std::deque<std::string> deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
     if (deqCoeffs[ii] == "-temp") {
-      temperature_ = StringToNumber<double>(deqCoeffs[++ii]);
+      temperature_ = StringToNumber<double>(deqCoeffs[++ii]); // [K]
     }
     if (deqCoeffs[ii] == "-press") {
-      pressure_ = StringToNumber<double>(deqCoeffs[++ii]);
+      pressure_ = StringToNumber<double>(deqCoeffs[++ii]); // [atm]
     }
     if (deqCoeffs[ii] == "-mass") {
-      molarMass_ = StringToNumber<double>(deqCoeffs[++ii]);
+      molarMass_ = StringToNumber<double>(deqCoeffs[++ii]); // [g/mol]
     }
     if (deqCoeffs[ii] == "-density") {
-      rhoMassBulk_ = StringToNumber<double>(deqCoeffs[++ii]);
-      rhoMolarBulk_ = rhoMassBulk_ / molarMass_ * gr_cm3_to_kg_m3;
+      rhoMassBulk_ = StringToNumber<double>(deqCoeffs[++ii]); // [g/cm3]
+      rhoMolarBulk_ = rhoMassBulk_ / molarMass_ * m3_to_cm3;  // [mol/m3]
     }
     if (deqCoeffs[ii] == "-mx_length") {
       matrixLength_ = StringToNumber<double>(deqCoeffs[++ii]);
@@ -61,7 +61,7 @@ void Eos::Report() {
   PrintVariable("Pressure", pressure_, "atm", 2);
   PrintMessage("Bulk polymer properties:",1);
   PrintVariable("Monomer molar mass", molarMass_, "g/mol", 2);
-  PrintVariable("Bulk mass density", rhoMassBulk_, "kg/m3", 2);
+  PrintVariable("Bulk mass density", rhoMassBulk_, "g/cm3", 2);
   PrintVariable("Bulk molar density", rhoMolarBulk_, "mol/m3", 2);
   PrintVariable("Length of matrix chains", matrixLength_, "carbon bonds", 2);
 

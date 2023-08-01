@@ -15,7 +15,6 @@ EosHelfand::EosHelfand(const std::string eosId, std::shared_ptr<class Russel> &r
 void EosHelfand::ParseDerived1(std::deque<std::string> deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
     if (deqCoeffs[ii] == "-coeffs") {
- //     rhoMassBulk_  = StringToNumber<double>(deqCoeffs[++ii]);
       kappaHlf_     = StringToNumber<double>(deqCoeffs[++ii]);
     }
   }
