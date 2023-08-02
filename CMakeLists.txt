@@ -81,6 +81,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 endif()
 
 target_sources(russel PUBLIC
+  src/Contour.cpp
   src/SolverMumps.cpp
   src/Eos.cpp
   src/Fem.cpp

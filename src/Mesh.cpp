@@ -10,6 +10,7 @@ namespace RusselNS {
 Mesh::Mesh(const std::string meshFileName)
 : meshFileName_(meshFileName) {
   logMesh_.open("o.mesh", std::ios::out);
+  PrintMessage("Create new Mesh instance",0);
   Import();
 }
 

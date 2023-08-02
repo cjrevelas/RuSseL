@@ -3,12 +3,12 @@
 
 namespace RusselNS {
 
-  enum class Contour {
-    uniform,
-    symmetric,
-    asymmetric,
-    hybrid
-  };
+enum class ContourDiscretization {
+  uniform,
+  symmetric,
+  asymmetric,
+  hybrid
+};
 
 } // RusselNS
 

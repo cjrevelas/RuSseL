@@ -10,7 +10,7 @@
 
 namespace RusselNS {
 
-class Mesh{
+class Mesh {
  private:
   std::string meshFileName_;
   std::fstream logMesh_;
