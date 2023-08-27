@@ -34,7 +34,8 @@ double EosHelfand::EnergyDensityDerivative(double phi) {
   return ((phi - 1.0)/(kappaHlf_ * rhoMolarBulk_ * n_avog));
 }
 
-double EosHelfand::RhoBulk() {
+double EosHelfand::RhoBulk(double lengthBulk_) {
+  lengthBulk_ = lengthBulk_;
   return rhoMolarBulk_;
 }
 

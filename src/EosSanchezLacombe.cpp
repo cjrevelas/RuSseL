@@ -17,7 +17,6 @@ EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<c
     rhoStar_      = 0.0;
     rhoStarInv_   = 0.0;
     rhoTildeMax_  = 0.0;
-    rhoTildeBulk_ = RhoBulk();
 
     PrintMessage("Add EosSanchezLacombe", 1);
 }
@@ -32,6 +31,7 @@ void EosSanchezLacombe::ParseDerived1(std::deque<std::string> deqCoeffs) {
       rslN_ = (molarMass_ * pressStar_) / (rhoStar_ * kg_m3_to_gr_m3 * boltz_const_Joule_molK * tempStar_);
 
       tempTilde_   = temperature_ / tempStar_;
+      pressTilde_  = pressure_ / pressStar_;
       tempStarInv_ = 1.0 / tempStar_;
       rhoStarInv_  = 1.0 / rhoStar_;
 
@@ -42,7 +42,10 @@ void EosSanchezLacombe::ParseDerived1(std::deque<std::string> deqCoeffs) {
     if (deqCoeffs[ii] == "-rhoTol") {
       rhoTildeMax_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
+
   }
+
+  rhoTildeBulk_ = RhoBulk(matrixLength_);
 }
 
 void EosSanchezLacombe::ReportDerived1() {
@@ -54,7 +57,9 @@ void EosSanchezLacombe::ReportDerived1() {
   PrintVariable("Maximum allowed density   ", rhoTildeMax_, "kg/m3"  , 2);
   PrintVariable("Compressibility           ", Compressibility(matrixLength_), "Pa^-1", 2);
   PrintVariable("Temp tilde:               ", tempTilde_, "", 2);
+  PrintVariable("Press tilde:              ", pressTilde_, "", 2);
   PrintVariable("rslN:                     ", rslN_,      "",2);
+  PrintVariable("rhoTildeBulk:             ", rhoTildeBulk_, "", 2);
 }
 
 double EosSanchezLacombe::EnergyDensity(double phi) {
@@ -73,8 +78,40 @@ double EosSanchezLacombe::EnergyDensityDerivative(double phi) {
   return boltz_const_Joule_K * tempStar_ * (-2.0 * rslN_ * rhoTilde - tempTilde_ * rslN_ * std::log(1.0 - rhoTilde));
 }
 
-double EosSanchezLacombe::RhoBulk() {
-  return 0.99; // FIXME
+double EosSanchezLacombe::RhoBulk(double lengthBulk) {
+  double rhoTildeZeroInit = 0.8;
+  double rhoTildeZeroNew  = 0.0;
+  double rhoTildeZero     = rhoTildeZeroInit;
+  double rhoTildeMax      = 0.98;
+
+  double rsl = rslN_ * lengthBulk;
+
+  double ff = 0.0;
+  double df = 0.0;
+
+  int numIter    = 0;
+  int maxNumIter = 1000;
+
+  double tolerance = 1.0e-10;
+  double errorNorm = 2.0e1;
+
+  std::cout << "iteration      " << "rhoTilde     " << "error\n";
+  while ((numIter < maxNumIter) && (errorNorm > tolerance)) {
+    std::cout << numIter << "      " << rhoTildeZero << "      " << errorNorm << '\n';
+    numIter += 1;
+
+    ff = rhoTildeZero * rhoTildeZero + pressTilde_ + tempTilde_ * ( std::log(1.0-rhoTildeZero) + (1.0-1.0/rsl)*rhoTildeZero );
+
+    df = 2.0 * rhoTildeZero + tempTilde_ * ( (1.0-1.0/rsl) - 1.0/(1.0-rhoTildeZero) );
+
+    rhoTildeZeroNew = rhoTildeZero - ff / df;
+
+    errorNorm = std::abs(rhoTildeZeroNew-rhoTildeZero);
+
+    rhoTildeZero = rhoTildeZeroNew;
+  }
+
+  return rhoTildeZero; // FIXME
 }
 
 double EosSanchezLacombe::Compressibility(double lengthBulk) {

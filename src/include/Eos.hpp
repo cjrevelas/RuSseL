@@ -18,7 +18,7 @@ class Eos {
 
     virtual double EnergyDensity(double) = 0;
     virtual double EnergyDensityDerivative(double) = 0;
-    virtual double RhoBulk() = 0;
+    virtual double RhoBulk(double) = 0;
     virtual double Compressibility(double) = 0;
 
     inline double GetTemperature() { return temperature_; }

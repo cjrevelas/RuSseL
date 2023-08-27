@@ -12,7 +12,7 @@ class EosHelfand : public Eos {
 
    double EnergyDensity(double) override;
    double EnergyDensityDerivative(double) override;
-   double RhoBulk() override;
+   double RhoBulk(double) override;
    double Compressibility(double) override;
 
  private:

@@ -44,6 +44,7 @@ int main(int argc, char **argv) {
 
   russel->memory_->InitializeArrays();
   russel->memory_->ReportArrays();
+  //russel->memory_->GetEos("EosId")->RhoBulk(48.0);
 
   // Start of iterative scheme
   SolverMumps(myId);

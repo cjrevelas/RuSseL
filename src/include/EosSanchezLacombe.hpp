@@ -12,7 +12,7 @@ class EosSanchezLacombe : public Eos {
 
     double EnergyDensity(double) override;
     double EnergyDensityDerivative(double) override;
-    double RhoBulk() override;
+    double RhoBulk(double) override;
     double Compressibility(double) override;
 
   private:
@@ -25,6 +25,7 @@ class EosSanchezLacombe : public Eos {
     double tempStar_; // [K]
     double tempStarInv_; // [K^-1]
     double tempTilde_;
+    double pressTilde_;
     double rhoStar_; // [kg/m3]
     double rhoStarInv_; // [m^3/kg]
     double rhoTildeBulk_; // [kg/m3]
