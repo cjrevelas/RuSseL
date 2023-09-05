@@ -1,3 +1,5 @@
+#include <iomanip>
+
 #include "Memory.hpp"
 #include "Mesh.hpp"
 
@@ -5,9 +7,9 @@ namespace RusselNS {
 
 Memory::Memory() {
 #ifdef REPORT_MEMORY_STATUS
-  PrintMessage("Add Memory", 1);
+  PrintMessage("Add Memory", 1);#
 #endif
-  logArrays_.open("o.arrays", std::ios::out); 
+  logArrays_.open("o.arrays", std::ios::out);
 }
 
 Memory::~Memory() {
@@ -44,12 +46,12 @@ void Memory::ReportArrays() {
     logArrays_ << "ww      ww_new      ww_mixed      phi_grafted      phi_matrix      phi_total\n";
 
     for (int ii=0; ii<mesh_->GetNumberOfNodes(); ++ii) {
-      logArrays_ << wwField_[ii]      << ' ';
-      logArrays_ << wwFieldNew_[ii]   << ' ';
-      logArrays_ << wwFieldMixed_[ii] << ' ';
-      logArrays_ << phiGrafted_[ii]   << ' ';
-      logArrays_ << phiMatrix_[ii]    << ' ';
-      logArrays_ << phiTotal_[ii]     << ' ';
+      logArrays_ << std::setprecision(6) << std::scientific << wwField_[ii]      << "   ";
+      logArrays_ << std::setprecision(6) << std::scientific << wwFieldNew_[ii]   << "   ";
+      logArrays_ << std::setprecision(6) << std::scientific << wwFieldMixed_[ii] << "   ";
+      logArrays_ << std::setprecision(6) << std::scientific << phiGrafted_[ii]   << "   ";
+      logArrays_ << std::setprecision(6) << std::scientific << phiMatrix_[ii]    << "   ";
+      logArrays_ << std::setprecision(6) << std::scientific << phiTotal_[ii]     << "   ";
       logArrays_ << '\n';
     }
   }
