@@ -2,6 +2,8 @@
 #define MATRIX_HPP
 
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <memory>
 
 template<class T>
@@ -21,7 +23,7 @@ class Matrix {
 
   void Resize(int, int);
   void Initialize();
-  void Print() const;
+  void Export(std::fstream &) const;
 
   T &operator()(int row, int col) const { return pointer_[row + rows_ * col]; }
 };
@@ -60,14 +62,14 @@ void Matrix<T>::Initialize() {
 }
 
 template<class T>
-void Matrix<T>::Print() const {
-  for (int ii = 0; ii < rows_; ++ii) {
-    for (int jj = 0; jj < cols_; ++jj) {
-      std::cout << pointer_[ii + this->rows_ * jj] << ' ';
+void Matrix<T>::Export(std::fstream &file) const {
+  for (int ii = 0; ii < cols_; ++ii) {
+    for (int jj = 0; jj < rows_; ++jj) {
+      file << std::setprecision(6) << std::scientific << pointer_[ii + this->rows_ * jj] << "   ";
     }
-    std::cout << '\n';
+    file << '\n';
   }
-  std::cout << '\n';
+  file << '\n';
 }
 
 template<class T>

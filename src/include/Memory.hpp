@@ -47,6 +47,9 @@ class Memory {
     std::shared_ptr<double []> phiMatrix_;
     std::shared_ptr<double []> phiTotal_;
 
+    Matrix<double> qqMatrix_;
+    Matrix<double> qqGrafted_;
+
     // Deleters
     void DeleteVariableWithTag(const std::string &tag);
     void DeleteVariable(const std::string &id);
@@ -57,6 +60,8 @@ class Memory {
     std::map<std::string, std::shared_ptr<class Eos>> eosMap_;
 
     std::fstream logArrays_;
+    std::fstream logMatrixPropagator_;
+    std::fstream logGraftedPropagator_;
 };
 
 } // RusselNS

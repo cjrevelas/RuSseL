@@ -10,6 +10,8 @@ Memory::Memory() {
   PrintMessage("Add Memory", 1);#
 #endif
   logArrays_.open("o.arrays", std::ios::out);
+  logMatrixPropagator_.open("o.qmx", std::ios::out);
+  logGraftedPropagator_.open("o.qgr", std::ios::out);
 }
 
 Memory::~Memory() {
@@ -17,6 +19,8 @@ Memory::~Memory() {
   PrintMessage("Delete Memory", 1);
 #endif
   logArrays_.close();
+  logMatrixPropagator_.close();
+  logGraftedPropagator_.close();
 }
 
 void Memory::InitializeArrays() {
@@ -27,6 +31,11 @@ void Memory::InitializeArrays() {
   phiMatrix_   = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
   phiTotal_    = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
 
+  int numContourPoints_ = 3; // TODO: create a Contour class like Mesh
+
+  qqMatrix_.Resize(numContourPoints_, mesh_->GetNumberOfNodes());
+  qqGrafted_.Resize(numContourPoints_, mesh_->GetNumberOfNodes());
+
   for (int ii=0; ii<mesh_->GetNumberOfNodes(); ++ii) {
     wwField_[ii]      = 0.0;
     wwFieldNew_[ii]   = 0.0;
@@ -36,7 +45,8 @@ void Memory::InitializeArrays() {
     phiTotal_[ii]     = 0.0;
   }
 
-  // TODO: add 2D propagator arrays using matrix.cpp with smart pointers
+  qqMatrix_.Initialize();
+  qqGrafted_.Initialize();
 }
 
 void Memory::ReportArrays() {
@@ -54,6 +64,9 @@ void Memory::ReportArrays() {
       logArrays_ << std::setprecision(6) << std::scientific << phiTotal_[ii]     << "   ";
       logArrays_ << '\n';
     }
+
+    qqMatrix_.Export(logMatrixPropagator_);
+    qqGrafted_.Export(logGraftedPropagator_);
   }
 }
 
