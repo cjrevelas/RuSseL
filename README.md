@@ -5,12 +5,6 @@ The code is named after the British philosopher and mathematician, Bertrand Russ
 
 It is an open-source code, distributed under the terms of the accompanying LICENSE.
 
-# Authors
-- Constantinos J. Revelas (cjrevelas@gmail.com)
-- Aristotelis P. Sgouros (arissgouros@gmail.com)
-- Apostolos T. Lakkas (tolis1981@gmail.com)
-- Prof. Doros N. Theodorou (doros@central.ntua.gr, scientific advisor and mentor)
-
 # Description
 The stable version of RuSseL3D is written in Fortran (RuSseL3D repo in my profile) and we have started translating in cpp for better
 connectivity with other software and so that more developer are attracted to join us in extending the code.
