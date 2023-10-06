@@ -8,16 +8,16 @@ namespace RusselNS {
 class EosHelfand : public Eos {
  public:
    EosHelfand(const std::string &eosId, std::shared_ptr<class Russel> &russel);
-   ~EosHelfand() override;
+   virtual ~EosHelfand() override;
 
-   double EnergyDensity(double) override;
-   double EnergyDensityDerivative(double) override;
-   double RhoBulk(double) override;
-   double Compressibility(double) override;
+   virtual double EnergyDensity(double) override;
+   virtual double EnergyDensityDerivative(double) override;
+   virtual double RhoBulk(double) override;
+   virtual double Compressibility(double) override;
 
  private:
-   void ParseDerived1(const std::deque<std::string> &) override;
-   void ReportDerived1() override;
+   virtual void ParseDerived1(const std::deque<std::string> &) override;
+   virtual void ReportDerived1() override;
 
    double rho0_;
    double kappaHlf_;

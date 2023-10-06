@@ -8,16 +8,16 @@ namespace RusselNS {
 class EosSanchezLacombe : public Eos {
   public:
     EosSanchezLacombe(const std::string &eosId, std::shared_ptr<class Russel> &russel);
-    ~EosSanchezLacombe() override;
+    virtual ~EosSanchezLacombe() override;
 
-    double EnergyDensity(double) override;
-    double EnergyDensityDerivative(double) override;
-    double RhoBulk(double) override;
-    double Compressibility(double) override;
+    virtual double EnergyDensity(double) override;
+    virtual double EnergyDensityDerivative(double) override;
+    virtual double RhoBulk(double) override;
+    virtual double Compressibility(double) override;
 
   private:
-    void ParseDerived1(const std::deque<std::string> &) override;
-    void ReportDerived1() override;
+    virtual void ParseDerived1(const std::deque<std::string> &) override;
+    virtual void ReportDerived1() override;
 
     double derPref1_;
     double derPref2_;
