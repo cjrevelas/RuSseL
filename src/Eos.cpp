@@ -11,7 +11,7 @@ Eos::~Eos() {
   russel_.reset();
 }
 
-Eos::Eos(std::string eosId, std::shared_ptr<class Russel> &russel) {
+Eos::Eos(const std::string &eosId, std::shared_ptr<class Russel> &russel) {
   russel_       = russel;
   id_           = eosId;
   tag_          = "i_" + id_ + "_";
@@ -33,7 +33,7 @@ Eos::Eos(std::string eosId, std::shared_ptr<class Russel> &russel) {
 // TODO: ENDIF REPORT_MEMORY_STATUS
 }
 
-void Eos::Parse(std::deque<std::string> deqCoeffs) {
+void Eos::Parse(const std::deque<std::string> &deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
     if (deqCoeffs[ii] == "-temp") {
       temperature_ = StringToNumber<double>(deqCoeffs[++ii]); // [K]

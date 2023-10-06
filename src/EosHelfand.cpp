@@ -5,17 +5,17 @@ namespace RusselNS {
 
 EosHelfand::~EosHelfand() { PrintMessage("Del EosHelfand", 3); }
 
-EosHelfand::EosHelfand(const std::string eosId, std::shared_ptr<class Russel> &russel)
+EosHelfand::EosHelfand(const std::string &eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {
   kappaHlf_ = 0.0;
 
   PrintMessage("Add EosHelfand", 1);
 }
 
-void EosHelfand::ParseDerived1(std::deque<std::string> deqCoeffs) {
+void EosHelfand::ParseDerived1(const std::deque<std::string> &deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
     if (deqCoeffs[ii] == "-coeffs") {
-      kappaHlf_     = StringToNumber<double>(deqCoeffs[++ii]);
+      kappaHlf_ = StringToNumber<double>(deqCoeffs[++ii]);
     }
   }
 }

@@ -21,7 +21,7 @@ EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<c
     PrintMessage("Add EosSanchezLacombe", 1);
 }
 
-void EosSanchezLacombe::ParseDerived1(std::deque<std::string> deqCoeffs) {
+void EosSanchezLacombe::ParseDerived1(const std::deque<std::string> &deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
     if (deqCoeffs[ii] == "-coeffs") {
       tempStar_  = StringToNumber<double>(deqCoeffs[++ii]);
@@ -111,7 +111,7 @@ double EosSanchezLacombe::RhoBulk(double lengthBulk) {
     rhoTildeZero = rhoTildeZeroNew;
   }
 
-  return rhoTildeZero; // FIXME
+  return rhoTildeZero;
 }
 
 double EosSanchezLacombe::Compressibility(double lengthBulk) {

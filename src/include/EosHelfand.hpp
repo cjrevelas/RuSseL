@@ -7,7 +7,7 @@ namespace RusselNS {
 
 class EosHelfand : public Eos {
  public:
-   EosHelfand(const std::string eosId, std::shared_ptr<class Russel> &russel);
+   EosHelfand(const std::string &eosId, std::shared_ptr<class Russel> &russel);
    ~EosHelfand() override;
 
    double EnergyDensity(double) override;
@@ -16,7 +16,7 @@ class EosHelfand : public Eos {
    double Compressibility(double) override;
 
  private:
-   void ParseDerived1(std::deque<std::string>) override;
+   void ParseDerived1(const std::deque<std::string> &) override;
    void ReportDerived1() override;
 
    double rho0_;

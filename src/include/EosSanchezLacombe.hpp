@@ -16,18 +16,18 @@ class EosSanchezLacombe : public Eos {
     double Compressibility(double) override;
 
   private:
-    void ParseDerived1(std::deque<std::string>) override;
+    void ParseDerived1(const std::deque<std::string> &) override;
     void ReportDerived1() override;
 
     double derPref1_;
     double derPref2_;
-    double pressStar_; // [Pa]
-    double tempStar_; // [K]
-    double tempStarInv_; // [K^-1]
+    double pressStar_;    // [Pa]
+    double tempStar_;     // [K]
+    double tempStarInv_;  // [K^-1]
     double tempTilde_;
     double pressTilde_;
-    double rhoStar_; // [kg/m3]
-    double rhoStarInv_; // [m^3/kg]
+    double rhoStar_;      // [kg/m3]
+    double rhoStarInv_;   // [m^3/kg]
     double rhoTildeBulk_; // [kg/m3]
     double rhoTildeMax_;
     double rslN_;

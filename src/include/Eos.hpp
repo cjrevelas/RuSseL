@@ -10,10 +10,10 @@ namespace RusselNS {
 
 class Eos {
   public:
-    Eos(const std::string eosId, std::shared_ptr<class Russel> &russel);
+    Eos(const std::string &eosId, std::shared_ptr<class Russel> &russel);
     virtual ~Eos();
 
-    void Parse(std::deque<std::string> coeffs);
+    void Parse(const std::deque<std::string> &coeffs);
     void Report();
 
     virtual double EnergyDensity(double) = 0;
@@ -28,7 +28,7 @@ class Eos {
     inline double GetMolarMass() { return molarMass_; }
 
   protected:
-    virtual void ParseDerived1(std::deque<std::string> coeffs) = 0;
+    virtual void ParseDerived1(const std::deque<std::string> &coeffs) = 0;
     virtual void ReportDerived1() = 0;
 
     std::string id_;
