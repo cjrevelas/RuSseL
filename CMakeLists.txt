@@ -82,6 +82,9 @@ endif()
 
 target_sources(russel PUBLIC
   src/Contour.cpp
+  src/ContourUniform.cpp
+  src/ContourSymmetric.cpp
+  src/ContourAsymmetric.cpp
   src/SolverMumps.cpp
   src/Eos.cpp
   src/Fem.cpp

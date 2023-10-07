@@ -8,6 +8,9 @@
 #include "StringOperations.hpp"
 #include "EosHelfand.hpp"
 #include "EosSanchezLacombe.hpp"
+#include "ContourUniform.hpp"
+#include "ContourSymmetric.hpp"
+#include "ContourAsymmetric.hpp"
 
 
 namespace RusselNS {
@@ -41,11 +44,12 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
   std::vector<std::unique_ptr<Parser>>::iterator listOfFlagsIt;
 
   listOfFlags.push_back(std::make_unique<Parser>("hello from parent class: Parser",0));
-  listOfFlags.push_back(std::make_unique<ParserInteract>("interact",1));
-  listOfFlags.push_back(std::make_unique<ParserPrint>("print",1));
-  listOfFlags.push_back(std::make_unique<ParserVariable>("variable",2));
-  listOfFlags.push_back(std::make_unique<ParserMesh>("mesh",1));
-  listOfFlags.push_back(std::make_unique<ParserEos>("eos",2));
+  listOfFlags.push_back(std::make_unique<ParserInteract>("interact", 1));
+  listOfFlags.push_back(std::make_unique<ParserPrint>("print", 1));
+  listOfFlags.push_back(std::make_unique<ParserVariable>("variable", 2));
+  listOfFlags.push_back(std::make_unique<ParserMesh>("mesh", 1));
+  listOfFlags.push_back(std::make_unique<ParserEos>("eos", 2));
+  listOfFlags.push_back(std::make_unique<ParserContour>("contour", 2));
 
   CheckDuplicateFlags(listOfFlags);
 
@@ -230,6 +234,32 @@ bool Parser::GetCoeffs(const std::string &stringCoeffs) {
   }
 
   return flagFound;
+}
+
+void ParserContour::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
+  std::string id    = deqCoeffs[0];
+  std::string style = deqCoeffs[1];
+
+  PrintMessage("Add contour " + style + " with id " + id, 1);
+
+  std::shared_ptr<class Contour> contour;
+
+  if (style == "uniform") {
+    contour = std::make_shared<class ContourUniform>(id, russel_);
+    std::cout << "Number of russel shared pointers [Contour]: " << russel_.use_count() << '\n';
+  } else if (style == "symmetric") {
+    contour = std::make_shared<class ContourSymmetric>(id, russel_);
+  } else if (style == "asymmetric") {
+    contour = std::make_shared<class ContourAsymmetric>(id, russel_);
+  } else {
+    ExitProgram("ParserContour", "Unknown Contour style \"" + style + "\"");
+  }
+
+  russel_->memory_->SetContour(id, contour);
+  russel_->memory_->GetContour(id)->Parse(deqCoeffs);
+  russel_->memory_->GetContour(id)->Report();
+
+  std::cout << "Number of russel shared pointers [Contour]: " << russel_.use_count() << '\n';
 }
 
 void ParserEos::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {

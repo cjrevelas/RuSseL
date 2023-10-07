@@ -26,6 +26,7 @@ class Eos {
     inline double GetRhoMassBulk() { return rhoMassBulk_; }
     inline double GetRhoMolarBulk() { return rhoMolarBulk_; }
     inline double GetMolarMass() { return molarMass_; }
+    inline double GetMatrixLength() { return matrixLength_; }
 
   protected:
     virtual void ParseDerived1(const std::deque<std::string> &coeffs) = 0;

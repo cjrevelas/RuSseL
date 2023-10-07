@@ -4,27 +4,35 @@
 #include <memory>
 #include <fstream>
 
-#include "Russel.hpp" // add russel instance in constructor of Contour
-#include "ContourFlags.hpp"
+#include "Russel.hpp"
 
 namespace RusselNS {
 
 class Contour {
- private:
+ public:
+   Contour(const std::string &contourId, std::shared_ptr<class Russel> &russel);
+   virtual ~Contour();
+
+   void Parse(const std::deque<std::string> &coeffs);
+   void Report();
+
+   virtual int GetNumberOfSteps() = 0;
+
+ protected:
+   virtual void ParseDerived1(const std::deque<std::string> &coeffs) = 0;
+   virtual void ReportDerived1() = 0;
+   virtual void Discretize() = 0;
+
    std::fstream logContour_;
+   std::string id_;
    std::shared_ptr<class Russel> russel_;
    std::shared_ptr<double []> xs_;
    std::shared_ptr<double []> ds_;
    std::shared_ptr<double []> coeff_;
    int ns_;
+   int nsPartOne_;
    double xsCrit_;
    double dsAve_;
-   ContourDiscretization discr_;
-
- public:
-   Contour(ContourDiscretization discr, std::shared_ptr<class Russel> &russel);
-
-   ~Contour();
 };
 
 } // RusselNS

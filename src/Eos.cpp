@@ -1,5 +1,4 @@
 #include "Eos.hpp"
-#include "EosFlags.hpp"
 #include "IOHelper.hpp"
 #include "Constants.hpp"
 
@@ -26,7 +25,7 @@ Eos::Eos(const std::string &eosId, std::shared_ptr<class Russel> &russel) {
   russel_->memory_->SetVariable(tag_ + "rhoMassBulk", std::make_shared<double>(rhoMassBulk_));
   russel_->memory_->SetVariable(tag_ + "rhoMolarBulk", std::make_shared<double>(rhoMolarBulk_));
   russel_->memory_->SetVariable(tag_ + "compressibility", std::make_shared<double>(kappa_));
-  russel_->memory_->SetVariable(tag_ + "length of matrix chains", std::make_shared<double>(matrixLength_));
+  russel_->memory_->SetVariable(tag_ + "lengthOfMatrixChains", std::make_shared<double>(matrixLength_));
 
 // TODO: IF REPORT_MEMORY_STATUS
   std::cout << "Number of russel shared pointers [Eos]: " << russel.use_count() << '\n';

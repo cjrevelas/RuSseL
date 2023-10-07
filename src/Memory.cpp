@@ -1,7 +1,6 @@
 #include <iomanip>
 
 #include "Memory.hpp"
-#include "Mesh.hpp"
 
 namespace RusselNS {
 
@@ -31,10 +30,12 @@ void Memory::InitializeArrays() {
   phiMatrix_   = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
   phiTotal_    = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
 
-  int numContourPoints_ = 3; // TODO: create a Contour class like Mesh
+  // int numContourPoints_ = 3; // TODO: create a Contour class like Mesh
 
-  qqMatrix_.Resize(numContourPoints_, mesh_->GetNumberOfNodes());
-  qqGrafted_.Resize(numContourPoints_, mesh_->GetNumberOfNodes());
+  int numContourPoints = GetContour("ContourId")->GetNumberOfSteps();
+
+  qqMatrix_.Resize(numContourPoints, mesh_->GetNumberOfNodes());
+  qqGrafted_.Resize(numContourPoints, mesh_->GetNumberOfNodes());
 
   for (int ii=0; ii<mesh_->GetNumberOfNodes(); ++ii) {
     wwField_[ii]      = 0.0;
@@ -74,6 +75,11 @@ void Memory::ReportArrays() {
 void Memory::SetEos(const std::string &id, std::shared_ptr<class Eos> eos) {
   if (IsEos(id)) { ExitProgram("Memory::SetEos", "Eos with " + id + " exists."); }
   eosMap_.insert(std::pair<std::string, std::shared_ptr<class Eos>>(id, eos));
+}
+
+void Memory::SetContour(const std::string &id, std::shared_ptr<class Contour> contour) {
+  if (IsContour(id)) { ExitProgram("Memory::SetContour", "Contour with " + id + " exists."); }
+  contourMap_.insert(std::pair<std::string, std::shared_ptr<class Contour>>(id, contour));
 }
 
 void Memory::SetVariable(const std::string &id, const std::string &type, const std::string &stringValue, std::string stringExpressionPrefix) {
@@ -117,6 +123,12 @@ std::shared_ptr<class Eos> Memory::GetEos(const std::string &id) {
   return it->second;
 }
 
+std::shared_ptr<class Contour> Memory::GetContour(const std::string &id) {
+  auto it = contourMap_.find(id);
+  if (it == contourMap_.end()) { ExitProgram("Memory::GetContour", "failed to retrieve contour with id: " + id); }
+  return it->second;
+}
+
 std::shared_ptr<Variable> Memory::GetVariable(const std::string &id) {
   auto varIt = variableMap_.find(id);
 
@@ -133,6 +145,11 @@ bool Memory::IsEos(const std::string &id) {
   return (it != eosMap_.end());
 }
 
+bool Memory::IsContour(const std::string &id) {
+  auto it = contourMap_.find(id);
+  return (it != contourMap_.end());
+}
+
 bool Memory::IsVariable(const std::string &id) {
   auto varIt = variableMap_.find(id);
   return (varIt != variableMap_.end());
@@ -144,6 +161,13 @@ void Memory::DeleteEos(const std::string &id) {
   if (it == eosMap_.end()) { ExitProgram("Memory::DeleteEos", "failed to find eos " + id + " to delete."); }
   (it->second).reset();
   eosMap_.erase(it);
+}
+
+void Memory::DeleteContour(const std::string &id) {
+  auto it = contourMap_.find(id);
+  if (it == contourMap_.end()) { ExitProgram("Memory::DeleteContour", "failed to find contour " + id + " to delete."); }
+  (it->second).reset();
+  contourMap_.erase(it);
 }
 
 void Memory::DeleteVariable(const std::string &id) {

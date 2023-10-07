@@ -9,7 +9,6 @@
 #include "Russel.hpp"
 #include "IOHelper.hpp"
 #include "Defaults.hpp"
-#include "ContourFlags.hpp"
 #include "SolverMumps.hpp"
 #include "MumpsFlags.hpp"
 
@@ -44,7 +43,6 @@ int main(int argc, char **argv) {
 
   russel->memory_->InitializeArrays();
   russel->memory_->ReportArrays();
-  //russel->memory_->GetEos("EosId")->RhoBulk(48.0);
 
   // Start of iterative scheme
   SolverMumps(myId);
@@ -58,6 +56,7 @@ int main(int argc, char **argv) {
   // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE EOS EXISTS (E.G., USE A PARSER FLAG IN INPUT FILE OR CHECK EOS-MAP SIZE)
   russel->memory_->DeleteEos("EosId");
   russel->memory_->DeleteEos("EosId2");
+  russel->memory_->DeleteContour("ContourId");
   russel.reset();
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
 
