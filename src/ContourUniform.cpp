@@ -8,8 +8,11 @@ ContourUniform::~ContourUniform() { PrintMessage("Del ContourUniform", 3); }
 ContourUniform::ContourUniform(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {
 
-    PrintMessage("Add ContourUniform", 1);
-  }
+  PrintMessage("Add ContourUniform", 1);
+
+  logName_ = "o.contour_uniform";
+  logContour_.open(logName_, std::ios::out);
+}
 
 int ContourUniform::GetNumberOfSteps() { return ns_; }
 
@@ -31,6 +34,8 @@ void ContourUniform::ReportDerived1() {
       logContour_ << std::setprecision(3) << xs_[ii] << "   ";
       logContour_ << '\n';
     }
+
+    logContour_.close();
   }
 }
 

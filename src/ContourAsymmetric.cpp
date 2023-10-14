@@ -8,8 +8,10 @@ ContourAsymmetric::~ContourAsymmetric() { PrintMessage("Del ContourAsymmetric", 
 ContourAsymmetric::ContourAsymmetric(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {
 
-    PrintMessage("Add ContourAsymmetric", 1);
-  }
+  PrintMessage("Add ContourAsymmetric", 1);
+
+  logContour_.open("o.contour_asymmetric", std::ios::out);
+}
 
 int ContourAsymmetric::GetNumberOfSteps() { return ns_; }
 

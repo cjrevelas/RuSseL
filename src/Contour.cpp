@@ -6,7 +6,6 @@
 namespace RusselNS {
 
 Contour::Contour(const std::string &contourId, std::shared_ptr<class Russel> &russel) {
-  logContour_.open("o.contour", std::ios::out);
   PrintMessage("Create new Contour instance",0);
 
   russel_ = russel;
@@ -31,9 +30,9 @@ void Contour::Parse(const std::deque<std::string> &deqCoeffs) {
     }
   }
 
-  double length = static_cast<int>(russel_->memory_->GetEos("EosId")->GetMatrixLength());
+  length_ = static_cast<int>(russel_->memory_->GetEos("EosId")->GetMatrixLength());
 
-  ns_ = length / dsAve_;
+  ns_ = length_ / dsAve_;
 
   ds_ = std::shared_ptr<double []>(new double[ns_]);
   xs_ = std::shared_ptr<double []>(new double[ns_]);
@@ -54,7 +53,7 @@ void Contour::Report() {
 }
 
 Contour::~Contour() {
-  logContour_.close();
+ // logContour_.close();
   russel_.reset();
   PrintMessage("Delete Contour Instance",0);
 }

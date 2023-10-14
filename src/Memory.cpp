@@ -32,7 +32,7 @@ void Memory::InitializeArrays() {
 
   // int numContourPoints_ = 3; // TODO: create a Contour class like Mesh
 
-  int numContourPoints = GetContour("ContourId")->GetNumberOfSteps();
+  int numContourPoints = GetContour("ContourId1")->GetNumberOfSteps();
 
   qqMatrix_.Resize(numContourPoints, mesh_->GetNumberOfNodes());
   qqGrafted_.Resize(numContourPoints, mesh_->GetNumberOfNodes());
@@ -91,7 +91,7 @@ void Memory::SetVariable(const std::string &id, const std::string &type, const s
   }
 }
 
-void Memory::SetVariable(const std::string &id, std::shared_ptr<const double> pcdbl) { // CHECK: pointer to heap here ?
+void Memory::SetVariable(const std::string &id, std::shared_ptr<const double> pcdbl) {
   if (IsVariable(id)) {
     ExitProgram("Memory::SetVariable", "Variable " + id + " already exists.");
   } else {
@@ -99,7 +99,7 @@ void Memory::SetVariable(const std::string &id, std::shared_ptr<const double> pc
   }
 }
 
-void Memory::SetVariable(const std::string &id, std::shared_ptr<const int> pcint) { // CHECK: pointer to heap here ?
+void Memory::SetVariable(const std::string &id, std::shared_ptr<const int> pcint) {
   if (IsVariable(id)) {
     ExitProgram("Memory::SetVariable", "Variable " + id + " already exists.");
   } else {
@@ -107,7 +107,7 @@ void Memory::SetVariable(const std::string &id, std::shared_ptr<const int> pcint
   }
 }
 
-void Memory::SetVariable(const std::string &id, std::shared_ptr<std::string> pcstr) { // CHECK: pointer to heap here ?
+void Memory::SetVariable(const std::string &id, std::shared_ptr<std::string> pcstr) {
   bool exists = IsVariable(id);
   if (exists) {
     ExitProgram("Memory::SetVariable", "Variable " + id + " already exists.");

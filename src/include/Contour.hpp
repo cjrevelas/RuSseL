@@ -24,6 +24,7 @@ class Contour {
    virtual void Discretize() = 0;
 
    std::fstream logContour_;
+   std::string logName_;
    std::string id_;
    std::shared_ptr<class Russel> russel_;
    std::shared_ptr<double []> xs_;
@@ -33,6 +34,7 @@ class Contour {
    int nsPartOne_;
    double xsCrit_;
    double dsAve_;
+   double length_;
 };
 
 } // RusselNS
