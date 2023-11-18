@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
   russel->memory_->DeleteEos("EosId2"); // FIXME: this id should not be written by hand in the general case
   russel->memory_->DeleteContour("ContourId1"); // FIXME: this id should not be written by hand in the general case
   russel->memory_->DeleteContour("ContourId2"); // FIXME: this id should not be written by hand in the general case
+  russel->memory_->DeleteContour("ContourId3"); // FIXME: this id should not be written by hand in the general case
   russel.reset();
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
 

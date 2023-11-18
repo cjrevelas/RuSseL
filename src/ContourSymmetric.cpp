@@ -48,7 +48,7 @@ void ContourSymmetric::Discretize() {
 
   for (int ii=1; ii<ns_; ++ii) {
     xs_[ii] = length_ * 0.5 * (1.0 - cos(M_PI * (static_cast<double>(ii) - 1.0) / (static_cast<double>(ns_)) ));
-    ds_[ii] = xs_[ii] - xs_[ii-1];    
+    ds_[ii] = xs_[ii] - xs_[ii-1];
   }
 }
 
