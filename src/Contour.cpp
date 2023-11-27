@@ -12,7 +12,6 @@ Contour::Contour(const std::string &contourId, std::shared_ptr<class Russel> &ru
   id_     = contourId;
 
   ns_        = 0;
-  nsPartOne_ = 0;
 
   dsAve_  = 0.0;
 

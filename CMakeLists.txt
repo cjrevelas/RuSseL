@@ -85,6 +85,7 @@ target_sources(russel PUBLIC
   src/ContourUniform.cpp
   src/ContourSymmetric.cpp
   src/ContourAsymmetric.cpp
+  src/ContourHybrid.cpp
   src/SolverMumps.cpp
   src/Eos.cpp
   src/Fem.cpp

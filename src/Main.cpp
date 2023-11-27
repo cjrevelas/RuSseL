@@ -53,12 +53,14 @@ int main(int argc, char **argv) {
   std::cout << "Number of mesh shared pointers: " << russel->memory_->mesh_.use_count() << '\n';
 
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
-  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE EOS EXISTS (E.G., USE A PARSER FLAG IN INPUT FILE OR CHECK EOS-MAP SIZE)
-  russel->memory_->DeleteEos("EosId"); // FIXME: this id should not be written by hand in the general case
-  russel->memory_->DeleteEos("EosId2"); // FIXME: this id should not be written by hand in the general case
-  russel->memory_->DeleteContour("ContourId1"); // FIXME: this id should not be written by hand in the general case
-  russel->memory_->DeleteContour("ContourId2"); // FIXME: this id should not be written by hand in the general case
-  russel->memory_->DeleteContour("ContourId3"); // FIXME: this id should not be written by hand in the general case
+  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE EOS EXISTS (FOR LOOP IN EOS MAP)
+  russel->memory_->DeleteEos("EosId");
+  russel->memory_->DeleteEos("EosId2");
+  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE CONTOUR EXISTS (FOR LOOP IN CONTOUR MAP)
+  russel->memory_->DeleteContour("ContourId1");
+  russel->memory_->DeleteContour("ContourId2");
+  russel->memory_->DeleteContour("ContourId3");
+  russel->memory_->DeleteContour("ContourId4");
   russel.reset();
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
 

@@ -11,6 +11,7 @@
 #include "ContourUniform.hpp"
 #include "ContourSymmetric.hpp"
 #include "ContourAsymmetric.hpp"
+#include "ContourHybrid.hpp"
 
 
 namespace RusselNS {
@@ -251,6 +252,8 @@ void ParserContour::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
     contour = std::make_shared<class ContourSymmetric>(id, russel_);
   } else if (style == "asymmetric") {
     contour = std::make_shared<class ContourAsymmetric>(id, russel_);
+  } else if (style == "hybrid") {
+    contour = std::make_shared<class ContourHybrid>(id, russel_);
   } else {
     ExitProgram("ParserContour", "Unknown Contour style \"" + style + "\"");
   }

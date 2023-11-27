@@ -31,8 +31,6 @@ class Contour {
    std::shared_ptr<double []> ds_;
    std::shared_ptr<double []> coeff_;
    int ns_;
-   int nsPartOne_;
-   double xsCrit_;
    double dsAve_;
    double length_;
 };
