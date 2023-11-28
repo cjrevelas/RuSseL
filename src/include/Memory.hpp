@@ -59,6 +59,8 @@ class Memory {
     void DeleteVariable(const std::string &id);
     void DeleteEos(const std::string &id);
     void DeleteContour(const std::string &id);
+    void DeleteEosMap();
+    void DeleteContourMap();
 
   private:
     std::unordered_map<std::string, std::shared_ptr<class Variable>> variableMap_;

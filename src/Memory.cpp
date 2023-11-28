@@ -189,4 +189,18 @@ void Memory::DeleteVariableWithTag(const std::string &tag) {
   }
 }
 
+void Memory::DeleteEosMap() {
+  for (std::map<std::string, std::shared_ptr<class Eos>>::iterator it = eosMap_.begin(); it != eosMap_.end(); ++it) {
+    (it->second).reset();
+    eosMap_.erase(it);
+  }
+}
+
+void Memory::DeleteContourMap() {
+  for (std::map<std::string, std::shared_ptr<class Contour>>::iterator it = contourMap_.begin(); it != contourMap_.end(); ++it) {
+    (it->second).reset();
+    contourMap_.erase(it);
+  }
+}
+
 } // RusselNS

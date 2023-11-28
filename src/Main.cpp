@@ -53,15 +53,11 @@ int main(int argc, char **argv) {
   std::cout << "Number of mesh shared pointers: " << russel->memory_->mesh_.use_count() << '\n';
 
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
-  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE EOS EXISTS (FOR LOOP IN EOS MAP)
-  russel->memory_->DeleteEos("EosId");
-  russel->memory_->DeleteEos("EosId2");
-  // FIXME: THE FOLLOWING DELETIONS MUST TAKE PLACE ONLY IF THE CONTOUR EXISTS (FOR LOOP IN CONTOUR MAP)
-  russel->memory_->DeleteContour("ContourId1");
-  russel->memory_->DeleteContour("ContourId2");
-  russel->memory_->DeleteContour("ContourId3");
-  russel->memory_->DeleteContour("ContourId4");
+
+  russel->memory_->DeleteEosMap();
+  russel->memory_->DeleteContourMap();
   russel.reset();
+
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';
 
   ierr = MPI_Finalize();
