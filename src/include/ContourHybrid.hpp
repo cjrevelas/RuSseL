@@ -18,7 +18,10 @@ class ContourHybrid : public Contour {
     virtual void Discretize() override;
 
     double xsCrit_;
+    double dsMax_;
+
     int nsPartOne_;
+    int nsPartTwo_;
 };
 
 } // RusselNS

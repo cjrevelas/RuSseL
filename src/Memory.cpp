@@ -30,8 +30,6 @@ void Memory::InitializeArrays() {
   phiMatrix_   = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
   phiTotal_    = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
 
-  // int numContourPoints_ = 3; // TODO: create a Contour class like Mesh
-
   int numContourPoints = GetContour("ContourId1")->GetNumberOfSteps();
 
   qqMatrix_.Resize(numContourPoints, mesh_->GetNumberOfNodes());
