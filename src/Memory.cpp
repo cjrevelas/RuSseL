@@ -70,14 +70,19 @@ void Memory::ReportArrays() {
 }
 
 // Setters
-void Memory::SetEos(const std::string &id, std::shared_ptr<class Eos> eos) {
+void Memory::SetEos(const std::string &id, std::shared_ptr<class Eos> &eos) {
   if (IsEos(id)) { ExitProgram("Memory::SetEos", "Eos with " + id + " exists."); }
   eosMap_.insert(std::pair<std::string, std::shared_ptr<class Eos>>(id, eos));
 }
 
-void Memory::SetContour(const std::string &id, std::shared_ptr<class Contour> contour) {
+void Memory::SetContour(const std::string &id, std::shared_ptr<class Contour> &contour) {
   if (IsContour(id)) { ExitProgram("Memory::SetContour", "Contour with " + id + " exists."); }
   contourMap_.insert(std::pair<std::string, std::shared_ptr<class Contour>>(id, contour));
+}
+
+void Memory::SetChain(const std::string &id, std::shared_ptr<class Chain> &chain) {
+  if (IsChain(id)) { ExitProgram("Memory::SetChain", "Chain with " + id + " exists."); }
+  chainMap_.insert(std::pair<std::string, std::shared_ptr<class Chain>>(id, chain));
 }
 
 void Memory::SetVariable(const std::string &id, const std::string &type, const std::string &stringValue, std::string stringExpressionPrefix) {
@@ -127,6 +132,12 @@ std::shared_ptr<class Contour> Memory::GetContour(const std::string &id) {
   return it->second;
 }
 
+std::shared_ptr<class Chain> Memory::GetChain(const std::string &id) {
+  auto it = chainMap_.find(id);
+  if (it == chainMap_.end()) { ExitProgram("Memory::GetChain", "failed to retrieve chain with id: " + id); }
+  return it->second;
+}
+
 std::shared_ptr<Variable> Memory::GetVariable(const std::string &id) {
   auto varIt = variableMap_.find(id);
 
@@ -148,6 +159,11 @@ bool Memory::IsContour(const std::string &id) {
   return (it != contourMap_.end());
 }
 
+bool Memory::IsChain(const std::string &id) {
+  auto it = chainMap_.find(id);
+  return (it != chainMap_.end());
+}
+
 bool Memory::IsVariable(const std::string &id) {
   auto varIt = variableMap_.find(id);
   return (varIt != variableMap_.end());
@@ -166,6 +182,13 @@ void Memory::DeleteContour(const std::string &id) {
   if (it == contourMap_.end()) { ExitProgram("Memory::DeleteContour", "failed to find contour " + id + " to delete."); }
   (it->second).reset();
   contourMap_.erase(it);
+}
+
+void Memory::DeleteChain(const std::string &id) {
+  auto it = chainMap_.find(id);
+  if (it == chainMap_.end()) { ExitProgram("Memory::DeleteChain", "failed to find chain " + id + " to delete."); }
+  (it->second).reset();
+  chainMap_.erase(it);
 }
 
 void Memory::DeleteVariable(const std::string &id) {
@@ -198,6 +221,13 @@ void Memory::DeleteContourMap() {
   for (std::map<std::string, std::shared_ptr<class Contour>>::iterator it = contourMap_.begin(); it != contourMap_.end(); ++it) {
     (it->second).reset();
     contourMap_.erase(it);
+  }
+}
+
+void Memory::DeleteChainMap() {
+  for (std::map<std::string, std::shared_ptr<class Chain>>::iterator it = chainMap_.begin(); it != chainMap_.end(); ++it) {
+    (it->second).reset();
+    chainMap_.erase(it);
   }
 }
 

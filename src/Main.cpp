@@ -56,6 +56,7 @@ int main(int argc, char **argv) {
 
   russel->memory_->DeleteEosMap();
   russel->memory_->DeleteContourMap();
+  russel->memory_->DeleteChainMap();
   russel.reset();
 
   std::cout << "Number of russel shared pointers: " << russel.use_count() << '\n';

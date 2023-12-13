@@ -81,6 +81,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 endif()
 
 target_sources(russel PUBLIC
+  src/Chain.cpp
   src/Contour.cpp
   src/ContourUniform.cpp
   src/ContourSymmetric.cpp

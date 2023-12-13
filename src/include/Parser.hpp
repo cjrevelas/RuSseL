@@ -45,6 +45,7 @@ class ParserVariable : public Parser { public: ParserVariable (const std::string
 class ParserMesh     : public Parser { public: ParserMesh     (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserMesh()     override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
 class ParserEos      : public Parser { public: ParserEos      (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserEos()      override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
 class ParserContour  : public Parser { public: ParserContour  (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserContour()  override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
+class ParserChain    : public Parser { public: ParserChain    (const std::string &flag, const int &coeffsMinLength) : Parser(flag, coeffsMinLength) {} virtual ~ParserChain()    override {} private: virtual void ProcessCoeffs(std::deque<std::string> &deqCoeffs) override; };
 
 } // RusselNS
 

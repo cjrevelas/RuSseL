@@ -51,6 +51,7 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
   listOfFlags.push_back(std::make_unique<ParserMesh>("mesh", 1));
   listOfFlags.push_back(std::make_unique<ParserEos>("eos", 2));
   listOfFlags.push_back(std::make_unique<ParserContour>("contour", 2));
+  listOfFlags.push_back(std::make_unique<ParserChain>("chain", 2));
 
   CheckDuplicateFlags(listOfFlags);
 
@@ -236,6 +237,22 @@ bool Parser::GetCoeffs(const std::string &stringCoeffs) {
 
   return flagFound;
 }
+
+void ParserChain::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
+  std::string id   = deqCoeffs[0];
+  std::string kind = deqCoeffs[1];
+
+  PrintMessage("Add chain of kind " + kind + " with id " + id, 1);
+
+  std::shared_ptr<class Chain> chain = std::make_shared<class Chain>(id, russel_);
+
+  std::cout << "Number of russel shared pointers [Chain]: " << russel_.use_count() << '\n';
+
+  russel_->memory_->SetChain(id,chain);
+  russel_->memory_->GetChain(id)->Parse(deqCoeffs);
+  russel_->memory_->GetChain(id)->Report();
+}
+
 
 void ParserContour::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id    = deqCoeffs[0];
