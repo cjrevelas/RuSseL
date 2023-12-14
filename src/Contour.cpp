@@ -18,7 +18,6 @@ Contour::Contour(const std::string &contourId, std::shared_ptr<class Russel> &ru
 // TODO: IF MEMORY_REPORT_STATUS
   std::cout << "Number of russel shared pointers [Contour]: " << russel_.use_count() << '\n';
 // TODO: ENDIF MEMORY_REPORT_STATUS
-
 }
 
 void Contour::Parse(const std::deque<std::string> &deqCoeffs) {

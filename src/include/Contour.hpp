@@ -15,6 +15,8 @@ class Contour {
 
    void Parse(const std::deque<std::string> &coeffs);
    void Report();
+   std::string GetId() const {return id_;};
+   std::shared_ptr<double []> Convolute(double length, int steps, std::shared_ptr<double []> coeffs);
 
    virtual int GetNumberOfSteps() = 0;
 
@@ -36,5 +38,6 @@ class Contour {
 };
 
 } // RusselNS
+
 
 #endif // CONTOUR_HPP

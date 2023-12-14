@@ -13,12 +13,19 @@ Chain::Chain(const std::string &chainId, std::shared_ptr<class Russel> &russel) 
 // TODO: ENDIF MEMORY_EXPORT_STATUS
 }
 
-void Chain::Parse(const std::deque<std::string> &Coeffs) {
-  std::cout << "Parsing arguments for Chain class\n";
+void Chain::Parse(const std::deque<std::string> &deqCoeffs) {
+  PrintMessage("Parsing arguments for Chain class",1);
+  for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
+    if (deqCoeffs[ii] == "-contour") {
+      std::string contourId = deqCoeffs[++ii];
+      contourEdw_ = russel_->memory_->GetContour(contourId);
+    }
+  }
 }
 
 void Chain::Report() {
-  std::cout << "Reporting for chain with id: " << id_;
+  PrintVariable("Reporting for chain with id: ", id_, " ", 2);
+  PrintVariable("chain is discretized for Edwards with contour: ", contourEdw_->GetId() ," ", 2);
 }
 
 Chain::~Chain() {

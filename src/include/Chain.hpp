@@ -22,8 +22,8 @@ class Chain {
     std::string id_;
     Matrix<double> qq_;
     std::shared_ptr<class Russel> russel_;
-    std::unique_ptr<class Contour> contourEdw_;
-    std::unique_ptr<class Contour> contourConv_;
+    std::shared_ptr<class Contour> contourEdw_;
+    std::shared_ptr<class Contour> contourConv_;
 
     void ComputePropagator();
 
