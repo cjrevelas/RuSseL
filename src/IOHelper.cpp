@@ -71,7 +71,7 @@ void PrintMessage(const std::string &message, const int indentLevel) {
   int widthLevel = indentLevel * 3;
 
   std::cout << std::left;
-  std::cout << std::setw(3          ) << "- ";
+  std::cout << std::setw(0) << "";
   std::cout << std::left;
   std::cout << std::setw(widthLevel) << "";
   std::cout << std::left;

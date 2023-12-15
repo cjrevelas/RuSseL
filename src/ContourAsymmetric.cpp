@@ -5,12 +5,10 @@
 
 namespace RusselNS {
 
-ContourAsymmetric::~ContourAsymmetric() { PrintMessage("Del ContourAsymmetric", 3); }
+ContourAsymmetric::~ContourAsymmetric() { PrintMessage("Del ContourAsymmetric", 1); }
 
 ContourAsymmetric::ContourAsymmetric(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {
-
-  PrintMessage("Add ContourAsymmetric", 1);
 
   logName_ = "o.contour_asymmetric";
   logContour_.open(logName_, std::ios::out);
@@ -23,7 +21,9 @@ void ContourAsymmetric::ParseDerived1(const std::deque<std::string> &deqCoeffs) 
 }
 
 void ContourAsymmetric::ReportDerived1() {
-  PrintMessage("Reporting details for asymmetric chain contour discretization", 1);
+  PrintMessage("Reporting details for asymmetric chain contour discretization", 2);
+  PrintVariable("Average contour step size: ", dsAve_, " ", 3);
+  PrintVariable("Number of contour steps: ", ns_, " ", 3);
 
   if (!logContour_) {
     std::cerr << "ERROR: " << logName_ << " file could not be opened for writing\n";
@@ -42,8 +42,6 @@ void ContourAsymmetric::ReportDerived1() {
 }
 
 void ContourAsymmetric::Discretize() {
-  PrintMessage("Performing asymmetric chain discretization", 1);
-
   ds_[0] = 0.0;
 
   for (int ii=1; ii<ns_; ++ii) {

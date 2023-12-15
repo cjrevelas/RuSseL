@@ -4,12 +4,10 @@
 #include "ContourHybrid.hpp"
 
 namespace RusselNS {
-  ContourHybrid::~ContourHybrid() { PrintMessage("Del ContouHybrid", 3); }
+  ContourHybrid::~ContourHybrid() { PrintMessage("Del ContouHybrid", 1); }
 
   ContourHybrid::ContourHybrid(const std::string &contourId, std::shared_ptr<class Russel> &russel)
     : Contour(contourId, russel) {
-
-    PrintMessage("Add ContourHybrid", 1);
 
     logName_ = "o.contour_hybrid";
     logContour_.open(logName_, std::ios::out);
@@ -49,11 +47,12 @@ namespace RusselNS {
   }
 
   void ContourHybrid::ReportDerived1() {
-    PrintMessage("Reporting details for hybrid chain contour discretization", 1);
-    PrintVariable("Number of steps before critical contour point: ", nsPartOne_, " ", 2);
-    PrintVariable("Number of steps after  critical contour point: ", nsPartTwo_, " ", 2);
-    PrintVariable("Total number of steps (+2):                    ", ns_,        " ", 2);
-    PrintVariable("Maximum step size:                             ", dsMax_,     " ", 2);
+    PrintMessage("Reporting details for hybrid chain contour discretization", 2);
+    PrintVariable("Number of steps before critical contour point: ", nsPartOne_, " ", 3);
+    PrintVariable("Number of steps after  critical contour point: ", nsPartTwo_, " ", 3);
+    PrintVariable("Total number of steps (+2):                    ", ns_,        " ", 3);
+    PrintVariable("Maximum step size:                             ", dsMax_,     " ", 3);
+    PrintVariable("Average contour step size:                     ", dsAve_,     " ", 3);
 
     if (!logContour_) {
       std::cerr << "ERROR: " << logName_ << " file could not be opened for writing\n";
@@ -72,8 +71,6 @@ namespace RusselNS {
   }
 
   void ContourHybrid::Discretize() {
-    PrintMessage("Performing hybrid chain discretization", 1);
-
     ds_[0] = 0.0;
 
     ns_ = GetNumberOfSteps();

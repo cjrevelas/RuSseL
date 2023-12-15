@@ -6,17 +6,13 @@
 namespace RusselNS {
 
 Contour::Contour(const std::string &contourId, std::shared_ptr<class Russel> &russel) {
-  PrintMessage("Create new Contour instance",0);
-
   russel_ = russel;
   id_     = contourId;
-
-  ns_        = 0;
-
+  ns_     = 0;
   dsAve_  = 0.0;
 
 // TODO: IF MEMORY_REPORT_STATUS
-  std::cout << "Number of russel shared pointers [Contour]: " << russel_.use_count() << '\n';
+  PrintVariable("Number of russel shared pointers [Contour]: ", russel_.use_count(), "", 1);
 // TODO: ENDIF MEMORY_REPORT_STATUS
 }
 
@@ -43,15 +39,12 @@ void Contour::Parse(const std::deque<std::string> &deqCoeffs) {
 }
 
 void Contour::Report() {
-  PrintVariable("Average contour step size: ", dsAve_, " ", 2);
-  PrintVariable("Number of contour steps: ", ns_, " ", 2);
-
   ReportDerived1();
 }
 
 Contour::~Contour() {
   russel_.reset();
-  PrintMessage("Delete Contour Instance",0);
+  PrintMessage("Delete contour base class",1);
 }
 
 } // RusselNS

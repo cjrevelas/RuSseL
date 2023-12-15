@@ -3,12 +3,10 @@
 
 namespace RusselNS {
 
-ContourUniform::~ContourUniform() { PrintMessage("Del ContourUniform", 3); }
+ContourUniform::~ContourUniform() { PrintMessage("Del ContourUniform", 1); }
 
 ContourUniform::ContourUniform(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {
-
-  PrintMessage("Add ContourUniform", 1);
 
   logName_ = "o.contour_uniform";
   logContour_.open(logName_, std::ios::out);
@@ -21,7 +19,9 @@ void ContourUniform::ParseDerived1(const std::deque<std::string> &deqCoeffs) {
 }
 
 void ContourUniform::ReportDerived1() {
-  PrintMessage("Reporting details for uniform chain contour discretization", 1);
+  PrintMessage("Reporting details for uniform chain contour discretization", 2);
+  PrintVariable("Average contour step size: ", dsAve_, " ", 3);
+  PrintVariable("Number of contour steps: ", ns_, " ", 3);
 
   if (!logContour_) {
     std::cerr << "ERROR: o.contour file could not be opened for writing\n";
@@ -40,8 +40,6 @@ void ContourUniform::ReportDerived1() {
 }
 
 void ContourUniform::Discretize() {
-  PrintMessage("Performing uniform chain discretization", 1);
-
   for (int ii=0; ii<ns_; ++ii) {
     ds_[ii] = dsAve_;
   }

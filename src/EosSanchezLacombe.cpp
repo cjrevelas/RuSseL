@@ -5,7 +5,7 @@
 
 namespace RusselNS {
 
-EosSanchezLacombe::~EosSanchezLacombe() { PrintMessage("Del EosSanchezLacombe", 3); }
+EosSanchezLacombe::~EosSanchezLacombe() { PrintMessage("Del EosSanchezLacombe", 1); }
 
 EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {
@@ -17,8 +17,6 @@ EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<c
     rhoStar_      = 0.0;
     rhoStarInv_   = 0.0;
     rhoTildeMax_  = 0.0;
-
-    PrintMessage("Add EosSanchezLacombe", 1);
 }
 
 void EosSanchezLacombe::ParseDerived1(const std::deque<std::string> &deqCoeffs) {
@@ -49,17 +47,17 @@ void EosSanchezLacombe::ParseDerived1(const std::deque<std::string> &deqCoeffs) 
 }
 
 void EosSanchezLacombe::ReportDerived1() {
-  PrintMessage("Sanchez-Lacombe coefficients", 1);
-  PrintVariable("Characteristic temperature", tempStar_,    "K"      , 2);
-  PrintVariable("Characteristic pressure   ", pressStar_,   "Pa"     , 2);
-  PrintVariable("Characteristic density    ", rhoStar_,     "kg/m^3" , 2);
-  PrintVariable("Characteristic rsl ratio  ", rslN_,        "-"      , 2);
-  PrintVariable("Maximum allowed density   ", rhoTildeMax_, "kg/m3"  , 2);
-  PrintVariable("Compressibility           ", Compressibility(matrixLength_), "Pa^-1", 2);
-  PrintVariable("Temp tilde:               ", tempTilde_, "", 2);
-  PrintVariable("Press tilde:              ", pressTilde_, "", 2);
-  PrintVariable("rslN:                     ", rslN_,      "",2);
-  PrintVariable("rhoTildeBulk:             ", rhoTildeBulk_, "", 2);
+  PrintMessage("Sanchez-Lacombe coefficients", 2);
+  PrintVariable("Characteristic temperature", tempStar_,    "K"      , 3);
+  PrintVariable("Characteristic pressure   ", pressStar_,   "Pa"     , 3);
+  PrintVariable("Characteristic density    ", rhoStar_,     "kg/m^3" , 3);
+  PrintVariable("Characteristic rsl ratio  ", rslN_,        "-"      , 3);
+  PrintVariable("Maximum allowed density   ", rhoTildeMax_, "kg/m3"  , 3);
+  PrintVariable("Compressibility           ", Compressibility(matrixLength_), "Pa^-1", 3);
+  PrintVariable("Temp tilde:               ", tempTilde_,    "", 3);
+  PrintVariable("Press tilde:              ", pressTilde_,   "", 3);
+  PrintVariable("rslN:                     ", rslN_,         "",3);
+  PrintVariable("rhoTildeBulk:             ", rhoTildeBulk_, "", 3);
 }
 
 double EosSanchezLacombe::EnergyDensity(double phi) {
@@ -95,9 +93,9 @@ double EosSanchezLacombe::RhoBulk(double lengthBulk) {
   double tolerance = 1.0e-10;
   double errorNorm = 2.0e1;
 
-  std::cout << "iteration      " << "rhoTilde     " << "error\n";
+  std::cout << "      iteration      " << "rhoTilde     " << "error\n";
   while ((numIter < maxNumIter) && (errorNorm > tolerance)) {
-    std::cout << numIter << "      " << rhoTildeZero << "      " << errorNorm << '\n';
+    std::cout << "      " << numIter << "      " << rhoTildeZero << "      " << errorNorm << '\n';
     numIter += 1;
 
     ff = rhoTildeZero * rhoTildeZero + pressTilde_ + tempTilde_ * ( std::log(1.0-rhoTildeZero) + (1.0-1.0/rsl)*rhoTildeZero );

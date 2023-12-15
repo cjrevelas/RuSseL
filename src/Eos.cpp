@@ -5,7 +5,7 @@
 using namespace RusselNS;
 
 Eos::~Eos() {
-  PrintMessage("Del Eos base class", 3);
+  PrintMessage("Del Eos base class", 1);
   russel_->memory_->DeleteVariableWithTag(tag_);
   russel_.reset();
 }
@@ -28,7 +28,7 @@ Eos::Eos(const std::string &eosId, std::shared_ptr<class Russel> &russel) {
   russel_->memory_->SetVariable(tag_ + "lengthOfMatrixChains", std::make_shared<double>(matrixLength_));
 
 // TODO: IF REPORT_MEMORY_STATUS
-  std::cout << "Number of russel shared pointers [Eos]: " << russel.use_count() << '\n';
+  PrintVariable("Number of russel shared pointers [Eos]: ", russel.use_count(), "", 1);
 // TODO: ENDIF REPORT_MEMORY_STATUS
 }
 
@@ -58,11 +58,11 @@ void Eos::Parse(const std::deque<std::string> &deqCoeffs) {
 void Eos::Report() {
   PrintVariable("Temperature", temperature_, "K", 2);
   PrintVariable("Pressure", pressure_, "atm", 2);
-  PrintMessage("Bulk polymer properties:",1);
-  PrintVariable("Monomer molar mass", molarMass_, "g/mol", 2);
-  PrintVariable("Bulk mass density", rhoMassBulk_, "g/cm3", 2);
-  PrintVariable("Bulk molar density", rhoMolarBulk_, "mol/m3", 2);
-  PrintVariable("Length of matrix chains", matrixLength_, "carbon bonds", 2);
+  PrintMessage("Bulk polymer properties:",2);
+  PrintVariable("Monomer molar mass", molarMass_, "g/mol", 3);
+  PrintVariable("Bulk mass density", rhoMassBulk_, "g/cm3", 3);
+  PrintVariable("Bulk molar density", rhoMolarBulk_, "mol/m3", 3);
+  PrintVariable("Length of matrix chains", matrixLength_, "carbon bonds", 3);
 
   ReportDerived1();
 }

@@ -3,13 +3,11 @@
 
 namespace RusselNS {
 
-EosHelfand::~EosHelfand() { PrintMessage("Del EosHelfand", 3); }
+EosHelfand::~EosHelfand() { PrintMessage("Del EosHelfand", 1); }
 
 EosHelfand::EosHelfand(const std::string &eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {
-  kappaHlf_ = 0.0;
-
-  PrintMessage("Add EosHelfand", 1);
+    kappaHlf_ = 0.0;
 }
 
 void EosHelfand::ParseDerived1(const std::deque<std::string> &deqCoeffs) {
@@ -21,9 +19,9 @@ void EosHelfand::ParseDerived1(const std::deque<std::string> &deqCoeffs) {
 }
 
 void EosHelfand::ReportDerived1() {
-  PrintMessage("Helfand coefficients", 1);
-  PrintVariable("Molar bulk density", rhoMolarBulk_, "kg/m3", 2);
-  PrintVariable("Compressibility", kappaHlf_, "Pa^-1", 2);
+  PrintMessage("Helfand coefficients", 2);
+  PrintVariable("Molar bulk density", rhoMolarBulk_, "kg/m3", 3);
+  PrintVariable("Compressibility", kappaHlf_, "Pa^-1", 3);
 }
 
 double EosHelfand::EnergyDensity(double phi) {

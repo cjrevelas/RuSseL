@@ -27,24 +27,21 @@ Parser::Parser(const std::string &flag, const int &coeffsMinLength) {
   flag_            = flag;
   flagLength_      = vecFlag.size();
   coeffsMinLength_ = coeffsMinLength;
-
-  std::cout << flag_ << coeffsMinLength_ << '\n';
 }
 
 void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russel) {
   Parser::russel_ = russel;
 
 // TODO: IF REPORT_MEMORY_STATUS
-  std::cout << "Number of russel shared pointers [Parser]: " << russel.use_count() << '\n';
+  PrintVariable("Number of russel shared pointers [Parser]: ", russel.use_count(), "", 0);
 // TODO: ENDIF REPORT_MEMORY_STATUS
 
-  PrintVariable("Parse input from file:", inputFileName, "", 0);
+  PrintMessage("Parsing input from file: " + inputFileName, 0);
 
   // Setup the list of input flags (vector of base smart pointers to derived classes)
   std::vector<std::unique_ptr<Parser>> listOfFlags;
   std::vector<std::unique_ptr<Parser>>::iterator listOfFlagsIt;
 
-  listOfFlags.push_back(std::make_unique<Parser>("hello from parent class: Parser",0));
   listOfFlags.push_back(std::make_unique<ParserInteract>("interact", 1));
   listOfFlags.push_back(std::make_unique<ParserPrint>("print", 1));
   listOfFlags.push_back(std::make_unique<ParserVariable>("variable", 2));
@@ -126,8 +123,8 @@ std::string CheckForExpressions(const std::string &stringCoeffs) {
   while (true) {
     // Attempt ot fetch a substring that contains the expression
     bool record = false;
-    int ibegin = 0;
-    int iend = 0;
+    int ibegin  = 0;
+    int iend    = 0;
 
     std::string stringExpressionPrefix = "";
 
@@ -246,13 +243,10 @@ void ParserChain::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
 
   std::shared_ptr<class Chain> chain = std::make_shared<class Chain>(id, russel_);
 
-  std::cout << "Number of russel shared pointers [Chain]: " << russel_.use_count() << '\n';
-
   russel_->memory_->SetChain(id,chain);
   russel_->memory_->GetChain(id)->Parse(deqCoeffs);
   russel_->memory_->GetChain(id)->Report();
 }
-
 
 void ParserContour::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id    = deqCoeffs[0];
@@ -264,7 +258,6 @@ void ParserContour::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
 
   if (style == "uniform") {
     contour = std::make_shared<class ContourUniform>(id, russel_);
-    std::cout << "Number of russel shared pointers [Contour]: " << russel_.use_count() << '\n';
   } else if (style == "symmetric") {
     contour = std::make_shared<class ContourSymmetric>(id, russel_);
   } else if (style == "asymmetric") {
@@ -278,8 +271,6 @@ void ParserContour::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   russel_->memory_->SetContour(id, contour);
   russel_->memory_->GetContour(id)->Parse(deqCoeffs);
   russel_->memory_->GetContour(id)->Report();
-
-  std::cout << "Number of russel shared pointers [Contour]: " << russel_.use_count() << '\n';
 }
 
 void ParserEos::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
@@ -305,17 +296,16 @@ void ParserEos::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
 
 void ParserInteract::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id = deqCoeffs[0];
-  std::cout << "ParserInteract::ProcessCoeffs " << id << '\n';
 }
 
 void ParserPrint::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id = deqCoeffs[0];
-  std::cout << "ParserPrint::ProcessCoeffs " << id << '\n';
 }
 
 void ParserMesh::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string id = deqCoeffs[0];
-  std::cout << "ParserMesh::ProcessCoeffs " << id << '\n';
+
+  PrintMessage("Add mesh with id " + id, 1);
 
   int graftPointId = 4852;
 
@@ -331,8 +321,6 @@ void ParserVariable::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
   std::string prefix = "v_";
   std::string id     = prefix + name;
   std::string third  = deqCoeffs[2];
-
-  std::cout << "ParserVariable::ProcessCoeffs " << id << '\n';
 
   std::string stringValue = "";
   std::string stringExpressionPrefix = "";
