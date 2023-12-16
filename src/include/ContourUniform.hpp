@@ -8,7 +8,7 @@ namespace RusselNS {
 class ContourUniform : public Contour {
   public:
     ContourUniform(const std::string &contourId, std::shared_ptr<class Russel> &russel);
-    virtual ~ContourUniform();
+    virtual ~ContourUniform() override;
 
     virtual int GetNumberOfSteps() override;
 

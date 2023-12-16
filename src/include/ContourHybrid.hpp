@@ -8,7 +8,7 @@ namespace RusselNS {
 class ContourHybrid : public Contour {
   public:
     ContourHybrid(const std::string &contourId, std::shared_ptr<class Russel> &russel);
-    virtual ~ContourHybrid();
+    virtual ~ContourHybrid() override;
 
     virtual int GetNumberOfSteps() override;
 

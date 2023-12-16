@@ -8,7 +8,7 @@ namespace RusselNS {
 class ContourAsymmetric : public Contour {
   public:
     ContourAsymmetric(const std::string &contourId, std::shared_ptr<class Russel> &russel);
-    virtual ~ContourAsymmetric();
+    virtual ~ContourAsymmetric() override;
 
     virtual int GetNumberOfSteps() override;
 

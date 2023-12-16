@@ -21,12 +21,12 @@ class Eos {
     virtual double RhoBulk(double) = 0;
     virtual double Compressibility(double) = 0;
 
-    inline double GetTemperature() { return temperature_; }
-    inline double GetPressure() { return pressure_; }
-    inline double GetRhoMassBulk() { return rhoMassBulk_; }
-    inline double GetRhoMolarBulk() { return rhoMolarBulk_; }
-    inline double GetMolarMass() { return molarMass_; }
-    inline double GetMatrixLength() { return matrixLength_; }
+    inline double GetTemperature()  const { return temperature_; }
+    inline double GetPressure()     const { return pressure_; }
+    inline double GetRhoMassBulk()  const { return rhoMassBulk_; }
+    inline double GetRhoMolarBulk() const { return rhoMolarBulk_; }
+    inline double GetMolarMass()    const { return molarMass_; }
+    inline double GetMatrixLength() const { return matrixLength_; }
 
   protected:
     virtual void ParseDerived1(const std::deque<std::string> &coeffs) = 0;

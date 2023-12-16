@@ -12,7 +12,6 @@ namespace RusselNS {
   class Russel {
     public:
      Russel();
-
      ~Russel();
 
      std::unique_ptr<class Memory> memory_;

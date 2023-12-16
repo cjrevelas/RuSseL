@@ -18,7 +18,7 @@ namespace RusselNS {
 class Memory {
   public:
     Memory();
-    virtual ~Memory();
+    ~Memory();
 
     // TODO: void ResizeNodalArrays(ints dofs); // e.g., useful for periodic boundary conditions
 
