@@ -3,7 +3,11 @@
 
 namespace RusselNS {
 
-EosHelfand::~EosHelfand() { PrintMessage("Del EosHelfand", 1); }
+EosHelfand::~EosHelfand() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete EosHelfand", 1);
+#endif
+}
 
 EosHelfand::EosHelfand(const std::string &eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {

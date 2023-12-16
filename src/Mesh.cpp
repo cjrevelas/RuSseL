@@ -15,7 +15,10 @@ Mesh::Mesh(const std::string meshFileName)
 
 Mesh::~Mesh() {
   logMesh_.close();
+
+#ifdef EXPORT_MEMORY_STATUS
   PrintMessage("Delete Mesh instance",1);
+#endif
 }
 
 void Mesh::Import() {

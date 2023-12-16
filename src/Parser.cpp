@@ -13,7 +13,6 @@
 #include "ContourAsymmetric.hpp"
 #include "ContourHybrid.hpp"
 
-
 namespace RusselNS {
 
 // Initialize the static variables of the Parser class
@@ -23,20 +22,29 @@ bool Parser::verbose_    = false;
 std::shared_ptr<Russel> Parser::russel_ = nullptr;
 
 Parser::Parser(const std::string &flag, const int &coeffsMinLength) {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Create new Parser instance", 1);
+#endif
   std::vector<std::string> vecFlag = GetVectorTokens(flag);
   flag_            = flag;
   flagLength_      = vecFlag.size();
   coeffsMinLength_ = coeffsMinLength;
 }
 
+Parser::~Parser() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete Parser instance", 1);
+#endif
+}
+
 void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russel) {
   Parser::russel_ = russel;
 
-// TODO: IF REPORT_MEMORY_STATUS
+#ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Parser]: ", russel.use_count(), "", 0);
-// TODO: ENDIF REPORT_MEMORY_STATUS
+#endif
 
-  PrintMessage("Parsing input from file: " + inputFileName, 0);
+  PrintMessage("Parsing input from file: " + inputFileName, 1);
 
   // Setup the list of input flags (vector of base smart pointers to derived classes)
   std::vector<std::unique_ptr<Parser>> listOfFlags;

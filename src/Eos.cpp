@@ -5,7 +5,9 @@
 using namespace RusselNS;
 
 Eos::~Eos() {
-  PrintMessage("Del Eos base class", 1);
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete Eos base class", 1);
+#endif
   russel_->memory_->DeleteVariableWithTag(tag_);
   russel_.reset();
 }
@@ -27,9 +29,9 @@ Eos::Eos(const std::string &eosId, std::shared_ptr<class Russel> &russel) {
   russel_->memory_->SetVariable(tag_ + "compressibility", std::make_shared<double>(kappa_));
   russel_->memory_->SetVariable(tag_ + "lengthOfMatrixChains", std::make_shared<double>(matrixLength_));
 
-// TODO: IF REPORT_MEMORY_STATUS
+#ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Eos]: ", russel.use_count(), "", 1);
-// TODO: ENDIF REPORT_MEMORY_STATUS
+#endif
 }
 
 void Eos::Parse(const std::deque<std::string> &deqCoeffs) {

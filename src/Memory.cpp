@@ -5,8 +5,8 @@
 namespace RusselNS {
 
 Memory::Memory() {
-#ifdef REPORT_MEMORY_STATUS
-  PrintMessage("Add Memory", 1);#
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Create new Memory instance", 0);
 #endif
   logArrays_.open("o.arrays", std::ios::out);
   logMatrixPropagator_.open("o.qmx", std::ios::out);
@@ -14,8 +14,8 @@ Memory::Memory() {
 }
 
 Memory::~Memory() {
-#ifdef REPORT_MEMORY_STATUS
-  PrintMessage("Delete Memory", 1);
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete Memory instance", 0);
 #endif
   logArrays_.close();
   logMatrixPropagator_.close();

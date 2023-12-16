@@ -35,31 +35,43 @@ int main(int argc, char **argv) {
   // Spawn an instance of the application itself
   std::shared_ptr<class Russel> russel{std::make_shared<Russel>()};
 
-//#ifdef REPORT_MEMORY_STATUS
+#ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 0);
-//#endif
+#endif
 
   ParseInput(inputFileName, russel);
 
   russel->memory_->InitializeArrays();
   russel->memory_->ReportArrays();
 
+#ifdef EXPORT_MEMORY_STATUS
+  PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 1);
+#endif
+
   // Start of iterative scheme
   SolverMumps(myId);
   // End of iterative scheme
 
-  std::cout << "MEMORY: number of mesh shared pointers: " << russel->memory_->mesh_.use_count() << '\n';
-  russel->memory_->mesh_.reset();
-  std::cout << "MEMORY: number of mesh shared pointers: " << russel->memory_->mesh_.use_count() << '\n';
+#ifdef EXPORT_MEMORY_STATUS
+  PrintVariable("Number of mesh shared pointers [Main]: ", russel->memory_->mesh_.use_count(), "", 1);
+#endif
 
-  std::cout << "MEMORY: number of russel shared pointers: " << russel.use_count() << '\n';
+  russel->memory_->mesh_.reset();
+#ifdef EXPORT_MEMORY_STATUS
+  PrintVariable("Number of mesh shared pointers [Main]: ", russel->memory_->mesh_.use_count(), "", 1);
+#endif
 
   russel->memory_->DeleteEosMap();
   russel->memory_->DeleteContourMap();
   russel->memory_->DeleteChainMap();
-  std::cout << "MEMORY: number of russel shared pointers: " << russel.use_count() << '\n';
+#ifdef EXPORT_MEMORY_STATUS
+  PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 0);
+#endif
+
   russel.reset();
-  std::cout << "MEMORY: number of russel shared pointers: " << russel.use_count() << '\n';
+#ifdef EXPORT_MEMORY_STATUS
+  PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 0);
+#endif
 
   ierr = MPI_Finalize();
 

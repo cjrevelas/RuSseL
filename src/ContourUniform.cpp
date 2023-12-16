@@ -3,7 +3,11 @@
 
 namespace RusselNS {
 
-ContourUniform::~ContourUniform() { PrintMessage("Del ContourUniform", 1); }
+ContourUniform::~ContourUniform() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete ContourUniform", 1);
+#endif
+}
 
 ContourUniform::ContourUniform(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {

@@ -7,7 +7,11 @@ set(BUILD_TYPE "Debug")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./run)
+
 add_executable(russel)
+
+# Define preprocessor macros
+target_compile_definitions(russel PUBLIC -DEXPORT_MEMORY_STATUS)
 
 # The exact path of all requisite header files must be specified below
 target_include_directories(russel PUBLIC

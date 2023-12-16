@@ -5,7 +5,6 @@
 
 namespace RusselNS {
 
-ContourAsymmetric::~ContourAsymmetric() { PrintMessage("Del ContourAsymmetric", 1); }
 
 ContourAsymmetric::ContourAsymmetric(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {
@@ -48,6 +47,12 @@ void ContourAsymmetric::Discretize() {
     xs_[ii] = length_ * (1.0 - cos(M_PI * (static_cast<double>(ii) - 1.0) / (static_cast<double>(ns_) * 2.0) ));
     ds_[ii] = xs_[ii] - xs_[ii-1];
   }
+}
+
+ContourAsymmetric::~ContourAsymmetric() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete ContourAsymmetric", 1);
+#endif
 }
 
 } // RusselNS

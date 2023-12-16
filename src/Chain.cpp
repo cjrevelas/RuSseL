@@ -6,9 +6,9 @@ Chain::Chain(const std::string &chainId, std::shared_ptr<class Russel> &russel) 
   russel_ = russel;
   id_     = chainId;
 
-// TODO: IF MEMORY_EXPORT_STATUS
-  PrintVariable("Number of russel shared pointers [Chain]: ", russel.use_count(), "", 1);
-// TODO: ENDIF MEMORY_EXPORT_STATUS
+#ifdef EXPORT_MEMORY_STATUS
+  PrintVariable("Number of russel shared pointers [Chain]: ", russel_.use_count(), "", 1);
+#endif
 }
 
 void Chain::Parse(const std::deque<std::string> &deqCoeffs) {
@@ -27,7 +27,10 @@ void Chain::Report() {
 
 Chain::~Chain() {
   russel_.reset();
+
+#ifdef EXPORT_MEMORY_STATUS
   PrintMessage("Delete Chain Instance",1);
+#endif
 }
 
 } // RusselNS

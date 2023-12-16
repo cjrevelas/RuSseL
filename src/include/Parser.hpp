@@ -20,7 +20,7 @@ class Parser {
  public:
   Parser(const std::string &flag, const int &coeffsMinLength);
 
-  virtual ~Parser() {}
+  virtual ~Parser();
 
   std::string GetFlag() const { return flag_;}
 

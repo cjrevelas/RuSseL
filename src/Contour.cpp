@@ -11,9 +11,9 @@ Contour::Contour(const std::string &contourId, std::shared_ptr<class Russel> &ru
   ns_     = 0;
   dsAve_  = 0.0;
 
-// TODO: IF MEMORY_REPORT_STATUS
+#ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Contour]: ", russel_.use_count(), "", 1);
-// TODO: ENDIF MEMORY_REPORT_STATUS
+#endif
 }
 
 void Contour::Parse(const std::deque<std::string> &deqCoeffs) {
@@ -44,7 +44,10 @@ void Contour::Report() {
 
 Contour::~Contour() {
   russel_.reset();
+
+#if EXPORT_MEMORY_STATUS
   PrintMessage("Delete contour base class",1);
+#endif
 }
 
 } // RusselNS

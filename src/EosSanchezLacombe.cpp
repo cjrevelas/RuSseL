@@ -5,7 +5,11 @@
 
 namespace RusselNS {
 
-EosSanchezLacombe::~EosSanchezLacombe() { PrintMessage("Del EosSanchezLacombe", 1); }
+EosSanchezLacombe::~EosSanchezLacombe() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete EosSanchezLacombe", 1);
+#endif
+}
 
 EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {
