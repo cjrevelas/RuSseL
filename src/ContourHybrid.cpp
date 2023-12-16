@@ -5,12 +5,6 @@
 
 namespace RusselNS {
 
-ContourHybrid::~ContourHybrid() {
-#ifdef EXPORT_MEMORY_STATUS
-  PrintMessage("Delete ContouHybrid", 1);
-#endif
-}
-
 ContourHybrid::ContourHybrid(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {
 
@@ -19,6 +13,12 @@ ContourHybrid::ContourHybrid(const std::string &contourId, std::shared_ptr<class
 
   nsPartOne_ = 0;
   xsCrit_    = 0.0;
+}
+
+ContourHybrid::~ContourHybrid() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete ContouHybrid", 1);
+#endif
 }
 
 int ContourHybrid::GetNumberOfSteps() {
@@ -98,4 +98,5 @@ void ContourHybrid::Discretize() {
     }
   }
 }
+
 } // RusselNS

@@ -2,7 +2,6 @@
 #define CONSTANTS_HPP
 
 namespace RusselNS {
-
   constexpr double boltz_const_Joule_molK = 8.3144598e0;
   constexpr double boltz_const_Joule_K    = 1.38064852e-23;
   constexpr double n_avog                 = 6.02214085700e23;
@@ -19,7 +18,6 @@ namespace RusselNS {
   constexpr double gr_cm3_to_kg_m3        = 1.0e3;
   constexpr double kg_m3_to_gr_m3         = 1.0e3;
   constexpr double N_to_mN                = 1.0e3;
-
 }
 
 

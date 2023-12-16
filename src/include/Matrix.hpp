@@ -6,6 +6,8 @@
 #include <iomanip>
 #include <memory>
 
+namespace RusselNS {
+
 template<class T>
 class Matrix {
 
@@ -30,6 +32,9 @@ class Matrix {
 
 template<class T>
 Matrix<T>::Matrix(int rows, int cols) : rows_(rows), cols_(cols) { pointer_ = std::make_unique<T []>(rows_ * cols_); }
+
+template<class T>
+Matrix<T>::~Matrix() {}
 
 template<class T>
 void Matrix<T>::Resize(int rows, int cols) {
@@ -72,7 +77,6 @@ void Matrix<T>::Export(std::fstream &file) const {
   file << '\n';
 }
 
-template<class T>
-Matrix<T>::~Matrix() {}
+} // RusselNS
 
 #endif // MATRIX_HPP

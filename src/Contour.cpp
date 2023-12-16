@@ -16,6 +16,14 @@ Contour::Contour(const std::string &contourId, std::shared_ptr<class Russel> &ru
 #endif
 }
 
+Contour::~Contour() {
+  russel_.reset();
+
+#if EXPORT_MEMORY_STATUS
+  PrintMessage("Delete contour base class",1);
+#endif
+}
+
 void Contour::Parse(const std::deque<std::string> &deqCoeffs) {
   for (int ii = 0; ii<static_cast<int>(deqCoeffs.size()); ++ii) {
     if (deqCoeffs[ii] == "-step") {
@@ -40,14 +48,6 @@ void Contour::Parse(const std::deque<std::string> &deqCoeffs) {
 
 void Contour::Report() {
   ReportDerived1();
-}
-
-Contour::~Contour() {
-  russel_.reset();
-
-#if EXPORT_MEMORY_STATUS
-  PrintMessage("Delete contour base class",1);
-#endif
 }
 
 } // RusselNS

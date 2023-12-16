@@ -41,12 +41,12 @@ int main(int argc, char **argv) {
 
   ParseInput(inputFileName, russel);
 
-  russel->memory_->InitializeArrays();
-  russel->memory_->ReportArrays();
-
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 1);
 #endif
+
+  russel->memory_->InitializeArrays();
+  russel->memory_->ReportArrays();
 
   // Start of iterative scheme
   SolverMumps(myId);

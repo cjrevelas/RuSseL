@@ -5,17 +5,17 @@
 
 namespace RusselNS {
 
-ContourSymmetric::~ContourSymmetric() {
-#ifdef EXPORT_MEMORY_STATUS
-  PrintMessage("Delete ContourSymmetric", 1);
-#endif
-}
-
 ContourSymmetric::ContourSymmetric(const std::string &contourId, std::shared_ptr<class Russel> &russel)
   : Contour(contourId, russel) {
 
   logName_ = "o.contour_symmetric";
   logContour_.open(logName_, std::ios::out);
+}
+
+ContourSymmetric::~ContourSymmetric() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete ContourSymmetric", 1);
+#endif
 }
 
 int ContourSymmetric::GetNumberOfSteps() { return ns_; }

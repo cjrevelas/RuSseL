@@ -2,7 +2,6 @@
 #define DEFAULTS_HPP
 
 namespace RusselNS {
-
   double dflt_adsorptionDistance    = 1.2e1;
   double dflt_numGraftedChainsTol   = 5.0e-3;
   double dflt_graftPointDistance    = 4.0e-1;
@@ -34,7 +33,6 @@ namespace RusselNS {
 
   bool dflt_domainIsPeriodic = false;
   bool dflt_squareGradient   = false;
-
 } // RusselN
 
 #endif // DEFAULTS_HPP

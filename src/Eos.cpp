@@ -2,15 +2,7 @@
 #include "IOHelper.hpp"
 #include "Constants.hpp"
 
-using namespace RusselNS;
-
-Eos::~Eos() {
-#ifdef EXPORT_MEMORY_STATUS
-  PrintMessage("Delete Eos base class", 1);
-#endif
-  russel_->memory_->DeleteVariableWithTag(tag_);
-  russel_.reset();
-}
+namespace RusselNS {
 
 Eos::Eos(const std::string &eosId, std::shared_ptr<class Russel> &russel) {
   russel_       = russel;
@@ -32,6 +24,14 @@ Eos::Eos(const std::string &eosId, std::shared_ptr<class Russel> &russel) {
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Eos]: ", russel.use_count(), "", 1);
 #endif
+}
+
+Eos::~Eos() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete Eos base class", 1);
+#endif
+  russel_->memory_->DeleteVariableWithTag(tag_);
+  russel_.reset();
 }
 
 void Eos::Parse(const std::deque<std::string> &deqCoeffs) {
@@ -68,3 +68,5 @@ void Eos::Report() {
 
   ReportDerived1();
 }
+
+} // RusselNS

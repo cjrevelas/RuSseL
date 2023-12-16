@@ -7,12 +7,6 @@ namespace RusselNS {
 
 std::shared_ptr<class Russel> EvalArg::russel_ = nullptr;
 
-EvalArg::~EvalArg() {
-#ifdef DEBUG
-  std::cout << "Destroying argument with stringValue: " << stringValue_ << '\n';
-#endif
-}
-
 EvalArg::EvalArg() {
   std::cout << "Calling EvalArg constructor\n";
   stringValue_ = "Base";
@@ -20,6 +14,12 @@ EvalArg::EvalArg() {
 
 EvalArg::EvalArg(std::string argument, int order, int type, std::string associativity)
   : stringValue_(argument), order_(order), type_(type), associativity_(associativity), value_(0.0) {}
+
+EvalArg::~EvalArg() {
+#ifdef DEBUG
+  std::cout << "Destroying argument with stringValue: " << stringValue_ << '\n';
+#endif
+}
 
 // Value operators
 void Val::Operate() {

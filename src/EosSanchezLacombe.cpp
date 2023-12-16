@@ -5,12 +5,6 @@
 
 namespace RusselNS {
 
-EosSanchezLacombe::~EosSanchezLacombe() {
-#ifdef EXPORT_MEMORY_STATUS
-  PrintMessage("Delete EosSanchezLacombe", 1);
-#endif
-}
-
 EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<class Russel> &russel)
   : Eos(eosId, russel) {
     derPref1_     = 0.0;
@@ -21,6 +15,12 @@ EosSanchezLacombe::EosSanchezLacombe(const std::string &eosId, std::shared_ptr<c
     rhoStar_      = 0.0;
     rhoStarInv_   = 0.0;
     rhoTildeMax_  = 0.0;
+}
+
+EosSanchezLacombe::~EosSanchezLacombe() {
+#ifdef EXPORT_MEMORY_STATUS
+  PrintMessage("Delete EosSanchezLacombe", 1);
+#endif
 }
 
 void EosSanchezLacombe::ParseDerived1(const std::deque<std::string> &deqCoeffs) {

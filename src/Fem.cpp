@@ -7,7 +7,7 @@ Fem::Fem() { gp = Gausspoints(); }
 
 Fem::~Fem() {}
 
-std::shared_ptr<double []> Fem::Gausspoints(){
+std::shared_ptr<double []> Fem::Gausspoints() {
   gp = std::shared_ptr<double []>(new double[numGaussPoints * numparams]);
 
   for (int ii=0; ii<3; ++ii){
