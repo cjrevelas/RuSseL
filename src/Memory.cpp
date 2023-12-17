@@ -9,8 +9,6 @@ Memory::Memory() {
   PrintMessage("Create new Memory instance", 0);
 #endif
   logArrays_.open("o.arrays", std::ios::out);
-  logMatrixPropagator_.open("o.qmx", std::ios::out);
-  logGraftedPropagator_.open("o.qgr", std::ios::out);
 }
 
 Memory::~Memory() {
@@ -18,8 +16,6 @@ Memory::~Memory() {
   PrintMessage("Delete Memory instance", 0);
 #endif
   logArrays_.close();
-  logMatrixPropagator_.close();
-  logGraftedPropagator_.close();
 }
 
 void Memory::InitializeArrays() {
@@ -30,11 +26,6 @@ void Memory::InitializeArrays() {
   phiMatrix_   = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
   phiTotal_    = std::shared_ptr<double []>(new double[mesh_->GetNumberOfNodes()]);
 
-  int numContourPoints = GetContour("ContourId1")->GetNumberOfSteps();
-
-  qqMatrix_.Resize(numContourPoints, mesh_->GetNumberOfNodes());
-  qqGrafted_.Resize(numContourPoints, mesh_->GetNumberOfNodes());
-
   for (int ii=0; ii<mesh_->GetNumberOfNodes(); ++ii) {
     wwField_[ii]      = 0.0;
     wwFieldNew_[ii]   = 0.0;
@@ -43,9 +34,6 @@ void Memory::InitializeArrays() {
     phiMatrix_[ii]    = 0.0;
     phiTotal_[ii]     = 0.0;
   }
-
-  qqMatrix_.Initialize();
-  qqGrafted_.Initialize();
 }
 
 void Memory::ReportArrays() {
@@ -63,9 +51,6 @@ void Memory::ReportArrays() {
       logArrays_ << std::setprecision(6) << std::scientific << phiTotal_[ii]     << "   ";
       logArrays_ << '\n';
     }
-
-    qqMatrix_.Export(logMatrixPropagator_);
-    qqGrafted_.Export(logGraftedPropagator_);
   }
 }
 

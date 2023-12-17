@@ -55,10 +55,6 @@ class Memory {
     std::shared_ptr<double []> phiMatrix_;
     std::shared_ptr<double []> phiTotal_;
 
-    // TODO: the following propagators must be declared and used inside the Chain childer classes
-    Matrix<double> qqMatrix_;
-    Matrix<double> qqGrafted_;
-
     // Deleters
     void DeleteVariableWithTag(const std::string &tag);
     void DeleteVariable(const std::string &id);
@@ -77,8 +73,6 @@ class Memory {
     std::map<std::string, std::shared_ptr<class Chain>> chainMap_;
 
     std::fstream logArrays_;
-    std::fstream logMatrixPropagator_;
-    std::fstream logGraftedPropagator_;
 };
 
 } // RusselNS

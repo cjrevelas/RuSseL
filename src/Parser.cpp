@@ -56,7 +56,7 @@ void ParseInput(const std::string &inputFileName, std::shared_ptr<Russel> &russe
   listOfFlags.push_back(std::make_unique<ParserMesh>("mesh", 1));
   listOfFlags.push_back(std::make_unique<ParserEos>("eos", 2));
   listOfFlags.push_back(std::make_unique<ParserContour>("contour", 2));
-  listOfFlags.push_back(std::make_unique<ParserChain>("chain", 2));
+  listOfFlags.push_back(std::make_unique<ParserChain>("chain", 4));
 
   CheckDuplicateFlags(listOfFlags);
 
