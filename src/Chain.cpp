@@ -46,12 +46,15 @@ void Chain::Report() {
   int numStepsEdw  = contourEdw_->GetNumberOfSteps();
   int numStepsConv = contourConv_->GetNumberOfSteps();
 
-  qqEdw_.Resize(numStepsEdw, numNodes);
-  qqEdw_.Initialize();
-  qqEdw_.Export(logPropagatorEdw_);
+  qqEdw_.Resize(numNodes,2);
+  qqEdwFinal_.Resize(numNodes, numStepsEdw);
+  qqConv_.Resize(numNodes, numStepsConv);
 
-  qqConv_.Resize(numStepsConv, numNodes);
+  qqEdw_.Initialize();
+  qqEdwFinal_.Initialize();
   qqConv_.Initialize();
+
+  qqEdwFinal_.Export(logPropagatorEdw_);
   qqConv_.Export(logPropagatorConv_);
 }
 

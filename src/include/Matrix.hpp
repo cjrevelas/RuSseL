@@ -68,8 +68,8 @@ void Matrix<T>::Initialize() {
 
 template<class T>
 void Matrix<T>::Export(std::fstream &file) const {
-  for (int ii = 0; ii < cols_; ++ii) {
-    for (int jj = 0; jj < rows_; ++jj) {
+  for (int ii = 0; ii < rows_; ++ii) {
+    for (int jj = 0; jj < cols_; ++jj) {
       file << std::setprecision(6) << std::scientific << pointer_[ii + this->rows_ * jj] << "   ";
     }
     file << '\n';

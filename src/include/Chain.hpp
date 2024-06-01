@@ -18,12 +18,13 @@ class Chain {
     void Parse(const std::deque<std::string> &coeffs);
     void Report();
 
+    Matrix<double> qqEdw_;
+    Matrix<double> qqEdwFinal_;
+    Matrix<double> qqConv_;
   protected:
     std::string id_;
     std::fstream logPropagatorEdw_;
     std::fstream logPropagatorConv_;
-    Matrix<double> qqEdw_;
-    Matrix<double> qqConv_;
     std::shared_ptr<class Russel> russel_;
     std::shared_ptr<class Contour> contourEdw_;
     std::shared_ptr<class Contour> contourConv_;

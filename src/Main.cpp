@@ -48,9 +48,26 @@ int main(int argc, char **argv) {
   russel->memory_->InitializeArrays();
   russel->memory_->ReportArrays();
 
+  std::fstream tempFile1;
+  std::fstream tempFile2;
+  tempFile1.open("o.qq_test_edw", std::ios::out);
+  tempFile2.open("o.qq_test_edw_final", std::ios::out);
+
   // Start of iterative scheme
+  for (int ii=0; ii<russel->memory_->mesh_->GetNumberOfNodes(); ++ii) {
+    russel->memory_->GetChain("mx1")->qqEdw_(ii, 0) = 1.0;
+    russel->memory_->GetChain("mx1")->qqEdwFinal_(ii, 0) = 1.0;
+  }
+
+  russel->memory_->GetChain("mx1")->qqEdw_.Export(tempFile1);
+  russel->memory_->GetChain("mx1")->qqEdwFinal_.Export(tempFile2);
+
+  tempFile1.close();
+  tempFile2.close();
+
   SolverMumps(myId);
   // End of iterative scheme
+
 
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of mesh shared pointers [Main]: ", russel->memory_->mesh_.use_count(), "", 1);
