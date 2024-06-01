@@ -321,6 +321,7 @@ void ParserMesh::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
 
   russel_->memory_->mesh_->ElementsContainingNode(graftPointId);
   russel_->memory_->mesh_->ComputeMeshVolume();
+  russel_->memory_->mesh_->ComputeBulkNodePairs();
 }
 
 void ParserVariable::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {

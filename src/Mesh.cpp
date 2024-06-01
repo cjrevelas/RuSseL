@@ -10,11 +10,14 @@ namespace RusselNS {
 Mesh::Mesh(const std::string meshFileName)
 : meshFileName_(meshFileName) {
   logMesh_.open("o.mesh", std::ios::out);
+  logNodeHash_.open("o.node_hash", std::ios::out);
+  logNodePairs_.open("o.node_pairs", std::ios::out);
   Import();
 }
 
 Mesh::~Mesh() {
   logMesh_.close();
+  logNodeHash_.close();
 
 #ifdef EXPORT_MEMORY_STATUS
   PrintMessage("Delete Mesh instance",1);
@@ -159,6 +162,57 @@ void Mesh::ComputeMeshVolume() {
   }
 
   logMesh_ << "Meshed domain volume: " << vol;
+}
+
+void Mesh::ComputeBulkNodePairs() {
+  int nodePair = 0;
+
+  int globalNodeId1 = 0;
+  int globalNodeId2 = 0;
+
+  int elemconValue;
+
+  numBulkNodePairs_ = nen_ * nen_ * numElements_;
+
+  nodePairId_ = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+
+  row_ = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+  col_ = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+
+  gg_ = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  rh_ = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  ww_ = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+
+  for (int element=0; element<numElements_; ++element) {
+    for (int localNodeIndex1=0; localNodeIndex1<nen_; ++localNodeIndex1) {
+      for (int localNodeIndex2=0; localNodeIndex2<nen_; ++localNodeIndex2) {
+        ++nodePair;
+
+        globalNodeId1 = ix(element, localNodeIndex1);
+        globalNodeId2 = ix(element, localNodeIndex2);
+
+        row_[nodePair] = globalNodeId1;
+        col_[nodePair] = globalNodeId2;
+
+        if (elemcon_.find(std::make_pair(globalNodeId1,globalNodeId2)) == elemcon_.end()) {
+          elemcon_[std::make_pair(globalNodeId1,globalNodeId2)] = nodePair;
+          nodePairId_[nodePair] = nodePair;
+        } else {
+          nodePairId_[nodePair] = elemcon_[std::make_pair(globalNodeId1, globalNodeId2)];
+        }
+      }
+    }
+  }
+
+  // Export element connectivity hash
+  for (auto const &item : elemcon_) {
+    logNodeHash_ << "Key: (" << item.first.first << ", " << item.first.second << ") -> value: " << item.second << '\n';
+  }
+
+  // Export node pairs data
+  for (int pairId=0; pairId<numBulkNodePairs_; ++pairId) {
+    logNodePairs_ << pairId+1 << "  " << row_[pairId]+1 << "  " << col_[pairId]+1 << "  " << nodePairId_[pairId] << '\n';
+  }
 }
 
 } // RusselNS
