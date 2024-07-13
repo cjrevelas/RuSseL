@@ -16,14 +16,14 @@ target_compile_definitions(russel PUBLIC -DEXPORT_MEMORY_STATUS)
 # The exact path of all requisite header files must be specified below
 target_include_directories(russel PUBLIC
   ./src/include
-  /usr/lib/gcc/x86_64-linux-gnu/9/include
+  /usr/lib/gcc/x86_64-pc-linux-gnu/14.1.1/include
   /home/cjrevelas/libraries/mumps_serial_cpp/PORD/include
   /home/cjrevelas/libraries/mumps_serial_cpp/libseq
   /home/cjrevelas/libraries/mumps_serial_cpp/include
 )
 
 # The exact path of all requisite libraries must be specified below
-set(CMAKE_PREFIX_PATH "/usr/lib/gcc/x86_64-linux-gnu/9/;"
+set(CMAKE_PREFIX_PATH "/usr/lib/gcc/x86_64-pc-linux-gnu/14.1.1/;"
                       "/home/cjrevelas/libraries/lapack-3.9.0/;"
                       "/home/cjrevelas/libraries/mumps_serial_cpp/lib/;"
                       "/home/cjrevelas/libraries/mumps_serial_cpp/libseq;"
