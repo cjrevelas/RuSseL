@@ -18,6 +18,8 @@ class Fem {
 
   std::shared_ptr<double []> Gausspoints();
   double Tetshp(int pp, std::shared_ptr<double []> xl);
+
+  void Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww);
 };
 
 } // RusselNS

@@ -109,4 +109,7 @@ double Fem::Tetshp(int pp, std::shared_ptr<double []> xl) {
   return xsj;
 }
 
+void Fem::Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww) {
+}
+
 } // RusselNS

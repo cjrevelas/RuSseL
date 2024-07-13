@@ -5,13 +5,13 @@
 #include <memory>
 #include <map>
 #include <unordered_map>
-#include <vector>
 
 #include "Variable.hpp"
 #include "Eos.hpp"
 #include "Contour.hpp"
 #include "Chain.hpp"
 #include "Mesh.hpp"
+#include "Fem.hpp"
 
 namespace RusselNS {
 
@@ -46,7 +46,8 @@ class Memory {
     bool IsContour(const std::string &id);
     bool IsChain(const std::string &id);
 
-    std::shared_ptr<Mesh> mesh_;
+    std::shared_ptr<class Mesh> mesh_;
+    std::shared_ptr<class Fem> fem_;
 
     std::shared_ptr<double []> wwField_;
     std::shared_ptr<double []> wwFieldNew_;
