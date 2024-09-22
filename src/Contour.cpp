@@ -1,7 +1,6 @@
-#include <fstream>
-
 #include "Contour.hpp"
 #include "IOHelper.hpp"
+#include "StringOperations.hpp"
 
 namespace RusselNS {
 

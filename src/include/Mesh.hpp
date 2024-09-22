@@ -3,13 +3,12 @@
 
 #include <memory>
 #include <fstream>
-#include <unordered_map>
 #include <map>
 #include <utility>
+#include <vector>
 
-#include "StringOperations.hpp"
-#include "Fem.hpp"
 #include "Matrix.hpp"
+#include "LinearSystem.hpp"
 
 namespace RusselNS {
 
@@ -30,7 +29,7 @@ class Mesh {
   Matrix<double> xc;
 
  public:
-  Mesh(const std::string meshFileName);
+  Mesh(const std::string &meshFileName);
   ~Mesh();
 
   void Import();
@@ -42,18 +41,9 @@ class Mesh {
   friend std::vector<std::string> Tokenize(const std::string &input_string);
 
   std::map<std::pair<int,int>, int> elemcon_;
-
   std::shared_ptr<int []> nodePairId_;
 
-  std::shared_ptr<double []> gg_;
-  std::shared_ptr<double []> rh_;
-  std::shared_ptr<double []> cc_;
-  std::shared_ptr<double []> ww_;
-
-  std::shared_ptr<int []> row_;
-  std::shared_ptr<int []> col_;
-
-  std::shared_ptr<bool []> isZero_;
+  struct LinearSystemOfEquations lse_;
 };
 
 } // RusselNS

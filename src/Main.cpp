@@ -4,18 +4,16 @@
 #include <mpi.h>
 #include <dmumps_c.h>
 
-#include "Mesh.hpp"
 #include "Parser.hpp"
 #include "Russel.hpp"
 #include "IOHelper.hpp"
-#include "Defaults.hpp"
 #include "SolverMumps.hpp"
-#include "MumpsFlags.hpp"
 
 using namespace RusselNS;
 
 int main(int argc, char **argv) {
-  MUMPS_INT ierr, myId;
+  [[maybe_unused]] MUMPS_INT ierr;
+  MUMPS_INT myId;
   ierr = MPI_Init(&argc, &argv);
   ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myId);
 
@@ -67,7 +65,6 @@ int main(int argc, char **argv) {
 
   SolverMumps(myId);
   // End of iterative scheme
-
 
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of mesh shared pointers [Main]: ", russel->memory_->mesh_.use_count(), "", 1);

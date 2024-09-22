@@ -1,6 +1,7 @@
 #include "Eos.hpp"
 #include "IOHelper.hpp"
 #include "Constants.hpp"
+#include "StringOperations.hpp"
 
 namespace RusselNS {
 

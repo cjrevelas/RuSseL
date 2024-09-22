@@ -2,6 +2,7 @@
 
 #include "EosSanchezLacombe.hpp"
 #include "Constants.hpp"
+#include "StringOperations.hpp"
 
 namespace RusselNS {
 

@@ -7,8 +7,8 @@
 
 namespace RusselNS {
 
-Mesh::Mesh(const std::string meshFileName)
-: meshFileName_(meshFileName) {
+Mesh::Mesh(const std::string &meshFileName)
+ : meshFileName_(meshFileName) {
   logMesh_.open("o.mesh", std::ios::out);
   logNodeHash_.open("o.node_hash", std::ios::out);
   logNodePairs_.open("o.node_pairs", std::ios::out);
@@ -176,12 +176,12 @@ void Mesh::ComputeBulkNodePairs() {
 
   nodePairId_ = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
 
-  row_ = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
-  col_ = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+  lse_.row = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+  lse_.col = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
 
-  gg_ = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
-  rh_ = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
-  ww_ = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_.gg = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_.rh = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_.ww = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
 
   for (int element=0; element<numElements_; ++element) {
     for (int localNodeIndex1=0; localNodeIndex1<nen_; ++localNodeIndex1) {
@@ -191,8 +191,8 @@ void Mesh::ComputeBulkNodePairs() {
         globalNodeId1 = ix(element, localNodeIndex1);
         globalNodeId2 = ix(element, localNodeIndex2);
 
-        row_[nodePair] = globalNodeId1;
-        col_[nodePair] = globalNodeId2;
+	lse_.row[nodePair] = globalNodeId1;
+	lse_.col[nodePair] = globalNodeId2;
 
         if (elemcon_.find(std::make_pair(globalNodeId1,globalNodeId2)) == elemcon_.end()) {
           elemcon_[std::make_pair(globalNodeId1,globalNodeId2)] = nodePair;
@@ -211,7 +211,7 @@ void Mesh::ComputeBulkNodePairs() {
 
   // Export node pairs data
   for (int pairId=0; pairId<numBulkNodePairs_; ++pairId) {
-    logNodePairs_ << pairId+1 << "  " << row_[pairId]+1 << "  " << col_[pairId]+1 << "  " << nodePairId_[pairId] << '\n';
+    logNodePairs_ << pairId+1 << "  " << lse_.row[pairId]+1 << "  " << lse_.col[pairId]+1 << "  " << nodePairId_[pairId] << '\n';
   }
 }
 

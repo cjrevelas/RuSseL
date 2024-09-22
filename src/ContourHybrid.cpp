@@ -2,6 +2,7 @@
 
 #include "Contour.hpp"
 #include "ContourHybrid.hpp"
+#include "StringOperations.hpp"
 
 namespace RusselNS {
 
