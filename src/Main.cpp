@@ -33,6 +33,8 @@ int main(int argc, char **argv) {
   // Spawn an instance of the application itself
   std::shared_ptr<class Russel> russel{std::make_shared<Russel>()};
 
+  russel->memory_->fem_ = std::make_shared<class Fem>();
+
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 0);
 #endif
@@ -45,6 +47,16 @@ int main(int argc, char **argv) {
 
   russel->memory_->InitializeArrays();
   russel->memory_->ReportArrays();
+
+
+  std::cout << russel << '\n';
+  std::cout << russel->memory_.get() << '\n';
+  std::cout << russel->memory_->fem_.get() << '\n';
+
+  russel->memory_->fem_->Assembly(3., russel->memory_->wwField_, russel);
+
+
+
 
   std::fstream tempFile1;
   std::fstream tempFile2;

@@ -20,13 +20,9 @@ class Mesh {
   std::fstream logNodePairs_;
   int numElements_;
   int numNodes_;
-  int nen_;
-  int ndm_;
   int numTotalNodePairs_;
   int numBulkNodePairs_;
   int numPeriodicNodePairs_;
-  Matrix<int> ix;
-  Matrix<double> xc;
 
  public:
   Mesh(const std::string &meshFileName);
@@ -38,12 +34,18 @@ class Mesh {
   void ComputeMeshVolume();
   void ComputeBulkNodePairs();
   int GetNumberOfNodes() const { return numNodes_; };
+  int GetNumberOfElements() const { return numElements_; };
+  int GetNumberOfBulkNodePairs() const { return numBulkNodePairs_; }
   friend std::vector<std::string> Tokenize(const std::string &input_string);
 
   std::map<std::pair<int,int>, int> elemcon_;
   std::shared_ptr<int []> nodePairId_;
 
-  struct LinearSystemOfEquations lse_;
+  std::shared_ptr<struct LinearSystemOfEquations> lse_;
+  int numNodesLocalTypeDomain_;
+  int numDimensions_;
+  Matrix<int> globalNodeIdTypeDomain_;
+  Matrix<double> nodeCoord_;
 };
 
 } // RusselNS

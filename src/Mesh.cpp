@@ -7,8 +7,7 @@
 
 namespace RusselNS {
 
-Mesh::Mesh(const std::string &meshFileName)
- : meshFileName_(meshFileName) {
+Mesh::Mesh(const std::string &meshFileName) : meshFileName_(meshFileName) {
   logMesh_.open("o.mesh", std::ios::out);
   logNodeHash_.open("o.node_hash", std::ios::out);
   logNodePairs_.open("o.node_pairs", std::ios::out);
@@ -39,9 +38,9 @@ void Mesh::Import() {
 
     if (current_line.find("sdim") != std::string::npos) {
       tokens = RusselNS::GetVectorTokens(current_line);
-      ndm_   = atoi(tokens[0].c_str());
+      numDimensions_   = atoi(tokens[0].c_str());
 
-      logMesh_ << "Number of dimensions = " << ndm_ << '\n';
+      logMesh_ << "Number of dimensions = " << numDimensions_ << '\n';
     }
 
     if (current_line.find("number of mesh points") != std::string::npos) {
@@ -49,7 +48,7 @@ void Mesh::Import() {
       numNodes_ = atoi(tokens[0].c_str());
 
       logMesh_ << "Number of mesh points: " << numNodes_ << '\n';
-      xc.Resize(numNodes_,ndm_);
+      nodeCoord_.Resize(numNodes_,numDimensions_);
     }
 
     if (current_line.find("Mesh point coordinates") != std::string::npos) {
@@ -57,27 +56,27 @@ void Mesh::Import() {
         getline(meshFile, current_line);
         tokens = RusselNS::GetVectorTokens(current_line);
 
-        for (int jj=0; jj<ndm_; ++jj) {
-          xc(ii,jj) = atof(tokens[jj].c_str());
+        for (int jj=0; jj<numDimensions_; ++jj) {
+          nodeCoord_(ii,jj) = atof(tokens[jj].c_str());
         }
       }
     }
 
     if (current_line.find("number of nodes per element") != std::string::npos) {
       tokens = RusselNS::GetVectorTokens(current_line);
-      nen_ = atoi(tokens[0].c_str());
+      numNodesLocalTypeDomain_ = atoi(tokens[0].c_str());
       getline(meshFile, current_line);
       tokens = RusselNS::GetVectorTokens(current_line);
       numElements_ = atoi(tokens[0].c_str());
 
-      if (nen_ == 1) {
+      if (numNodesLocalTypeDomain_ == 1) {
         logMesh_ << "Number of vertex elements: " << numElements_ << '\n';
-      } else if (nen_ == 2) {
+      } else if (numNodesLocalTypeDomain_ == 2) {
         logMesh_ << "Number of edge elements: " << numElements_ << '\n';
-      } else if (nen_ == 3) {
+      } else if (numNodesLocalTypeDomain_ == 3) {
         logMesh_ << "Number of face elements: " << numElements_ << '\n';
-      } else if (nen_ == 4) {
-        ix.Resize(numElements_,nen_);
+      } else if (numNodesLocalTypeDomain_ == 4) {
+        globalNodeIdTypeDomain_.Resize(numElements_,numNodesLocalTypeDomain_);
 
         getline(meshFile, current_line);
 
@@ -85,8 +84,8 @@ void Mesh::Import() {
           getline(meshFile, current_line);
           tokens = RusselNS::GetVectorTokens(current_line);
 
-          for (int jj=0; jj<nen_; ++jj) {
-            ix(ii,jj) = atoi(tokens[jj].c_str());
+          for (int jj=0; jj<numNodesLocalTypeDomain_; ++jj) {
+            globalNodeIdTypeDomain_(ii,jj) = atoi(tokens[jj].c_str());
           }
         }
 
@@ -99,8 +98,8 @@ void Mesh::Import() {
 void Mesh::ElementsContainingNode(const int &gid){
   logMesh_ << '\n';
   for (int ii=0; ii<numElements_; ++ii) {
-    for (int jj=0; jj<nen_; ++jj) {
-      if (ix(ii,jj) == gid) {
+    for (int jj=0; jj<numNodesLocalTypeDomain_; ++jj) {
+      if (globalNodeIdTypeDomain_(ii,jj) == gid) {
         logMesh_ << "Node " << gid << " is in element " << ii << " with volume " << ComputeElementVolume(ii) << '\n';
       }
     }
@@ -109,14 +108,14 @@ void Mesh::ElementsContainingNode(const int &gid){
 }
 
 double Mesh::ComputeElementVolume(const int &elemId) {
-  std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[ndm_ * nen_]);
+  std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[numDimensions_ * numNodesLocalTypeDomain_]);
 
   Fem fem;
 
-  for (int ii=0; ii<nen_; ++ii) {
-    int kk = ix(elemId,ii);
-    for (int jj=0; jj<ndm_; ++jj) {
-      xl[nen_ * jj + ii] = xc(kk,jj);
+  for (int ii=0; ii<numNodesLocalTypeDomain_; ++ii) {
+    int kk = globalNodeIdTypeDomain_(elemId,ii);
+    for (int jj=0; jj<numDimensions_; ++jj) {
+      xl[numNodesLocalTypeDomain_ * jj + ii] = nodeCoord_(kk,jj);
     }
   }
 
@@ -125,7 +124,7 @@ double Mesh::ComputeElementVolume(const int &elemId) {
 
   for (int kk=0; kk<11; ++kk) {
     xsj = fem.Tetshp(kk, xl);
-    xsj *= fem.gp[11*4+kk];
+    xsj *= fem.gaussPoint_[11*4+kk];
 
     volel += xsj;
   }
@@ -134,17 +133,17 @@ double Mesh::ComputeElementVolume(const int &elemId) {
 }
 
 void Mesh::ComputeMeshVolume() {
-  std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[ndm_ * nen_]);
+  std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[numDimensions_ * numNodesLocalTypeDomain_]);
 
   Fem fem;
 
   double vol = 0.0;
 
   for (int nn=0; nn<numElements_; ++nn) {
-    for (int ii=0; ii<nen_; ++ii) {
-      int kk = ix(nn,ii);
-      for (int jj=0; jj<ndm_; ++jj) {
-        xl[nen_ * jj + ii] = xc(kk,jj);
+    for (int ii=0; ii<numNodesLocalTypeDomain_; ++ii) {
+      int kk = globalNodeIdTypeDomain_(nn,ii);
+      for (int jj=0; jj<numDimensions_; ++jj) {
+        xl[numNodesLocalTypeDomain_ * jj + ii] = nodeCoord_(kk,jj);
       }
     }
 
@@ -153,7 +152,7 @@ void Mesh::ComputeMeshVolume() {
 
     for (int kk=0; kk<11; ++kk) {
       xsj = fem.Tetshp(kk, xl);
-      xsj *= fem.gp[11 * 4 + kk];
+      xsj *= fem.gaussPoint_[11 * 4 + kk];
 
       volel += xsj;
     }
@@ -170,29 +169,33 @@ void Mesh::ComputeBulkNodePairs() {
   int globalNodeId1 = 0;
   int globalNodeId2 = 0;
 
-  int elemconValue;
+  // int elemconValue;
 
-  numBulkNodePairs_ = nen_ * nen_ * numElements_;
+  numBulkNodePairs_ = numNodesLocalTypeDomain_ * numNodesLocalTypeDomain_ * numElements_;
 
   nodePairId_ = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
 
-  lse_.row = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
-  lse_.col = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+  lse_ = std::make_shared<struct LinearSystemOfEquations>();
 
-  lse_.gg = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
-  lse_.rh = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
-  lse_.ww = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_->row = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+  lse_->col = std::shared_ptr<int []>(new int[numBulkNodePairs_]);
+
+  lse_->gg = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_->rh = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_->ww = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_->kk = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
+  lse_->cc = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
 
   for (int element=0; element<numElements_; ++element) {
-    for (int localNodeIndex1=0; localNodeIndex1<nen_; ++localNodeIndex1) {
-      for (int localNodeIndex2=0; localNodeIndex2<nen_; ++localNodeIndex2) {
+    for (int localNodeIndex1=0; localNodeIndex1<numNodesLocalTypeDomain_; ++localNodeIndex1) {
+      for (int localNodeIndex2=0; localNodeIndex2<numNodesLocalTypeDomain_; ++localNodeIndex2) {
         ++nodePair;
 
-        globalNodeId1 = ix(element, localNodeIndex1);
-        globalNodeId2 = ix(element, localNodeIndex2);
+        globalNodeId1 = globalNodeIdTypeDomain_(element, localNodeIndex1);
+        globalNodeId2 = globalNodeIdTypeDomain_(element, localNodeIndex2);
 
-	lse_.row[nodePair] = globalNodeId1;
-	lse_.col[nodePair] = globalNodeId2;
+	lse_->row[nodePair] = globalNodeId1;
+	lse_->col[nodePair] = globalNodeId2;
 
         if (elemcon_.find(std::make_pair(globalNodeId1,globalNodeId2)) == elemcon_.end()) {
           elemcon_[std::make_pair(globalNodeId1,globalNodeId2)] = nodePair;
@@ -211,7 +214,7 @@ void Mesh::ComputeBulkNodePairs() {
 
   // Export node pairs data
   for (int pairId=0; pairId<numBulkNodePairs_; ++pairId) {
-    logNodePairs_ << pairId+1 << "  " << lse_.row[pairId]+1 << "  " << lse_.col[pairId]+1 << "  " << nodePairId_[pairId] << '\n';
+    logNodePairs_ << pairId+1 << "  " << lse_->row[pairId]+1 << "  " << lse_->col[pairId]+1 << "  " << nodePairId_[pairId] << '\n';
   }
 }
 
