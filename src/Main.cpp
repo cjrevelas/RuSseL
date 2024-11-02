@@ -49,12 +49,8 @@ int main(int argc, char **argv) {
   russel->memory_->ReportArrays();
 
 
-  std::cout << russel << '\n';
-  std::cout << russel->memory_.get() << '\n';
-  std::cout << russel->memory_->fem_.get() << '\n';
 
   russel->memory_->fem_->Assembly(3., russel->memory_->wwField_, russel);
-
 
 
 
