@@ -202,6 +202,7 @@ void Mesh::ComputeBulkNodePairs() {
     lse_->isZero[pair] = true;
   }
 
+  // RuSseL3D -> MeshBulkNodePairs
   for (int element=0; element<numElements_; ++element) {
     for (int localNodeIndex1=0; localNodeIndex1<numNodesLocalTypeDomain_; ++localNodeIndex1) {
       for (int localNodeIndex2=0; localNodeIndex2<numNodesLocalTypeDomain_; ++localNodeIndex2) {
@@ -210,8 +211,8 @@ void Mesh::ComputeBulkNodePairs() {
         globalNodeId1 = globalNodeIdTypeDomain_(element, localNodeIndex1);
         globalNodeId2 = globalNodeIdTypeDomain_(element, localNodeIndex2);
 
-	lse_->row[nodePair] = globalNodeId1;
-	lse_->col[nodePair] = globalNodeId2;
+        lse_->row[nodePair] = globalNodeId1;
+        lse_->col[nodePair] = globalNodeId2;
 
         if (elemcon_.find(std::make_pair(globalNodeId1,globalNodeId2)) == elemcon_.end()) {
           elemcon_[std::make_pair(globalNodeId1,globalNodeId2)] = nodePair;
@@ -223,6 +224,11 @@ void Mesh::ComputeBulkNodePairs() {
     }
   }
 
+  // Calculate isZero array entries
+  for (int pairId=0; pairId<GetNumberOfBulkNodePairs(); ++pairId) {
+    lse_->isZero[pairId] = ( nodePairId_[pairId] != pairId );
+  }
+
   // Export element connectivity hash
   for (auto const &item : elemcon_) {
     logNodeHash_ << "Key: (" << item.first.first << ", " << item.first.second << ") -> value: " << item.second << '\n';
@@ -230,7 +236,7 @@ void Mesh::ComputeBulkNodePairs() {
 
   // Export node pairs data
   for (int pairId=0; pairId<numBulkNodePairs_; ++pairId) {
-    logNodePairs_ << pairId+1 << "  " << lse_->row[pairId]+1 << "  " << lse_->col[pairId]+1 << "  " << nodePairId_[pairId] << '\n';
+    logNodePairs_ << pairId+1 << "  " << lse_->row[pairId]+1 << "  " << lse_->col[pairId]+1 << "  " << nodePairId_[pairId]+1 << "  " << lse_->isZero[pairId] << '\n';
   }
 }
 
