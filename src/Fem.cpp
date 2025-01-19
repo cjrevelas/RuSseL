@@ -211,6 +211,24 @@ void Fem::Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww, std
       }
     }
   }
+
+  for (int nodePair=0; nodePair<russel->memory_->mesh_->GetNumberOfBulkNodePairs(); ++nodePair) {
+    if (russel->memory_->mesh_->lse_->isZero[nodePair]) {
+ //     russel->memory_->mesh_->lse_->kk[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->kk[nodePair];
+ //     russel->memory_->mesh_->lse_->kk[nodePair] = 0;
+
+ //     russel->memory_->mesh_->lse_->cc[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->cc[nodePair];
+ //     russel->memory_->mesh_->lse_->cc[nodePair] = 0;
+
+ //     russel->memory_->mesh_->lse_->ww[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->ww[nodePair];
+ //     russel->memory_->mesh_->lse_->ww[nodePair] = 0;
+ //  
+      if (nodePair == russel->memory_->mesh_->GetNumberOfBulkNodePairs()) {
+         std::cout << "number of bulk node pairs = " << nodePair << '\n';
+      }
+    }
+  }
+
   std::cout << "------------------------------------  END OF MATRIX ASSEMBLY  ------------------------------------\n";
 }
 

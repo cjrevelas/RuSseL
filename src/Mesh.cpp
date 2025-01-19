@@ -186,6 +186,22 @@ void Mesh::ComputeBulkNodePairs() {
   lse_->kk = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
   lse_->cc = std::shared_ptr<double []>(new double[numBulkNodePairs_]);
 
+  lse_->isZero = std::shared_ptr<bool []>(new bool[numBulkNodePairs_]);
+
+  // Initialize lse arrays
+  for (int pair=0; pair<numBulkNodePairs_; ++pair) {
+    lse_->row[pair] = 0;
+    lse_->col[pair] = 0;
+
+    lse_->gg[pair] = 0.0;
+    lse_->rh[pair] = 0.0;
+    lse_->ww[pair] = 0.0;
+    lse_->kk[pair] = 0.0;
+    lse_->cc[pair] = 0.0;
+
+    lse_->isZero[pair] = true;
+  }
+
   for (int element=0; element<numElements_; ++element) {
     for (int localNodeIndex1=0; localNodeIndex1<numNodesLocalTypeDomain_; ++localNodeIndex1) {
       for (int localNodeIndex2=0; localNodeIndex2<numNodesLocalTypeDomain_; ++localNodeIndex2) {
