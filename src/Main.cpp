@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
   std::shared_ptr<class Russel> russel{std::make_shared<Russel>()};
 
   russel->memory_->fem_ = std::make_shared<class Fem>();
+  // TODO: here, it is a good point to print the gausspoints matrix
 
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 0);

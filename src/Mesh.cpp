@@ -152,7 +152,10 @@ void Mesh::ComputeMeshVolume() {
 
     for (int kk=0; kk<11; ++kk) {
       xsj = fem.Tetshp(kk, xl);
+ //     std::cout << "jacob1: " << xsj << '\n';
       xsj *= fem.gaussPoint_[11 * 4 + kk];
+ //   std::cout << "jacob2: " << xsj << '\n';
+ //     std::cout << '\n';
 
       volel += xsj;
     }

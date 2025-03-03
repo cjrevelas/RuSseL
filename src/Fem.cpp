@@ -137,15 +137,18 @@ void Fem::Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww, std
   assemblyFile2.open("o.assembly2",std::ios::out);
   assemblyFile3.open("o.assembly3",std::ios::out);
 
-  // Loop through elements
-  int pair = 0;
+  int numDims          = russel->memory_->mesh_->numDimensions_;
+  int numNodesLocal    = russel->memory_->mesh_->numNodesLocalTypeDomain_;
+  int numElements      = russel->memory_->mesh_->GetNumberOfElements();
+  int numBulkNodePairs = russel->memory_->mesh_->GetNumberOfBulkNodePairs();
 
-  for (int element=0; element < russel->memory_->mesh_->GetNumberOfElements(); ++element) {
-    // Retrieve global index of each node in the element along with its coordinates
-    for (int localNodeIndex=0; localNodeIndex < russel->memory_->mesh_->numNodesLocalTypeDomain_; ++localNodeIndex) {
+  int pair = 0;
+  // Loop through elements
+  for (int element = 0; element < numElements; ++element) {
+    for (int localNodeIndex = 0; localNodeIndex < numNodesLocal; ++localNodeIndex) {
       globalIndex[localNodeIndex] = russel->memory_->mesh_->globalNodeIdTypeDomain_(element,localNodeIndex);
 
-      for (int axis=0; axis<2; ++axis) {
+      for (int axis=0; axis<2; ++axis) {// < 2 ??
         coord(axis,localNodeIndex) = russel->memory_->mesh_->nodeCoord_(globalIndex[localNodeIndex],axis);
       }
 
@@ -155,79 +158,98 @@ void Fem::Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww, std
       " z:    "         << std::setprecision(12) << std::fixed << coord(2,localNodeIndex) << '\n';
     }
 
-    std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[russel->memory_->mesh_->numDimensions_ * russel->memory_->mesh_->numNodesLocalTypeDomain_]);
+    std::shared_ptr<double []> xl = std::shared_ptr<double []>(new double[numDims * numNodesLocal]);
 
-    for (int localNodeIndex=0; localNodeIndex<russel->memory_->mesh_->numNodesLocalTypeDomain_; ++localNodeIndex) {
-      for (int axis=0; axis<russel->memory_->mesh_->numDimensions_; ++axis) {
-        xl[russel->memory_->mesh_->numNodesLocalTypeDomain_ * axis + localNodeIndex] = coord(axis,localNodeIndex);
-
+    for (int localNodeIndex=0; localNodeIndex < numNodesLocal; ++localNodeIndex) {
+      for (int axis=0; axis < numDims; ++axis) {
+        xl[numNodesLocal * axis + localNodeIndex] = coord(axis,localNodeIndex);
       }
+
       assemblyFile2 << "element: " << element << ",    local: " << localNodeIndex << ",    global: " << globalIndex[localNodeIndex] <<
-      ",        x:    " << std::setprecision(12) << std::fixed << xl[russel->memory_->mesh_->numNodesLocalTypeDomain_ * 0 + localNodeIndex] <<
-      "    y:    "      << std::setprecision(12) << std::fixed << xl[russel->memory_->mesh_->numNodesLocalTypeDomain_ * 1 + localNodeIndex] <<
-      " z:    "         << std::setprecision(12) << std::fixed << xl[russel->memory_->mesh_->numNodesLocalTypeDomain_ * 2 + localNodeIndex] << '\n';
+      ",        x:    " << std::setprecision(12) << std::fixed << xl[numNodesLocal * 0 + localNodeIndex] <<
+      "    y:    "      << std::setprecision(12) << std::fixed << xl[numNodesLocal * 1 + localNodeIndex] <<
+      " z:    "         << std::setprecision(12) << std::fixed << xl[numNodesLocal * 2 + localNodeIndex] << '\n';
     }
 
-    // CJR: Up to this point everything is fine: tests pass and assemblyFile1, assemblyFile2 have identical content
-
-
-    // Set up for Gauss Quadradure inside the element
+    double jacobDeterm = 0.0;
     for (int gaussPointIndex=0; gaussPointIndex<numGaussPoints_; ++gaussPointIndex) {
 
-      pair = russel->memory_->mesh_->numNodesLocalTypeDomain_ * russel->memory_->mesh_->numNodesLocalTypeDomain_ * element;
+      pair = numNodesLocal * numNodesLocal * element;
 
-      // Compute Jacobian determinant and values of shape functions
-      double jacobDeterm = Tetshp(gaussPointIndex, xl); // Shape functions are members of the Fem class and thus modified internally
+      jacobDeterm = russel->memory_->fem_->Tetshp(gaussPointIndex, xl);
 
-      jacobDeterm *= gaussPoint_[numGaussPoints_*4 + gaussPointIndex];  // TODO: check that the matrix of gauss points (5x11) is identical to the Fortran one
+      jacobDeterm *= gaussPoint_[numGaussPoints_*4 + gaussPointIndex];
 
-      for (int localNodeIndexOne=0; localNodeIndexOne<russel->memory_->mesh_->numNodesLocalTypeDomain_; ++localNodeIndexOne) {
-        for (int localNodeIndexTwo=0; localNodeIndexTwo<russel->memory_->mesh_->numNodesLocalTypeDomain_; ++ localNodeIndexTwo) {
+      for (int localNodeIndexOne=0; localNodeIndexOne < numNodesLocal; ++localNodeIndexOne) {
+        for (int localNodeIndexTwo=0; localNodeIndexTwo < numNodesLocal; ++localNodeIndexTwo) {
            ++pair;
 
            assemblyFile3 << "gausspoint: " << gaussPointIndex << ",    ";
            assemblyFile3 << "element: "    << element         << ",    ";
-           assemblyFile3 << "pair:    "    << pair            << ",    node1: " << globalIndex[localNodeIndexOne] << ", node2: " << globalIndex[localNodeIndexTwo] << '\n';
-
-           // std::cout << "&lse:    " << russel->memory_->mesh_->lse_ << '\n';
+           assemblyFile3 << "pair:    "    << pair            << ",    node1: " << globalIndex[localNodeIndexOne]
+                                                              << ", node2: " << globalIndex[localNodeIndexTwo] << '\n';
 
            int globalNodeIndex = globalIndex[localNodeIndexTwo];
 
-           russel->memory_->mesh_->lse_->ww[pair] += shp_[3 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexOne] * // 3 * 4 + (0,3)
-                                                     shp_[3 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexTwo] *
-                                                     jacobDeterm * gaussPoint_[4*numGaussPoints_ + gaussPointIndex] * ww[globalNodeIndex];
 
-           russel->memory_->mesh_->lse_->cc[pair] += shp_[3 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexOne] *
-                                                     shp_[3 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexTwo] *
-                                                     jacobDeterm * gaussPoint_[4 * numGaussPoints_ + gaussPointIndex];
+           russel->memory_->mesh_->lse_->ww[pair] += shp_[3 * numNodesLocal + localNodeIndexOne] * // 3 * 4 + (0,3)
+                                                     shp_[3 * numNodesLocal + localNodeIndexTwo] *
+                                                     jacobDeterm *
+                                                     gaussPoint_[4 * numGaussPoints_ + gaussPointIndex] *
+                                                     ww[globalNodeIndex];
 
-           russel->memory_->mesh_->lse_->kk[pair] += rg2OfMonomer * ( (shp_[0 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexOne] *
-                                                                       shp_[0 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexTwo] ) +
-                                                                      (shp_[1 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexOne] *
-                                                                       shp_[1 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexTwo] ) +
-                                                                      (shp_[2 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexOne] *
-                                                                       shp_[2 * russel->memory_->mesh_->numNodesLocalTypeDomain_ + localNodeIndexTwo]) );
+           russel->memory_->mesh_->lse_->cc[pair] += shp_[3 * numNodesLocal + localNodeIndexOne] *
+                                                     shp_[3 * numNodesLocal + localNodeIndexTwo] *
+                                                     jacobDeterm *
+                                                     gaussPoint_[4 * numGaussPoints_ + gaussPointIndex];
+
+           russel->memory_->mesh_->lse_->kk[pair] += rg2OfMonomer * ( (shp_[0 * numNodesLocal + localNodeIndexOne] *
+                                                                       shp_[0 * numNodesLocal + localNodeIndexTwo] ) +
+
+                                                                      (shp_[1 * numNodesLocal + localNodeIndexOne] *
+                                                                       shp_[1 * numNodesLocal + localNodeIndexTwo] ) +
+
+                                                                      (shp_[2 * numNodesLocal + localNodeIndexOne] *
+                                                                       shp_[2 * numNodesLocal + localNodeIndexTwo]) );
         }
       }
     }
   }
 
-  for (int nodePair=0; nodePair<russel->memory_->mesh_->GetNumberOfBulkNodePairs(); ++nodePair) {
+  for (int nodePair = 0; nodePair < numBulkNodePairs; ++nodePair) {
     if (russel->memory_->mesh_->lse_->isZero[nodePair]) {
- //     russel->memory_->mesh_->lse_->kk[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->kk[nodePair];
- //     russel->memory_->mesh_->lse_->kk[nodePair] = 0;
+      russel->memory_->mesh_->lse_->kk[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->kk[nodePair];
+      russel->memory_->mesh_->lse_->kk[nodePair] = 0;
 
- //     russel->memory_->mesh_->lse_->cc[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->cc[nodePair];
- //     russel->memory_->mesh_->lse_->cc[nodePair] = 0;
+      russel->memory_->mesh_->lse_->cc[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->cc[nodePair];
+      russel->memory_->mesh_->lse_->cc[nodePair] = 0;
 
- //     russel->memory_->mesh_->lse_->ww[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->ww[nodePair];
- //     russel->memory_->mesh_->lse_->ww[nodePair] = 0;
- //  
-      if (nodePair == russel->memory_->mesh_->GetNumberOfBulkNodePairs()) {
+      russel->memory_->mesh_->lse_->ww[russel->memory_->mesh_->nodePairId_[nodePair]] += russel->memory_->mesh_->lse_->ww[nodePair];
+      russel->memory_->mesh_->lse_->ww[nodePair] = 0;
+
+      if (nodePair == numBulkNodePairs - 1) {
          std::cout << "number of bulk node pairs = " << nodePair << '\n';
       }
     }
   }
+
+  std::fstream logLinearSystem_; // Make this an object inside the header Fem.hpp
+  logLinearSystem_.open("o.assembly4", std::ios::out);
+
+  if (!logLinearSystem_) {
+    std::cerr << "ERROR: o.arrays.txt file could not be opened for writing\n";
+  } else {
+    logLinearSystem_ << "kk      cc      ww\n";
+
+    for (int pair = 0; pair < numBulkNodePairs; ++pair) {
+      logLinearSystem_ << std::setprecision(6) << std::scientific << russel->memory_->mesh_->lse_->kk[pair] << "   ";
+      logLinearSystem_ << std::setprecision(6) << std::scientific << russel->memory_->mesh_->lse_->cc[pair] << "   ";
+      logLinearSystem_ << std::setprecision(6) << std::scientific << russel->memory_->mesh_->lse_->ww[pair] << "   ";
+      logLinearSystem_ << '\n';
+    }
+  }
+
+  logLinearSystem_.close();
 
   std::cout << "------------------------------------  END OF MATRIX ASSEMBLY  ------------------------------------\n";
 }
