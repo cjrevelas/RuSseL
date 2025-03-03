@@ -148,7 +148,7 @@ void Fem::Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww, std
     for (int localNodeIndex = 0; localNodeIndex < numNodesLocal; ++localNodeIndex) {
       globalIndex[localNodeIndex] = russel->memory_->mesh_->globalNodeIdTypeDomain_(element,localNodeIndex);
 
-      for (int axis=0; axis<2; ++axis) {// < 2 ??
+      for (int axis=0; axis<numDims; ++axis) {
         coord(axis,localNodeIndex) = russel->memory_->mesh_->nodeCoord_(globalIndex[localNodeIndex],axis);
       }
 
