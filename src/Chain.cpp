@@ -6,16 +6,12 @@ Chain::Chain(const std::string &chainId, std::shared_ptr<class Russel> &russel) 
   russel_ = russel;
   id_     = chainId;
 
-  logPropagatorEdw_.open("o.qq_"+id_+"_edw", std::ios::out);
-  logPropagatorConv_.open("o.qq_"+id_+"_conv", std::ios::out);
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Chain]: ", russel_.use_count(), "", 1);
 #endif
 }
 
 Chain::~Chain() {
-  logPropagatorEdw_.close();
-  logPropagatorConv_.close();
   russel_.reset();
 
 #ifdef EXPORT_MEMORY_STATUS
@@ -34,6 +30,19 @@ void Chain::Parse(const std::deque<std::string> &deqCoeffs) {
       contourConv_ = russel_->memory_->GetContour(contourId);
     }
   }
+
+  int numNodes = russel_->memory_->mesh_->GetNumberOfNodes();
+
+  int numStepsEdw  = contourEdw_->GetNumberOfSteps();
+  int numStepsConv = contourConv_->GetNumberOfSteps();
+
+  qqEdw_.Resize(numNodes, 2);
+  qqEdwFinal_.Resize(numNodes, numStepsEdw);
+  qqConv_.Resize(numNodes, numStepsConv);
+
+  qqEdw_.Initialize();
+  qqEdwFinal_.Initialize();
+  qqConv_.Initialize();
 }
 
 void Chain::Report() {
@@ -41,21 +50,17 @@ void Chain::Report() {
   PrintVariable("Edwards discretization with contour: ", contourEdw_->GetId(), " ", 3);
   PrintVariable("Convolution discretization with contour: ", contourConv_->GetId(), " ", 3);
 
-  int numNodes = russel_->memory_->mesh_->GetNumberOfNodes();
+  logPropagatorEdw_.open("o.qq_"+id_+"_edw", std::ios::out);
+  logPropagatorEdwFinal_.open("o.qq_"+id_+"_edw_final", std::ios::out);
+  logPropagatorConv_.open("o.qq_"+id_+"_conv", std::ios::out);
 
-  int numStepsEdw  = contourEdw_->GetNumberOfSteps();
-  int numStepsConv = contourConv_->GetNumberOfSteps();
-
-  qqEdw_.Resize(numNodes,2);
-  qqEdwFinal_.Resize(numNodes, numStepsEdw);
-  qqConv_.Resize(numNodes, numStepsConv);
-
-  qqEdw_.Initialize();
-  qqEdwFinal_.Initialize();
-  qqConv_.Initialize();
-
-  qqEdwFinal_.Export(logPropagatorEdw_);
+  qqEdw_.Export(logPropagatorEdw_);
+  qqEdwFinal_.Export(logPropagatorEdwFinal_);
   qqConv_.Export(logPropagatorConv_);
+
+  logPropagatorEdw_.close();
+  logPropagatorEdwFinal_.close();
+  logPropagatorConv_.close();
 }
 
 } // RusselNS

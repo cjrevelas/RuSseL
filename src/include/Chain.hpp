@@ -13,7 +13,7 @@ namespace RusselNS {
 class Chain {
   public:
     Chain(const std::string &chainId, std::shared_ptr<class Russel> &russel);
-    ~Chain(); // CJR:: destructor will become virtual
+    ~Chain(); // CJR: destructor will become virtual
 
     void Parse(const std::deque<std::string> &coeffs);
     void Report();
@@ -24,6 +24,7 @@ class Chain {
   protected:
     std::string id_;
     std::fstream logPropagatorEdw_;
+    std::fstream logPropagatorEdwFinal_;
     std::fstream logPropagatorConv_;
     std::shared_ptr<class Russel> russel_;
     std::shared_ptr<class Contour> contourEdw_;

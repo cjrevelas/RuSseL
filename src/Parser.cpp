@@ -253,7 +253,6 @@ void ParserChain::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {
 
   russel_->memory_->SetChain(id,chain);
   russel_->memory_->GetChain(id)->Parse(deqCoeffs);
-  russel_->memory_->GetChain(id)->Report();
 }
 
 void ParserContour::ProcessCoeffs(std::deque<std::string> &deqCoeffs) {

@@ -34,7 +34,6 @@ int main(int argc, char **argv) {
   std::shared_ptr<class Russel> russel{std::make_shared<Russel>()};
 
   russel->memory_->fem_ = std::make_shared<class Fem>();
-  // TODO: here, it is a good point to print the gausspoints matrix
 
 #ifdef EXPORT_MEMORY_STATUS
   PrintVariable("Number of russel shared pointers [Main]: ", russel.use_count(), "", 0);
@@ -47,18 +46,10 @@ int main(int argc, char **argv) {
 #endif
 
   russel->memory_->InitializeArrays();
+
   russel->memory_->ReportArrays();
 
-
-
   russel->memory_->fem_->Assembly(3., russel->memory_->wwField_, russel);
-
-
-
-  std::fstream tempFile1;
-  std::fstream tempFile2;
-  tempFile1.open("o.qq_test_edw", std::ios::out);
-  tempFile2.open("o.qq_test_edw_final", std::ios::out);
 
   // Start of iterative scheme
   for (int ii=0; ii<russel->memory_->mesh_->GetNumberOfNodes(); ++ii) {
@@ -66,11 +57,7 @@ int main(int argc, char **argv) {
     russel->memory_->GetChain("mx1")->qqEdwFinal_(ii, 0) = 1.0;
   }
 
-  russel->memory_->GetChain("mx1")->qqEdw_.Export(tempFile1);
-  russel->memory_->GetChain("mx1")->qqEdwFinal_.Export(tempFile2);
-
-  tempFile1.close();
-  tempFile2.close();
+  russel->memory_->GetChain("mx1")->Report();
 
   SolverMumps(myId);
   // End of iterative scheme
