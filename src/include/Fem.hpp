@@ -21,6 +21,8 @@ class Fem {
   double Tetshp(int pp, std::shared_ptr<double []> xl);
 
   void Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww, std::shared_ptr<class Russel> &russel);
+  void AssignNonZeroEntries(std::shared_ptr<class Russel> &russel);
+  void Edwards(std::shared_ptr<class Russel> &russel);
 };
 
 } // RusselNS

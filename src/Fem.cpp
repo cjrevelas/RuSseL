@@ -254,4 +254,32 @@ void Fem::Assembly(const double rg2OfMonomer, std::shared_ptr<double []> ww, std
   std::cout << "------------------------------------  END OF MATRIX ASSEMBLY  ------------------------------------\n";
 }
 
+
+void Fem::AssignNonZeroEntries(std::shared_ptr<class Russel> &russel) {
+  std::cout << "Assigning non-zero entries in the stiffness matrix\n";
+
+  std::shared_ptr<double []> cc = russel->memory_->mesh_->lse_->cc;
+  return;
+}
+
+
+void Fem::Edwards(std::shared_ptr<class Russel> &russel) {
+  // step_size = dsEdwMatrix
+
+  // num_steps = numEdwPointsMatrix
+  // qq        = qqMatrix
+  // qqFinal   = qqMatrixFinal
+  // nodeBelongsToDirichletFace
+  // elemcon
+  std::cout << "Solving linear system..\n";
+
+  int numSteps = russel->memory_->GetContour("ContourId1")->GetNumberOfSteps();
+
+
+
+  for (int step=1; step<numSteps; ++step) {
+    // do solve
+  }
+}
+
 } // RusselNS

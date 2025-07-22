@@ -9,6 +9,7 @@ struct LinearSystemOfEquations {
   std::shared_ptr<double []> cc;
   std::shared_ptr<double []> kk;
   std::shared_ptr<double []> ww;
+  std::shared_ptr<double []> uu;
 
   std::shared_ptr<int []> row;
   std::shared_ptr<int []> col;
