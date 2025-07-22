@@ -1,5 +1,6 @@
 obj/
 run/
+tests/
 node_modules/
 test_integrity/
 tools/interp_fem/run/
